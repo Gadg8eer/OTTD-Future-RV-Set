@@ -30,42 +30,42 @@ grf {
 /* This is the Road Type Table. You can add roadtype labels (such as ROAD) to extend compatibility. */
 
 roadtypetable {
- 	ROAD,
+ 	//ROAD,
 	RAaN, RAAN, RABN, RACN, RAcN,
 	RBaN, RBBN, RBBN, RBCN, RBcN,
 	RCaN, RCAN, RCBN,// RCCN, RCcN,
 	RDaN, RDAN, RDBN,// RDCN, RDcN,
 	REaN, REAN,// REBN, RECN, REcN,
-	ELRD,
+	//ELRD,
 	RAaE, RAAE, RABE, RACE, RAcE,
 	RBaE, RBAE, RBBE, RBCE, RBcE,
 	RCaE, RCAE, RCBE,// RCCE, RCcE,
 	RDaE, RDAE, RDBE,// RDCE, RDcE,
 	REaE, REAE,// REBE, RECE, REcE,
-	SMTS, SMRT,
-	RAaS, RAAS, RABS, RACS, RAcS,
-	RBaS, RBAS, RBBS, RBCS, RBcS,
-	RCaS, RCAS, RCBS,// RCCS, RCcS,
-	RDaS, RDAS,// RDBS, RDCS, RDcS,
-	REaS, REAS,// REBS, RECS, REcS
-	BUSN,
+	//SMTS, SMRT,
+	RAaI, RAAI, RABI, RACI, RAcI,
+	RBaI, RBAI, RBBI, RBCI, RBcI,
+	RCaI, RCAI, RCBI,// RCCI, RCcI,
+	RDaI, RDAI,// RDBI, RDCI, RDcI,
+	REaI, REAI,// REBI, RECI, REcI,
+	//BUSN,
 	GAaN, GAAN, GABN, GACN, GAcN,
 	GBaN, GBAN, GBBN, GBCN, GBcN,
 	GCaN, GCAN, GCBN,// GCCN, GCcN,
 	GDaN, GDAN, GDBN,// GDCN, GDcN,
 	GEaN, GEAN,// GEBN, GECN, GEcN,
-	BUSE,
+	//BUSE,
 	GAaE, GAAE, GABE, GACE, GAcE,
 	GBaE, GBAE, GBBE, GBCE, GBcE,
 	GCaE, GCAE, GCBE,// GCCE, GCcE,
 	GDaE, GDAE, GDBE,// GDCE, GDcE,
 	GEaE, GEAE,// GEBE, GECE, GEcE,
-	BUSS,
-	GAaS, GAAS, GABS, GACS, GAcS,
-	GBaS, GBAS, GBBS, GBCS, GBcS,
-	GCaS, GCAS, GCBS,// GCCS, GCcS,
-	GDaS, GDAS,// GDBS, GDCS, GDcS,
-	GEaS, GEAS//, GEBS, GECS, GEcS
+	//BUSI,
+	GAaI, GAAI, GABI, GACI, GAcI,
+	GBaI, GBAI, GBBI, GBCI, GBcI,
+	GCaI, GCAI, GCBI,// GCCI, GCcI,
+	GDaI, GDAI,// GDBI, GDCI, GDcI,
+	GEaI, GEAI//, GEBI, GECI, GEcI,
 }
 
 /*
@@ -85,11 +85,11 @@ tramtypetable {
 	//RCaE, RCAE, RCBE, RCCE, RCcE,
 	/* Optic-Guided "Trackless Tram" Bus */
 	//AUTO,
-	OAaS, OAAS, OABS, OACS, OAcS,
-	OBaS, OBAS, OBBS, OBCS, OBcS,
-	OCaS, OCAS, OCBS,// OCCS, OCcS,
-	ODaS, ODAS,// ODBS, ODCS, ODcS,
-	OEaS, OEAS//, OEBS, OECS, OEcS
+	OAaI, OAaI, OABI, OACI, OACI,
+	OBaI, OBaI, OBBI, OBCI, OBCI,
+	OCaI, OCaI, OCBI,// OCCI, OCCI,
+	ODaI, ODaI,// ODBI, ODCI, ODCI,
+	OEaI, OEAS//, OEBI, OECI, OEcS
 	}
 
 /*
@@ -146,7 +146,7 @@ cargotable {
 	OLSD, //Oil Seed
 	FERT, //Fertilizer
 	LIME, //Limestone
-	PLAS, //Plastic
+	PLaI, //Plastic
 	MILK, //Milk
 	FISH, //Fish
 	ENSP, //Enigneering Supplies
