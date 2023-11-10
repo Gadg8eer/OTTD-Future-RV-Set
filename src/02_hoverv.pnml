@@ -31,7 +31,7 @@ item(FEAT_ROADTYPES, item_road) {
 		powered_roadtype_list:			[
 										"RAaN", "RAAN", "RABN", "RACN", "RAcN",
 										"RAaE", "RAAE", "RABE", "RACE", "RAcE",
-										"RAaS", "RAAS", "RABS", "RACS", "RAcS"
+										"RAaI", "RAaI", "RABI", "RACI", "RACI"
 										];
 		//roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
 	}
@@ -85,7 +85,7 @@ item(FEAT_ROADVEHS, item_hoverbus_01) {
 		loading_speed:					3;
 		cost_factor:					250;
 		running_cost_factor:				250;
-		road_type:							RABS;
+		road_type:							RABI;
 		/* cargo_age_period is left at default */
 
 		/* RV-specific properties */
@@ -254,7 +254,7 @@ item(FEAT_ROADVEHS, item_hoverflat_01) {
 		loading_speed:					5;
 		cost_factor:					255;
 		running_cost_factor:				255;
-		road_type:							RAAS;
+		road_type:							RAaI;
 		/* cargo_age_period is left at default */
 
 		/* RV-specific properties */
@@ -399,7 +399,7 @@ item(FEAT_ROADVEHS, item_hoverhopper_01) {
 		loading_speed:					5;
 		cost_factor:					255;
 		running_cost_factor:				255;
-		road_type:							RACS;
+		road_type:							RACI;
 		/* cargo_age_period is left at default */
 
 		/* RV-specific properties */
@@ -477,7 +477,7 @@ item(FEAT_ROADVEHS, item_hovertank_01) {
 		loading_speed:					6;
 		cost_factor:					255;
 		running_cost_factor:				255;
-		road_type:							RACS;
+		road_type:							RACI;
 		/* cargo_age_period is left at default */
 
 		/* RV-specific properties */
@@ -536,7 +536,7 @@ item(FEAT_ROADVEHS, item_hoversec_01) {
 		loading_speed:					5;
 		cost_factor:					255;
 		running_cost_factor:				255;
-		road_type:							RACS;
+		road_type:							RACI;
 		/* cargo_age_period is left at default */
 //
 		/* RV-specific properties */
@@ -595,7 +595,7 @@ item(FEAT_ROADVEHS, item_hoverfridge_01) {
 		loading_speed:					6;
 		cost_factor:					255;
 		running_cost_factor:				255;
-		road_type:							RACS;
+		road_type:							RACI;
 		/* cargo_age_period is left at default */
 
 		/* RV-specific properties */
@@ -658,7 +658,7 @@ item(FEAT_ROADVEHS, item_hoveruniv_01) {
 		loading_speed:					3;
 		cost_factor:					255;
 		running_cost_factor:				255;
-		road_type:							RACS;
+		road_type:							RACI;
 		/* cargo_age_period is left at default */
 
 		/* RV-specific properties */
