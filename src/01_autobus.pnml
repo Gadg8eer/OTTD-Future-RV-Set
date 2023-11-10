@@ -175,7 +175,7 @@ item(FEAT_ROADVEHS, item_smartram_0_front) {
         sprite_id: SPRITE_ID_NEW_ROADVEH;
         speed: 100 km/h;
         refit_cost: 0;
-        tram_type: OABS;
+        tram_type: OABI;
         power: 200 hp;
         running_cost_base: RUNNING_COST_ROADVEH;
 		default_cargo_type: PASS;
@@ -216,7 +216,7 @@ item(FEAT_ROADVEHS, item_smartram_0_rear) {
         running_cost_factor: 0;
         sprite_id: SPRITE_ID_NEW_ROADVEH;
         refit_cost: 0;
-        tram_type: OABS;
+        tram_type: OABI;
         power: 1 hp;
         running_cost_base: RUNNING_COST_NONE;
 		default_cargo_type: PASS;
@@ -245,23 +245,23 @@ switch (FEAT_ROADVEHS, SELF, switch_autobus_0_speed, current_roadtype) {
 //
 	RAaN: return 5;
 	RAaE: return 5;
-	RAaS: return 10;
+	RAaI: return 10;
 //---
 	RAAN: return 15;
 	RAAE: return 15;
-	RAAS: return 20;
+	RAaI: return 20;
 //---
 	RABN: return 25;
 	RABE: return 25;
-	RABS: return 30;
+	RABI: return 30;
 //---
 	RACN: return 35;
 	RACE: return 35;
-	RACS: return 40;
+	RACI: return 40;
 //---
 	RAcN: return 45;
 	RAcE: return 45;
-	RAcS: return 50;
+	RACI: return 50;
 //--- x2
 	RBaN: return 10;
 	RBaE: return 10;
@@ -469,7 +469,7 @@ item(FEAT_ROADVEHS, item_autobus_0_front) {
         sprite_id: SPRITE_ID_NEW_ROADVEH;
         speed: 100 km/h;
         refit_cost: 0;
-        road_type: RABS;
+        road_type: RABI;
         power: 200 hp;
         running_cost_base: RUNNING_COST_ROADVEH;
 		default_cargo_type: PASS;
@@ -510,7 +510,7 @@ item(FEAT_ROADVEHS, item_autobus_0_rear) {
         running_cost_factor: 0;
         sprite_id: SPRITE_ID_NEW_ROADVEH;
         refit_cost: 0;
-        road_type: RABS;
+        road_type: RABI;
         power: 1 hp;
         running_cost_base: RUNNING_COST_NONE;
 		default_cargo_type: PASS;
