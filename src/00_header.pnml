@@ -1,0 +1,155 @@
+/* This is the Header. Change the grfid to something like "YOU/01" or "SET/01" to start creating a new set. */
+grf {
+    grfid: "G8R\05";
+    name: string(STR_GRF_NAME);
+    desc: string(STR_GRF_DESCRIPTION);
+    version: 10;
+    min_compatible_version: 10;
+	param {
+		param_disable_bus {
+			type: bool;
+			name: string(STR_PARAM_NAME_BUS);
+			desc: string(STR_PARAM_DESC_BUS);
+		}
+	}
+	param {
+		param_enable_univ {
+			type: bool;
+			name: string(STR_PARAM_NAME_UNIV);
+			desc: string(STR_PARAM_DESC_UNIV);
+		}
+	}
+}
+
+/*
+ * *********************
+ * Define roadtype table
+ * *********************
+ */
+ 
+/* This is the Road Type Table. You can add roadtype labels (such as ROAD) to extend compatibility. */
+
+roadtypetable {
+ 	ROAD,
+	RAaN, RAAN, RABN, RACN, RAcN,
+	RBaN, RBBN, RBBN, RBCN, RBcN,
+	RCaN, RCAN, RCBN,// RCCN, RCcN,
+	RDaN, RDAN, RDBN,// RDCN, RDcN,
+	REaN, REAN,// REBN, RECN, REcN,
+	ELRD,
+	RAaE, RAAE, RABE, RACE, RAcE,
+	RBaE, RBAE, RBBE, RBCE, RBcE,
+	RCaE, RCAE, RCBE,// RCCE, RCcE,
+	RDaE, RDAE, RDBE,// RDCE, RDcE,
+	REaE, REAE,// REBE, RECE, REcE,
+	SMTS, SMRT,
+	RAaS, RAAS, RABS, RACS, RAcS,
+	RBaS, RBAS, RBBS, RBCS, RBcS,
+	RCaS, RCAS, RCBS,// RCCS, RCcS,
+	RDaS, RDAS,// RDBS, RDCS, RDcS,
+	REaS, REAS,// REBS, RECS, REcS
+	BUSN,
+	GAaN, GAAN, GABN, GACN, GAcN,
+	GBaN, GBAN, GBBN, GBCN, GBcN,
+	GCaN, GCAN, GCBN,// GCCN, GCcN,
+	GDaN, GDAN, GDBN,// GDCN, GDcN,
+	GEaN, GEAN,// GEBN, GECN, GEcN,
+	BUSE,
+	GAaE, GAAE, GABE, GACE, GAcE,
+	GBaE, GBAE, GBBE, GBCE, GBcE,
+	GCaE, GCAE, GCBE,// GCCE, GCcE,
+	GDaE, GDAE, GDBE,// GDCE, GDcE,
+	GEaE, GEAE,// GEBE, GECE, GEcE,
+	BUSS,
+	GAaS, GAAS, GABS, GACS, GAcS,
+	GBaS, GBAS, GBBS, GBCS, GBcS,
+	GCaS, GCAS, GCBS,// GCCS, GCcS,
+	GDaS, GDAS,// GDBS, GDCS, GDcS,
+	GEaS, GEAS//, GEBS, GECS, GEcS
+}
+
+/*
+ * *********************
+ * Define tramtype table
+ * *********************
+ */
+
+tramtypetable {
+	//RAIL,
+	//RAaN, RAAN, RABN, RACN, RAcN,
+	//RBaN, RBBN, RBBN, RBCN, RBcN,
+	//RCaN, RCAN, RCBN, RCCN, RCcN,
+	//ELRL,
+	//RAaE, RAAE, RABE, RACE, RAcE,
+	//RBaE, RBAE, RBBE, RBCE, RBcE,
+	//RCaE, RCAE, RCBE, RCCE, RCcE,
+	/* Optic-Guided "Trackless Tram" Bus */
+	//AUTO,
+	OAaS, OAAS, OABS, OACS, OAcS,
+	OBaS, OBAS, OBBS, OBCS, OBcS,
+	OCaS, OCAS, OCBS,// OCCS, OCcS,
+	ODaS, ODAS,// ODBS, ODCS, ODcS,
+	OEaS, OEAS//, OEBS, OECS, OEcS
+	}
+
+/*
+* ********************************************
+* Define cargo translation table and refits
+* ********************************************
+*/
+ 
+/* This is the cargo table. Check https://newgrf-specs.tt-wiki.net/wiki/CargoTypes to find cargo labels and add them to the cargo table. */
+ 
+// cargotable {
+//	Default cargos
+//   PASS, MAIL
+//   }
+ 
+
+//Cargotable
+cargotable {
+	PASS, //Passengers
+	GOOD, //Goods
+	MAIL, //Mail
+	COAL, //Coal
+	WOOD, //Wood
+	PAPR, //Paper
+	STEL, //Steel
+	BATT, //Batteries
+	BUBL, //Bubbles
+	FZDR, //Fizzy Drinks
+	LVST, //Livestock
+	FRUT, //Fruit
+	GRAI, //Grain
+	WHEA, //Wheat
+	MAIZ, //Maize
+	IORE, //Iron Ore
+	CORE, //Copper Ore
+	TOFF, //Toffee
+	SUGR, //Sugar
+	CTCD, //Candyfloss
+	SWET, //Candy (sweets)
+	//
+	OIL_, //Oil
+	RUBR, //Rubber
+	WATR, //Water
+	COLA, //Cola
+	PLST, //Plastic (candyland)
+	PETR, //Petrol
+	RFPR, //Refined Products
+	//Special
+	BEER, //Alcohol
+	FRVG, //FRUIT
+	WDPR, //Wood Products
+	WOOL, //Wool
+	CERE, //Cereal
+	OLSD, //Oil Seed
+	FERT, //Fertilizer
+	LIME, //Limestone
+	PLAS, //Plastic
+	MILK, //Milk
+	FISH, //Fish
+	ENSP, //Enigneering Supplies
+	FMSP, //Farm Supplies
+	MNSP, //Manufacturing Supplies
+}
