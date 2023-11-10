@@ -3,8 +3,8 @@ grf {
     grfid: "G8R\05";
     name: string(STR_GRF_NAME);
     desc: string(STR_GRF_DESCRIPTION);
-    version: 10;
-    min_compatible_version: 10;
+    version: 11;
+    min_compatible_version: 11;
 	param {
 		param_disable_bus {
 			type: bool;
