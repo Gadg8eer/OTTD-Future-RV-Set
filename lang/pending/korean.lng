@@ -1,0 +1,36 @@
+##grflangid 0x3a
+##plural 11
+##gender m f
+
+STR_GRF_NAME                                            :가짜 지하철
+STR_GRF_DESCRIPTION                                     :도로 아래를 지나는 지하철을 구현하기 위해, 실제로는 반투명으로 표시되는 자동차로 가짜 "지하철"을 추가해줍니다. 더 자세한 정보는 읽어보기 파일을 보시거나 아래의 URL을 방문해주십시오.
+STR_GRF_WEBSITE                                         :http://www.tt-forums.net/viewtopic.php?f=26&amp;t=56780
+
+STR_CAPACITY_PARAM_NAME                         :차량 수송량
+STR_CAPACITY_PARAM_DESC                         :지하철의 수송량을 좌석 수송량으로 할지 좌석 + 입석 수송량(더 많음)으로 할지를 결정합니다.
+STR_CAPACITY_PARAM_SEATED                       :좌석
+STR_CAPACITY_PARAM_STANDING                     :좌석 + 입석
+
+STR_TRAM_PARAM_NAME                                     :지하철이 다닐 도로 종류
+STR_TRAM_PARAM_DESC                                     :지하철을 보통 자동차로 취급할지 전차로 취급할지를 결정합니다.
+
+STR_ROADVEHICLES                                        :자동차
+STR_TRAMS                                                       :전차
+
+STR_NAME_TUBE_GATE                                      :게이트 튜브
+STR_NAME_TUBE_NEW_WORKS                         :뉴 워크스 튜브
+STR_NAME_TUBE_VICTORIA                          :빅토리아 튜브
+STR_NAME_TUBE_ADTRANZ                           :애드트란츠 튜브
+
+STR_NAME_SUBWAY_SHINKU_EKI                                     :신쿠-에키 2층 지하철
+
+STR_TUBE_PURCHASE_TEXT                          :{}2~8량으로 구성 가능합니다.{}구매 목록 상의 수송량은 8량 기준입니다.
+
+
+STR_SUBTYPE_LENGTH_2                            :(2량)
+STR_SUBTYPE_LENGTH_3                            :(3량)
+STR_SUBTYPE_LENGTH_4                            :(4량)
+STR_SUBTYPE_LENGTH_5                            :(5량)
+STR_SUBTYPE_LENGTH_6                            :(6량)
+STR_SUBTYPE_LENGTH_7                            :(7량)
+STR_SUBTYPE_LENGTH_8                            :(8량)

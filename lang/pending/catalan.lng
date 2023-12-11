@@ -1,0 +1,36 @@
+##grflangid 0x22
+##plural 0
+##gender Masculin Femenin
+
+STR_GRF_NAME                                            :Falsos Trens Subterranis
+STR_GRF_DESCRIPTION                                     :Afegeix "metros", que són de fet vehicles de carretera que apareixen com a ombres, per a simular metros circulant per les carreteres per baix terra. Per a més detalls, veure el llegeix-me o visiteu la direcció detallada a continuació.
+STR_GRF_WEBSITE                                         :http://www.tt-forums.net/viewtopic.php?f=26&amp;t=56780
+
+STR_CAPACITY_PARAM_NAME                         :Capacitats del vehicle
+STR_CAPACITY_PARAM_DESC                         :Determina si les capacitats de cada vagó dels metros reflecteixen només seients, o seients + localitats de peu (que són majors).
+STR_CAPACITY_PARAM_SEATED                       :Sense localitats de peu
+STR_CAPACITY_PARAM_STANDING                     :Seients + Localitats de peu
+
+STR_TRAM_PARAM_NAME                                     :Tipus de carretera del Metro
+STR_TRAM_PARAM_DESC                                     :Determina si els metros són vehicles de carretera normals o bé són tramvies.
+
+STR_ROADVEHICLES                                        :Vehicles de carretera normals
+STR_TRAMS                                                       :Tramvies
+
+STR_NAME_TUBE_GATE                                      :Metro Gate
+STR_NAME_TUBE_NEW_WORKS                         :Metro New Works
+STR_NAME_TUBE_VICTORIA                          :Metro Victoria
+STR_NAME_TUBE_ADTRANZ                           :Metro Adtranz
+
+STR_NAME_SUBWAY_SHINKU_EKI                                     :Metro de dos pisos Shinkū-eki
+
+STR_TUBE_PURCHASE_TEXT                          :{}Disponible en vagons de 2-8 parts.{}La capacitat mostrada és per al de 8 parts.
+
+
+STR_SUBTYPE_LENGTH_2                            :(2 vagons)
+STR_SUBTYPE_LENGTH_3                            :(3 vagons)
+STR_SUBTYPE_LENGTH_4                            :(4 vagons)
+STR_SUBTYPE_LENGTH_5                            :(5 vagons)
+STR_SUBTYPE_LENGTH_6                            :(6 vagons)
+STR_SUBTYPE_LENGTH_7                            :(7 vagons)
+STR_SUBTYPE_LENGTH_8                            :(8 vagons)

@@ -1,0 +1,37 @@
+##grflangid 0x13
+##plural 13
+##gender m f
+##case dat gen nom voc
+
+STR_GRF_NAME                                            :Carbadan fo-rathaid mas-fhìor
+STR_GRF_DESCRIPTION                                     :Cuiridh seo “carbadan fo-rathaid” ris a tha ’nan carbadan-rathaid a nochdas ’nan sgàileanan gus slighean fo-rathaid a riochdachadh. Thoir sùil air an leughmi no tadhail air an URL gu h-ìosal airson barrachd fiosrachaidh.
+STR_GRF_WEBSITE                                         :http://www.tt-forums.net/viewtopic.php?f=26&amp;t=56780
+
+STR_CAPACITY_PARAM_NAME                         :Tomhas-lìonaidh nan carbadan
+STR_CAPACITY_PARAM_DESC                         :Tagh am freagair an tomhas-lìonaidh aig eagair nan carbadan fho-rathaid ri àitichean-suidhe a-mhàin no ri àitichean-suidhe + seasaimh (a tha mòran nas motha).
+STR_CAPACITY_PARAM_SEATED                       :Àitichean-suidhe a-mhàin
+STR_CAPACITY_PARAM_STANDING                     :Àitichean-suidhe + seasaimh
+
+STR_TRAM_PARAM_NAME                                     :Seòrsa an fho-rathaid
+STR_TRAM_PARAM_DESC                                     :Suidhichidh seo am bi carbadan fo-rathaid ’nan carbadan-rathaid no ’nan tramaichean.
+
+STR_ROADVEHICLES                                        :Carbadan-rathaid àbhaisteach
+STR_TRAMS                                                       :Tramaichean
+
+STR_NAME_TUBE_GATE                                      :Trama fo-rathaid Gate
+STR_NAME_TUBE_NEW_WORKS                         :Trama fo-rathaid New Works
+STR_NAME_TUBE_VICTORIA                          :Trama fo-rathaid Victoria
+STR_NAME_TUBE_ADTRANZ                           :Trama fo-rathaid Adtranz
+
+STR_NAME_SUBWAY_SHINKU_EKI                                     :Trama fo-rathaid dà-chlàrach Shinkū-eki
+
+STR_TUBE_PURCHASE_TEXT                          :{}Ri fhaighinn ann an eagair le 2-8 carbaidean.{}Tha an tomhas-lìonaidh ’ga shealltainn airson eagar le 8 carbadan.
+
+
+STR_SUBTYPE_LENGTH_2                            :(2 Charbad)
+STR_SUBTYPE_LENGTH_3                            :(3 Carbadan)
+STR_SUBTYPE_LENGTH_4                            :(4 Carbadan)
+STR_SUBTYPE_LENGTH_5                            :(5 Carbadan)
+STR_SUBTYPE_LENGTH_6                            :(6 Carbadan)
+STR_SUBTYPE_LENGTH_7                            :(7 Carbadan)
+STR_SUBTYPE_LENGTH_8                            :(8 Carbadan)

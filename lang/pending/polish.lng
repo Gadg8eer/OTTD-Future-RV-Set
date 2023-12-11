@@ -1,0 +1,37 @@
+##grflangid 0x30
+##plural 7
+##gender m f n
+##case b c d m n w
+
+STR_GRF_NAME                                            :Sztuczne Metro
+STR_GRF_DESCRIPTION                                     :Dodaje "metro", co tak naprawdę jest pojazdami drogowymi wyświetlanymi jako cienie, by symulować metro biegnące pod drogami. Po więcej szczegółów zajrzyj do pliku readme lub odwiedź URL poniżej.
+STR_GRF_WEBSITE                                         :http://www.tt-forums.net/viewtopic.php?f=26&amp;t=56780
+
+STR_CAPACITY_PARAM_NAME                         :Pojemność pojazdów
+STR_CAPACITY_PARAM_DESC                         :Wybierz, czy pojemność zestawów metra odzwierciedla tylko miejsca siedzące, czy siedzące i stojące (których jest dużo więcej).
+STR_CAPACITY_PARAM_SEATED                       :Tylko siedzące
+STR_CAPACITY_PARAM_STANDING                     :Miejsca siedzące + stojące
+
+STR_TRAM_PARAM_NAME                                     :Typ Drogi Dla Metra
+STR_TRAM_PARAM_DESC                                     :Określa, czy metro to zwykłe pojazdy drogowe czy tramwaje.
+
+STR_ROADVEHICLES                                        :Zwykłe Pojazdy Drogowe
+STR_TRAMS                                                       :Tramwaje
+
+STR_NAME_TUBE_GATE                                      :Metro Gate
+STR_NAME_TUBE_NEW_WORKS                         :Metro New Works
+STR_NAME_TUBE_VICTORIA                          :Metro Victoria
+STR_NAME_TUBE_ADTRANZ                           :Metro Adtranz
+
+STR_NAME_SUBWAY_SHINKU_EKI                                     :Shinkū-eki Piętrowe Metro
+
+STR_TUBE_PURCHASE_TEXT                          :{}Dostępne w składach 2-8-wagonowych.{}Wyświetlana jest pojemność dla 8-wagonowego składu.
+
+
+STR_SUBTYPE_LENGTH_2                            :(2 Wagony)
+STR_SUBTYPE_LENGTH_3                            :(3 Wagony)
+STR_SUBTYPE_LENGTH_4                            :(4 Wagony)
+STR_SUBTYPE_LENGTH_5                            :(5 Wagonów)
+STR_SUBTYPE_LENGTH_6                            :(6 Wagonów)
+STR_SUBTYPE_LENGTH_7                            :(7 Wagonów)
+STR_SUBTYPE_LENGTH_8                            :(8 Wagonów)

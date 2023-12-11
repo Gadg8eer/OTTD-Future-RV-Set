@@ -1,0 +1,37 @@
+##grflangid 0x07
+##plural 6
+##gender m f n p
+##case abl acc dat f gen m n nom p pre
+
+STR_GRF_NAME                                            :Псевдометро
+STR_GRF_DESCRIPTION                                     :Создаёт псевдометро, которое на самом деле является автомобилями, отображаемыми как тень, что изображает метро, движущееся под дорогами. Дополнительную информацию смотрите в readme или по ссылке.
+STR_GRF_WEBSITE                                         :http://www.tt-forums.net/viewtopic.php?f=26&amp;t=56780
+
+STR_CAPACITY_PARAM_NAME                         :Вместимость
+STR_CAPACITY_PARAM_DESC                         :Определяет, вместимость определяется по сидячим местам или по сидячим и стоячим местам, что значительно больше.
+STR_CAPACITY_PARAM_SEATED                       :Только сидячие места
+STR_CAPACITY_PARAM_STANDING                     :Сидячие и стоячие места
+
+STR_TRAM_PARAM_NAME                                     :Тип дорог для псевдометро
+STR_TRAM_PARAM_DESC                                     :Определяет, псевдометро это автомобили или трамваи
+
+STR_ROADVEHICLES                                        :Автомобили
+STR_TRAMS                                                       :Трамваи
+
+STR_NAME_TUBE_GATE                                      :Метро Gate
+STR_NAME_TUBE_NEW_WORKS                         :Метро New Works
+STR_NAME_TUBE_VICTORIA                          :Метро Victoria
+STR_NAME_TUBE_ADTRANZ                           :Метро Adtranz
+
+STR_NAME_SUBWAY_SHINKU_EKI                                     :"Shinkū-eki" двух-ярусное метро
+
+STR_TUBE_PURCHASE_TEXT                          :{}Доступная длина состава - 2-8 вагонов.{}Вместимость указывается для 8-и вагонного состава.
+
+
+STR_SUBTYPE_LENGTH_2                            :(2 Вагона)
+STR_SUBTYPE_LENGTH_3                            :(3 Вагона)
+STR_SUBTYPE_LENGTH_4                            :(4 Вагона)
+STR_SUBTYPE_LENGTH_5                            :(5 Вагонов)
+STR_SUBTYPE_LENGTH_6                            :(6 Вагонов)
+STR_SUBTYPE_LENGTH_7                            :(7 Вагонов)
+STR_SUBTYPE_LENGTH_8                            :(8 Вагонов)

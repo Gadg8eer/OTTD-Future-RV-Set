@@ -1,0 +1,36 @@
+##grflangid 0x24
+##plural 2
+##case ba t
+
+STR_GRF_NAME                                            :Hamis metrók
+STR_GRF_DESCRIPTION                                     :Metrók hozzáadása, amik igazából árnyékként látszódó közúti járművek, hogy szimuláljuk a metróforgalmat. Több információért nézd meg a readme-t vagy az alábbi címet!
+STR_GRF_WEBSITE                                         :http://www.tt-forums.net/viewtopic.php?f=26&t=56780
+
+STR_CAPACITY_PARAM_NAME                         :Járműkapacitás
+STR_CAPACITY_PARAM_DESC                         :A metró kapacitása csak az ülőhelyekre korlátozódik, vagy állóhelyek is vannak. (Utóbbi esetben többen férnek el.)
+STR_CAPACITY_PARAM_SEATED                       :csak ülőhely
+STR_CAPACITY_PARAM_STANDING                     :ülő- és állóhelyek
+
+STR_TRAM_PARAM_NAME                                     :A metrók
+STR_TRAM_PARAM_DESC                                     :A metrók közúti járműnek vagy villamosnak számítanak.
+
+STR_ROADVEHICLES                                        :Közönséges közúti járművek
+STR_TRAMS                                                       :Villamosok
+
+STR_NAME_TUBE_GATE                                      :Gate kocsi
+STR_NAME_TUBE_NEW_WORKS                         :New Works metró
+STR_NAME_TUBE_VICTORIA                          :Victoria kocsi
+STR_NAME_TUBE_ADTRANZ                           :
+
+STR_NAME_SUBWAY_SHINKU_EKI                                     :Shinkū-eki emeletes metró
+
+STR_TUBE_PURCHASE_TEXT                          :{}Elérhető 2-8 kocsis hosszban is.{}A szállítási kapacitás a 8 kocsis szerelvényre vonatkozik.
+
+
+STR_SUBTYPE_LENGTH_2                            :(2 kocsi)
+STR_SUBTYPE_LENGTH_3                            :(3 kocsi)
+STR_SUBTYPE_LENGTH_4                            :(4 kocsi)
+STR_SUBTYPE_LENGTH_5                            :(5 kocsi)
+STR_SUBTYPE_LENGTH_6                            :(6 kocsi)
+STR_SUBTYPE_LENGTH_7                            :(7 kocsi)
+STR_SUBTYPE_LENGTH_8                            :(8 kocsi)

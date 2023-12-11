@@ -1,0 +1,37 @@
+##grflangid 0x66
+##plural 0
+##gender m f n mp fp np
+##case abl acc dat gen
+
+STR_GRF_NAME                                            :Ferriviae Subterraneae Fictae
+STR_GRF_DESCRIPTION                                     :Hoc Newgrf addit "ferrivias subterraneas", quae vero sunt vehicula viaria quae videntur esse umbrae, ut simulet tramina subterranea sub vias vadere. Potes invenire plura indicia in LegeMe sive apud situm Interretiale.
+STR_GRF_WEBSITE                                         :http://www.tt-forums.net/viewtopic.php?f=26&t=56780
+
+STR_CAPACITY_PARAM_NAME                         :Capacitates vehiculorum
+STR_CAPACITY_PARAM_DESC                         :Eligere si capacitates traminum sunt modo vectorum sedentium, aut sedentium et stantium (quae sunt multo ampliores).
+STR_CAPACITY_PARAM_SEATED                       :Modo sedentium
+STR_CAPACITY_PARAM_STANDING                     :Sedentium & stantium
+
+STR_TRAM_PARAM_NAME                                     :Tramina subterranea sunt
+STR_TRAM_PARAM_DESC                                     :Eligere si tramina subterranea sunt vehicula viaria solita aut transviariae raedae.
+
+STR_ROADVEHICLES                                        :Vehicula viaria solita
+STR_TRAMS                                                       :Transviariae Raedae
+
+STR_NAME_TUBE_GATE                                      :Portae Tramen
+STR_NAME_TUBE_NEW_WORKS                         :Novi Operis Tramen
+STR_NAME_TUBE_VICTORIA                          :Victoriae Tramen
+STR_NAME_TUBE_ADTRANZ                           :Adtranz Tramen
+
+STR_NAME_SUBWAY_SHINKU_EKI                                     :Shinkū-eki Tramen cum Duobus Constratis
+
+STR_TUBE_PURCHASE_TEXT                          :{}Parabilis cum II-VIII curribus.{}Capacitas monstrata est VIII curruum.
+
+
+STR_SUBTYPE_LENGTH_2                            :(cum II curribus)
+STR_SUBTYPE_LENGTH_3                            :(cum III curribus)
+STR_SUBTYPE_LENGTH_4                            :(cum IV curribus)
+STR_SUBTYPE_LENGTH_5                            :(cum V curribus)
+STR_SUBTYPE_LENGTH_6                            :(cum VI curribus)
+STR_SUBTYPE_LENGTH_7                            :(cum VII curribus)
+STR_SUBTYPE_LENGTH_8                            :(cum VIII curribus)

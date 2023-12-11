@@ -1,0 +1,17 @@
+##grflangid 0x5a
+##plural 1
+
+STR_GRF_WEBSITE                                         :http://www.tt-forums.net/viewtopic.php?f=26&t=56780
+
+STR_CAPACITY_PARAM_SEATED                       :Cuma-duduk
+
+
+STR_ROADVEHICLES                                        :Kendaraan Jalan Raya biasa
+
+
+
+
+
+STR_SUBTYPE_LENGTH_2                            :(2 Gerbong)
+STR_SUBTYPE_LENGTH_3                            :(3 Gerbong)
+STR_SUBTYPE_LENGTH_4                            :(4 Gerbong)

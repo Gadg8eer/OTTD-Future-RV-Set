@@ -1,0 +1,36 @@
+##grflangid 0x02
+##plural 0
+##gender m w n p
+
+STR_GRF_NAME                                            :Fake-U-Bahnen
+STR_GRF_DESCRIPTION                                     :Fügt dem Spiel Pseudo-U-Bahnen hinzu. Diese sind tatsächlich Straßenfahrzeuge, die als Schatten angezeigt werden, die unter der Straße verkehrende U-Bahnen simulieren. Weitere Informationen sind in der readme und unter der unten stehenden URL zu finden.
+STR_GRF_WEBSITE                                         :http://www.tt-forums.net/viewtopic.php?f=26&t=56780
+
+STR_CAPACITY_PARAM_NAME                         :Fahrzeugkapazitäten
+STR_CAPACITY_PARAM_DESC                         :Legt fest, ob die Kapazität der U-Bahnen nur Sitzplätze umfasst oder zusätzlich auch die Stehplätze (so dass die Kapazität viel größer ist).
+STR_CAPACITY_PARAM_SEATED                       :Nur Sitzplätze
+STR_CAPACITY_PARAM_STANDING                     :Sitz- und Stehplätze
+
+STR_TRAM_PARAM_NAME                                     :U-Bahnen sollten sein:
+STR_TRAM_PARAM_DESC                                     :Legt fest, ob Fake-U-Bahnen normale Straßenfahrzeuge sind oder Trams.
+
+STR_ROADVEHICLES                                        :normale Straßenfahrzeuge
+STR_TRAMS                                                       :Trams
+
+STR_NAME_TUBE_GATE                                      :Gate Tube
+STR_NAME_TUBE_NEW_WORKS                         :New-Works-Programme U-Bahn
+STR_NAME_TUBE_VICTORIA                          :Victoria-U-Bahn
+STR_NAME_TUBE_ADTRANZ                           :Adtranz-U-Bahn
+
+STR_NAME_SUBWAY_SHINKU_EKI                                     :Shinkū-eki Doppelstock-U-Bahn
+
+STR_TUBE_PURCHASE_TEXT                          :{}Als Zwei- bis Acht-Wagen-Züge verfügbar.{}Die angezeigte Kapazität entspricht einem Acht-Wagen-Zug
+
+
+STR_SUBTYPE_LENGTH_2                            :(2 Wagen)
+STR_SUBTYPE_LENGTH_3                            :(3 Wagen)
+STR_SUBTYPE_LENGTH_4                            :(4 Wagen)
+STR_SUBTYPE_LENGTH_5                            :(5 Wagen)
+STR_SUBTYPE_LENGTH_6                            :(6 Wagen)
+STR_SUBTYPE_LENGTH_7                            :(7 Wagen)
+STR_SUBTYPE_LENGTH_8                            :(8 Wagen)
