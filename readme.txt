@@ -10,7 +10,7 @@ Contents
 2. Recomended Settings
 3. Vehicles
 4. Copyright
-5. Fake Subways Readme
+5. Original Readme Files
 
 ========
 
@@ -93,7 +93,7 @@ Contents
 			-Cosmopolitan Railways "CargoVac" V4c (2050)-
 
 3f. Hovermobiles
-		A conversion of the "Hover Vehicles" GRF by Hazzard and their graphical bases to use standardized roadtype tables, they have sprites (and names) modified from that set.
+		A conversion of the "Hover Vehicles" GRF by Hazzard and their graphical bases to use standardized roadtype tables, they have sprites (and modified names) from that set. The sprites are derived from Zephyris' 
 
 			-Chryslus Metroliner '78 HoverBus (2078)-
 			-BnL HAUL-E Flatbed Hover Truck (2080)-
@@ -105,6 +105,8 @@ Contents
 
 4. Copyright
 	See license.txt
+
+5. Original Readme Files
 	
 =======================
 Fake Subways Readme (Unmodified)
