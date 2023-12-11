@@ -1,19 +1,19 @@
 // ======= BEGIN SHINKU-EKI E1 FUTURISTIC =======
 
 // Shinku_eki Sprites
-spriteset(Shinku_eki_purchase_set, "gfx/vehicles/MABV/Shinku-eki/ShinkuPurchase.png") {
+spriteset(Shinku_eki_purchase_set, "gfx/vehicles/VACT/Shinku-eki/ShinkuPurchase.png") {
 	[-18, -6]
 }
 
-spriteset(Shinku_eki_head_visible_set, "gfx/vehicles/MABV/Shinku-eki/ShinkuHead.png") {
+spriteset(Shinku_eki_head_visible_set, "gfx/vehicles/VACT/Shinku-eki/ShinkuHead.png") {
 	[-16, -5]
 }
 
-spriteset(Shinku_eki_middle_visible_set, "gfx/vehicles/MABV/Shinku-eki/ShinkuMiddle.png") {
+spriteset(Shinku_eki_middle_visible_set, "gfx/vehicles/VACT/Shinku-eki/ShinkuMiddle.png") {
 	[-16, -5]
 }
 
-spriteset(Shinku_eki_tail_visible_set, "gfx/vehicles/MABV/Shinku-eki/ShinkuTail.png") {
+spriteset(Shinku_eki_tail_visible_set, "gfx/vehicles/VACT/Shinku-eki/ShinkuTail.png") {
 	[-16, -5]
 }
 
@@ -248,19 +248,19 @@ if (param_RV0_or_tram1 == 1) {
 // ======= BEGIN SHINKU-EKI E4 FUTURISTIC =======
 
 // Shinku_eki Sprites
-spriteset(Shinku_eki_purchase_set, "gfx/vehicles/MABV/Shinku-eki/ShinkuPurchase.png") {
+spriteset(Shinku_eki_purchase_set, "gfx/vehicles/VACT/Shinku-eki/ShinkuPurchase.png") {
 	[-18, -6]
 }
 
-spriteset(Shinku_eki_head_visible_set, "gfx/vehicles/MABV/Shinku-eki/ShinkuHead.png") {
+spriteset(Shinku_eki_head_visible_set, "gfx/vehicles/VACT/Shinku-eki/ShinkuHead.png") {
 	[-16, -5]
 }
 
-spriteset(Shinku_eki_middle_visible_set, "gfx/vehicles/MABV/Shinku-eki/ShinkuMiddle.png") {
+spriteset(Shinku_eki_middle_visible_set, "gfx/vehicles/VACT/Shinku-eki/ShinkuMiddle.png") {
 	[-16, -5]
 }
 
-spriteset(Shinku_eki_tail_visible_set, "gfx/vehicles/MABV/Shinku-eki/ShinkuTail.png") {
+spriteset(Shinku_eki_tail_visible_set, "gfx/vehicles/VACT/Shinku-eki/ShinkuTail.png") {
 	[-16, -5]
 }
 
