@@ -1,9 +1,9 @@
 FutuRVs Readme
-==========================================================================
-credits to Roujin, Hazzard, Supercheese, EmperorJake, PikkaBird and acs121
-==========================================================================
+====================================================================================
+credits to Zephyris, Roujin, Hazzard, Supercheese, EmperorJake, PikkaBird and acs121
+====================================================================================
 Code merging by Gadg8eer
-==========================================================================
+====================================================================================
 
 Contents
 1. About
@@ -93,7 +93,7 @@ Contents
 			-Cosmopolitan Railways "CargoVac" V4c (2050)-
 
 3f. Hovermobiles
-		A conversion of the "Hover Vehicles" GRF by Hazzard and their graphical bases to use standardized roadtype tables, they have sprites (and modified names) from that set. The sprites are derived from Zephyris' 
+		A conversion of the "Hover Vehicles" GRF by Hazzard and their graphical bases to use standardized roadtype tables, they have sprites (and modified names) from that set. The sprites are derived from Zephyris' "eGRVTS" GRF.
 
 			-Chryslus Metroliner '78 HoverBus (2078)-
 			-BnL HAUL-E Flatbed Hover Truck (2080)-
