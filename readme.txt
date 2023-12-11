@@ -1,9 +1,9 @@
 FutuRVs Readme
-==================================================================
-credits to Hazzard, Supercheese, EmperorJake, PikkaBird and acs121
-==================================================================
+==========================================================================
+credits to Roujin, Hazzard, Supercheese, EmperorJake, PikkaBird and acs121
+==========================================================================
 Code merging by Gadg8eer
-==================================================================
+==========================================================================
 
 Contents
 1. About
@@ -16,6 +16,7 @@ Contents
 
 1. About
 		Hover vehicles is a small newGRF created to add a few futuristic hovering vehicles to OpenTTD. The GRF currently includes one bus and five trucks. An aditional universal truck can be enabled via the parameter setings.
+	
 	1a. About Articul8eer
 		Originally concieved as a template for articulated vehicles, the set evolved into a reuse of one of acs121's old NABI bus sprites to create a vehicle capable of interacting with futuristic roads.
 
