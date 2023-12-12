@@ -34,8 +34,8 @@ Contents
 
 			-London Underground '03 Stock "Gate" (1903)-
 			-London Underground '38 Stock "New Works" (1938)-
-			-London Underground '67 Stock "Victoria" (1967)-
-			-London Underground '92 Stock "Adtranz" (1992)-
+			-London Underground '67 Stock "Victoria" (1964)-
+			-London Underground '92 Stock "Adtranz" (1991)-
 	
 		You may recognize the futuristic subways and the VacTube variants from one of the Vactrain sets by EmperorJake, as they have sprites (and names) modified from that set.
 		
