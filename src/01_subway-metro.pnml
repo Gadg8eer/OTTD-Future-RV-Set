@@ -5,6 +5,7 @@ spriteset(gate_purchase_set, "gfx/graphics/MTRO/Gate/GTubePurchase_0.png") {
 	[-18, -5]
 }
 
+/* DISABLED
 spriteset(gate_head_visible_set, "gfx/graphics/MTRO/Gate/GTubeHead_0.png") {
 	[-16, -5]
 }
@@ -16,6 +17,20 @@ spriteset(gate_middle_visible_set, "gfx/graphics/MTRO/Gate/GTubeMiddle_0.png") {
 spriteset(gate_tail_visible_set, "gfx/graphics/MTRO/Gate/GTubeTail_0.png") {
 	[-16, -5]
 }
+*/
+
+spriteset(gate_head_visible_set, "gfx/graphics/MTRO/Gate/GateFront_0.png") {
+	template_tram_28(0, 60)
+}
+
+spriteset(gate_middle_visible_set, "gfx/graphics/MTRO/Gate/GateMiddle_0.png") {
+	template_tram_28(0, 60)
+}
+
+spriteset(gate_tail_visible_set, "gfx/graphics/MTRO/Gate/GateBack_0.png") {
+	template_tram_28(0, 60)
+}
+
 
 
 // Switches
