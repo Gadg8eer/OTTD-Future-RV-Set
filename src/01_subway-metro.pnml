@@ -1,33 +1,33 @@
 // ======= BEGIN GATE TUBE =======
 
 // Gate Tube Sprites
-spriteset(gate_purchase_set, "gfx/graphics/MTRO/Gate/GTubePurchase_0.png") {
+spriteset(gate_purchase_set, "gfx/graphics/tram/MTRO/Gate/GTubePurchase_0.png") {
 	[-18, -5]
 }
 
 /* DISABLED
-spriteset(gate_head_visible_set, "gfx/graphics/MTRO/Gate/GTubeHead_0.png") {
+spriteset(gate_head_visible_set, "gfx/graphics/tram/MTRO/Gate/GTubeHead_0.png") {
 	[-16, -5]
 }
 
-spriteset(gate_middle_visible_set, "gfx/graphics/MTRO/Gate/GTubeMiddle_0.png") {
+spriteset(gate_middle_visible_set, "gfx/graphics/tram/MTRO/Gate/GTubeMiddle_0.png") {
 	[-16, -5]
 }
 
-spriteset(gate_tail_visible_set, "gfx/graphics/MTRO/Gate/GTubeTail_0.png") {
+spriteset(gate_tail_visible_set, "gfx/graphics/tram/MTRO/Gate/GTubeTail_0.png") {
 	[-16, -5]
 }
 */
 
-spriteset(gate_head_visible_set, "gfx/graphics/MTRO/Gate/GateFront_0.png") {
+spriteset(gate_head_visible_set, "gfx/graphics/tram/MTRO/Gate/GateFront_0.png") {
 	template_tram_28(0, 60)
 }
 
-spriteset(gate_middle_visible_set, "gfx/graphics/MTRO/Gate/GateMiddle_0.png") {
+spriteset(gate_middle_visible_set, "gfx/graphics/tram/MTRO/Gate/GateMiddle_0.png") {
 	template_tram_28(0, 60)
 }
 
-spriteset(gate_tail_visible_set, "gfx/graphics/MTRO/Gate/GateBack_0.png") {
+spriteset(gate_tail_visible_set, "gfx/graphics/tram/MTRO/Gate/GateBack_0.png") {
 	template_tram_28(0, 60)
 }
 
@@ -179,7 +179,7 @@ item(FEAT_ROADVEHS, gate_tube) {
 		running_cost_factor:			132;
 		length:							7;
 		cargo_age_period:				90;
-		tram_type:                    	MAB3;
+		tram_type:                    	Mtro;
 	}
 	graphics {
 		articulated_part:				gate_switch_articulated;
@@ -215,19 +215,19 @@ if (param_RV0_or_tram1 == 1) {
 // ======= BEGIN NEW WORKS TUBE =======
 
 // New Works Tube Sprites
-spriteset(new_works_purchase_set, "gfx/graphics/MTRO/New Works/NWTubePurchase_0.png") {
+spriteset(new_works_purchase_set, "gfx/graphics/tram/MTRO/New Works/NWTubePurchase_0.png") {
 	[-18, -5]
 }
 
-spriteset(new_works_head_visible_set, "gfx/graphics/MTRO/New Works/NWTubeHead_0.png") {
+spriteset(new_works_head_visible_set, "gfx/graphics/tram/MTRO/New Works/NWTubeHead_0.png") {
 	[-16, -5]
 }
 
-spriteset(new_works_middle_visible_set, "gfx/graphics/MTRO/New Works/NWTubeMiddle_0.png") {
+spriteset(new_works_middle_visible_set, "gfx/graphics/tram/MTRO/New Works/NWTubeMiddle_0.png") {
 	[-16, -5]
 }
 
-spriteset(new_works_tail_visible_set, "gfx/graphics/MTRO/New Works/NWTubeTail_0.png") {
+spriteset(new_works_tail_visible_set, "gfx/graphics/tram/MTRO/New Works/NWTubeTail_0.png") {
 	[-16, -5]
 }
 
@@ -377,7 +377,7 @@ item(FEAT_ROADVEHS, new_works_tube) {
 		running_cost_factor:			158;
 		length:							7;
 		cargo_age_period:				92;
-		tram_type:                    	MAB3;
+		tram_type:                    	Mtro;
 	}
 	graphics {
 		articulated_part:				new_works_switch_articulated;
@@ -413,19 +413,19 @@ if (param_RV0_or_tram1 == 1) {
 // ======= BEGIN VICTORIA TUBE =======
 
 // Victoria Tube Sprites
-spriteset(victoria_purchase_set, "gfx/graphics/MTRO/Victoria/VTubePurchase_0.png") {
+spriteset(victoria_purchase_set, "gfx/graphics/tram/MTRO/Victoria/VTubePurchase_0.png") {
 	[-18, -5]
 }
 
-spriteset(victoria_head_visible_set, "gfx/graphics/MTRO/Victoria/VTubeHead_0.png") {
+spriteset(victoria_head_visible_set, "gfx/graphics/tram/MTRO/Victoria/VTubeHead_0.png") {
 	[-16, -5]
 }
 
-spriteset(victoria_middle_visible_set, "gfx/graphics/MTRO/Victoria/VTubeMiddle_0.png") {
+spriteset(victoria_middle_visible_set, "gfx/graphics/tram/MTRO/Victoria/VTubeMiddle_0.png") {
 	[-16, -5]
 }
 
-spriteset(victoria_tail_visible_set, "gfx/graphics/MTRO/Victoria/VTubeTail_0.png") {
+spriteset(victoria_tail_visible_set, "gfx/graphics/tram/MTRO/Victoria/VTubeTail_0.png") {
 	[-16, -5]
 }
 
@@ -576,7 +576,7 @@ item(FEAT_ROADVEHS, victoria_tube) {
 		running_cost_factor:			184;
 		length:							7;
 		cargo_age_period:				108;
-		tram_type:                    	MAB3;
+		tram_type:                    	Mtro;
 	}
 	graphics {
 		articulated_part:				victoria_switch_articulated;
@@ -612,19 +612,19 @@ if (param_RV0_or_tram1 == 1) {
 // ======= BEGIN ADTRANZ TUBE =======
 
 // Adtranz Tube Sprites
-spriteset(adtranz_purchase_set, "gfx/graphics/MTRO/Adtranz/ATubePurchase_0.png") {
+spriteset(adtranz_purchase_set, "gfx/graphics/tram/MTRO/Adtranz/ATubePurchase_0.png") {
 	[-18, -5]
 }
 
-spriteset(adtranz_head_visible_set, "gfx/graphics/MTRO/Adtranz/ATubeHead_0.png") {
+spriteset(adtranz_head_visible_set, "gfx/graphics/tram/MTRO/Adtranz/ATubeHead_0.png") {
 	[-16, -5]
 }
 
-spriteset(adtranz_middle_visible_set, "gfx/graphics/MTRO/Adtranz/ATubeMiddle_0.png") {
+spriteset(adtranz_middle_visible_set, "gfx/graphics/tram/MTRO/Adtranz/ATubeMiddle_0.png") {
 	[-16, -5]
 }
 
-spriteset(adtranz_tail_visible_set, "gfx/graphics/MTRO/Adtranz/ATubeTail_0.png") {
+spriteset(adtranz_tail_visible_set, "gfx/graphics/tram/MTRO/Adtranz/ATubeTail_0.png") {
 	[-16, -5]
 }
 
@@ -774,7 +774,7 @@ item(FEAT_ROADVEHS, adtranz_tube) {
 		running_cost_factor:			212;
 		length:							7;
 		cargo_age_period:				120;
-		tram_type:                    	MAB3;
+		tram_type:                    	Mtro;
 	}
 	graphics {
 		articulated_part:				adtranz_switch_articulated;
@@ -808,19 +808,19 @@ if (param_RV0_or_tram1 == 1) {
 // ======= BEGIN CHIKATETSU E1 FUTURISTIC =======
 
 // ChikatetsuE4 Sprites
-spriteset(ChikatetsuE4_purchase_set, "gfx/graphics/MTRO/Chikatetsu/ChikatetsuE1Purchase_0.png") {
+spriteset(ChikatetsuE1_purchase_set, "gfx/graphics/tram/MTRO/Chikatetsu/ChikatetsuE1Purchase_0.png") {
 	[-18, -6]
 }
 
-spriteset(ChikatetsuE4_head_visible_set, "gfx/graphics/MTRO/Chikatetsu/ChikatetsuE1Head_0.png") {
+spriteset(ChikatetsuE1_head_visible_set, "gfx/graphics/tram/MTRO/Chikatetsu/ChikatetsuE1Head_0.png") {
 	[-16, -5]
 }
 
-spriteset(ChikatetsuE4_middle_visible_set, "gfx/graphics/MTRO/Chikatetsu/ChikatetsuE1Middle_0.png") {
+spriteset(ChikatetsuE1_middle_visible_set, "gfx/graphics/tram/MTRO/Chikatetsu/ChikatetsuE1Middle_0.png") {
 	[-16, -5]
 }
 
-spriteset(ChikatetsuE4_tail_visible_set, "gfx/graphics/MTRO/Chikatetsu/ChikatetsuE1Tail_0.png") {
+spriteset(ChikatetsuE1_tail_visible_set, "gfx/graphics/tram/MTRO/Chikatetsu/ChikatetsuE1Tail_0.png") {
 	[-16, -5]
 }
 
@@ -1021,7 +1021,7 @@ item(FEAT_ROADVEHS, ChikatetsuE1) {
 		running_cost_factor:			255;
 		length:							7;
 		cargo_age_period:				128;
-		tram_type:                    	MAB3;
+		tram_type:                    	MTRO;
 	}
 	graphics {
 		articulated_part:				ChikatetsuE1_switch_articulated;
@@ -1056,19 +1056,19 @@ if (param_RV0_or_tram1 == 1) {
 // ======= BEGIN CHIKATETSU E4 FUTURISTIC =======
 
 // ChikatetsuE4 Sprites
-spriteset(ChikatetsuE4_purchase_set, "gfx/graphics/MTRO/Chikatetsu/ChikatetsuE4Purchase_0.png") {
+spriteset(ChikatetsuE4_purchase_set, "gfx/graphics/tram/MTRO/Chikatetsu/ChikatetsuE4Purchase_0.png") {
 	[-18, -6]
 }
 
-spriteset(ChikatetsuE4_head_visible_set, "gfx/graphics/MTRO/Chikatetsu/ChikatetsuE4Head_0.png") {
+spriteset(ChikatetsuE4_head_visible_set, "gfx/graphics/tram/MTRO/Chikatetsu/ChikatetsuE4Head_0.png") {
 	[-16, -5]
 }
 
-spriteset(ChikatetsuE4_middle_visible_set, "gfx/graphics/MTRO/Chikatetsu/ChikatetsuE4Middle_0.png") {
+spriteset(ChikatetsuE4_middle_visible_set, "gfx/graphics/tram/MTRO/Chikatetsu/ChikatetsuE4Middle_0.png") {
 	[-16, -5]
 }
 
-spriteset(ChikatetsuE4_tail_visible_set, "gfx/graphics/MTRO/Chikatetsu/ChikatetsuE4Tail_0.png") {
+spriteset(ChikatetsuE4_tail_visible_set, "gfx/graphics/tram/MTRO/Chikatetsu/ChikatetsuE4Tail_0.png") {
 	[-16, -5]
 }
 
@@ -1269,7 +1269,7 @@ item(FEAT_ROADVEHS, ChikatetsuE4) {
 		running_cost_factor:			255;
 		length:							7;
 		cargo_age_period:				128;
-		tram_type:                    	MAb3;
+		tram_type:                    	MTRO;
 	}
 	graphics {
 		articulated_part:				ChikatetsuE4_switch_articulated;

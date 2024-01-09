@@ -1,91 +1,91 @@
 ##grflangid 0x01
 ##plural 0
 
-STR_GRF_NAME                       :Future Vehicles Set 0.2a
-STR_GRF_DESCRIPTION                :Articulated bus graphic credits to {SILVER}acs121{BLACK}, graphics licensed in {SILVER}GPL v2{BLACK}.{}Hover Vehicles graphics credits to {SILVER}Hazzard{BLACK}, graphics licensed in {SILVER}GPL v2{BLACK}.{}This GRF is a combination of Gadg8eer's "Articul8eer" set and Hazzard's hover vhecles; it adds one new optical tram, one new self-driving bus, and six new high-speed levitating road vehicles to the game :a bus and a truck.{}{COPYRIGHT}{COPYDATE} Hazzard (Mingwei Samuel){}License:{}GPLv2{}Uses parts of HoverBus and eGRVTS
-STR_GRF_URL                        :https://lemmy.dbzero.com/
+STR_GRF_NAME:Future Vehicles Set 0.2a
+STR_GRF_DESCRIPTION:Articulated bus graphic credits to {SILVER}acs121{BLACK}, graphics licensed in {SILVER}GPL v2{BLACK}.{}Hover Vehicles graphics credits to {SILVER}Hazzard{BLACK}, graphics licensed in {SILVER}GPL v2{BLACK}.{}This GRF is a combination of Gadg8eer's "Articul8eer" set and Hazzard's hover vhecles; it adds one new optical tram, one new self-driving bus, and six new high-speed levitating road vehicles to the game:a bus and a truck.{}{COPYRIGHT}{COPYDATE} Hazzard (Mingwei Samuel){}License:{}GPLv2{}Uses parts of HoverBus and eGRVTS
+STR_GRF_URL:https://lemmy.dbzero.com/
 
 #Parameter Names
-STR_PARAM_NAME_BUS                 :Diable the 'Chryslus HoverBus' Vehicle
-STR_PARAM_DESC_BUS                 :Disables the Hover Bus included in the set for use with the original Hover Bus GRF
-STR_PARAM_NAME_UNIV                :Enable the universal truck
-STR_PARAM_DESC_UNIV                :Enables the universal truck (can cary any cargo) for refit orders
+STR_PARAM_NAME_BUS	:Diable the 'Chryslus HoverBus' Vehicle
+STR_PARAM_DESC_BUS	:Disables the Hover Bus included in the set for use with the original Hover Bus GRF
+STR_PARAM_NAME_UNIV	:Enable the universal truck
+STR_PARAM_DESC_UNIV	:Enables the universal truck (can cary any cargo) for refit orders
 
 # =============================================================================
 # ROAD VEHICLE NAMES
 # =============================================================================
 
 #Vehicle Names
-STR_NAME_BUS_ARTICULATED           :AutöWerks A10 AutöBus (Induction)-
-STR_NAME_HOVERBUS_01               :Chryslus Metroliner '75 HoverBus (Fusion-Electric)-
-STR_NAME_HOVERFLAT_01              :BnL HAUL-E Flatbed Hover Van (Induction)-
-STR_NAME_HOVERHOPPER_01            :Argyle Coop Hopper Hover Truck (Gravlev)-
-STR_NAME_HOVERTANK_01              :Mahir PetroX Hover Tanker (Biofuel)-
-STR_NAME_HOVERSEC_01               :KaibaCorp HiSec Hover Van (Momentum-Electric)-
-STR_NAME_HOVERFRIDGE_01            :Versatran MTR-X Refrigerations (Hoverpad)-
-STR_NAME_HOVERUNIV_01              :CusCo. Omnimodal Hovercraft (Hoverpad)-
+STR_NAME_BUS_ARTICULATED:AutöWerks A10 AutöBus (Induction)-
+STR_NAME_HOVERBUS_01:Chryslus Metroliner '75 HoverBus (Fusion-Electric)-
+STR_NAME_HOVERFLAT_01:BnL HAUL-E Flatbed Hover Van (Induction)-
+STR_NAME_HOVERHOPPER_01:Argyle Coop Hopper Hover Truck (Gravlev)-
+STR_NAME_HOVERTANK_01:Mahir PetroX Hover Tanker (Biofuel)-
+STR_NAME_HOVERSEC_01:KaibaCorp HiSec Hover Van (Momentum-Electric)-
+STR_NAME_HOVERFRIDGE_01:Versatran MTR-X Refrigerations (Hoverpad)-
+STR_NAME_HOVERUNIV_01:CusCo. Omnimodal Hovercraft (Hoverpad)-
 
 #Vehicle Descriptions
-STR_DESC_HOVERBUS_01               :This vehicle can be disabled in the GRF parameters for use with the original Hover Bus GRF.
-STR_DESC_HOVERUNIV_01              :This truck can be refitted to all cargoes, and therefore has a lower capacity. This vehicle can be disabled in the GRF parameters.
+STR_DESC_HOVERBUS_01:This vehicle can be disabled in the GRF parameters for use with the original Hover Bus GRF.
+STR_DESC_HOVERUNIV_01:This truck can be refitted to all cargoes, and therefore has a lower capacity. This vehicle can be disabled in the GRF parameters.
 
 # =============================================================================
 # TRAM NAMES
 # =============================================================================
 
-STR_NAME_TRAM_ARTICULATED          :AutöWerks X10 SmarTram-
+STR_NAME_TRAM_ARTICULATED					:AutöWerks X10 SmarTram
 
-STR_CAPACITY_PARAM_NAME            :Vehicle capacities
-STR_CAPACITY_PARAM_DESC            :Determine whether the subway consists' capacities reflect seated-only capacities, or seated + standing-room capacities (which are much larger).
-STR_CAPACITY_PARAM_SEATED          :Seated-only
-STR_CAPACITY_PARAM_STANDING        :Seated + standing-room
+STR_CAPACITY_PARAM_NAME						:Vehicle capacities
+STR_CAPACITY_PARAM_DESC						:Determine whether the subway consists' capacities reflect seated-only capacities, or seated + standing-room capacities (which are much larger).
+STR_CAPACITY_PARAM_SEATED					:Seated-only
+STR_CAPACITY_PARAM_STANDING					:Seated + standing-room
 
-STR_TRAM_PARAM_NAME                :Subway Roadtype
-STR_TRAM_PARAM_DESC                :Determines whether subways are regular road vehicles or trams.
+STR_TRAM_PARAM_NAME							:Subway Roadtype
+STR_TRAM_PARAM_DESC							:Determines whether subways are regular road vehicles or trams.
 
-STR_ROADVEHICLES                   :Regular RVs
-STR_TRAMS                          :Trams
+STR_ROADVEHICLES							:Regular RVs
+STR_TRAMS									:Trams
 
-STR_NAME_TUBE_GATE                 :LU '03 Stock "Gate" (Metro)-
-STR_NAME_TUBE_NEW_WORKS            :LU '38 Stock "New Works" (Metro)-
-STR_NAME_TUBE_VICTORIA             :LU '67 Stock "Victoria" (Metro)
-STR_NAME_TUBE_ADTRANZ              :LU '92 Stock "Adtranz" (Metro)-
+STR_NAME_TUBE_GATE							:LU '03 Stock "Gate" (Metro)
+STR_NAME_TUBE_NEW_WORKS						:LU '38 Stock "New Works" (Metro)
+STR_NAME_TUBE_VICTORIA						:LU '67 Stock "Victoria" (Metro)
+STR_NAME_TUBE_ADTRANZ						:LU '92 Stock "Adtranz" (Metro)
 
-STR_NAME_SUBWAY_CHIKATETSU_JXP     :Mitsubishi J-XP MetroPod (Battery)-
-STR_NAME_SUBWAY_CHIKATETSU_100     :TRTA N100 (3rd Rail)-
-STR_NAME_SUBWAY_CHIKATETSU_200     :TRTA N200 (3rd Rail)-
-STR_NAME_SUBWAY_CHIKATETSU_E1      :Hitachi Chikatetsu E1 (3rd Rail)-
-STR_NAME_SUBWAY_CHIKATETSU_C1      :CRH "SubTerXpress" CRHC1-C (3rd Rail)-
-STR_NAME_SUBWAY_CHIKATETSU_E4      :TRTA Chikatetsu E4 (3rd Rail)-
-STR_NAME_SUBWAY_CHIKATETSU_C4      :TRTA Chikatetsu C4 (3rd Rail)-
+STR_NAME_SUBWAY_CHIKATETSU_JXP				:Mitsubishi J-XP MetroPod (Battery)-
+STR_NAME_SUBWAY_CHIKATETSU_100				:TRTA N100 (3rd Rail)-
+STR_NAME_SUBWAY_CHIKATETSU_200				:TRTA N200 (3rd Rail)-
+STR_NAME_SUBWAY_CHIKATETSU_E1				:Hitachi Chikatetsu E1 (3rd Rail)
+STR_NAME_SUBWAY_CHIKATETSU_C1				:CRH "SubTerXpress" CRHC1-C (3rd Rail)-
+STR_NAME_SUBWAY_CHIKATETSU_E4				:TRTA Chikatetsu E4 (3rd Rail)
+STR_NAME_SUBWAY_CHIKATETSU_C4				:TRTA Chikatetsu C4 (3rd Rail)
 
-STR_NAME_MABP_JANUS                :MTC Mk.I Stock "Janus" (Atmospheric)-
-STR_NAME_MABP_GRAND_WORKS          :MTC Mk.II Stock "Grand Works" (Atmospheric)-
-STR_NAME_MABP_BRITANNIA            :LT Mk.3 Stock "Rail Britannia" (Pneumatic)-
-STR_NAME_MABP_XP2K                 :qbCorp v4.0 Stock "XP-2000" (Pneumatic)-
-STR_NAME_MABP_J-HD                 :Mitsubishi J-HD "HydroPod" (Hydraulic)-
-STR_NAME_MABP_CHIKATETSU_100       :TRTA E100 (Evacuatic)-
-STR_NAME_MABP_CHIKATETSU_200       :TRTA E200 (Evacuatic)-
-STR_NAME_MABP_CHIKATETSU_E1        :TRTA Chikatetsu DS1 (Pneumagnetic)-
-STR_NAME_MABP_CHIKATETSU_C1        :CRH "SilkRail" CRHPM1-C CargoPod (Pneumagnetic)-
-STR_NAME_MABP_CHIKATETSU_E4        :TRTA Chikatetsu GS4 (Atmogravitic)-
-STR_NAME_MABP_CHIKATETSU_C4        :TRTA Chikatetsu GSc (Atmogravitic)-
+STR_NAME_MABP_JANUS							:MTC Mk.I Stock "Janus" (Atmospheric)
+STR_NAME_MABP_GRAND_WORKS					:MTC Mk.II Stock "Grand Works" (Atmospheric)
+STR_NAME_MABP_BRITANNIA						:LT Mk.3 Stock "Rail Britannia" (Pneumatic)
+STR_NAME_MABP_XP2K							:qbCorp v4.0 Stock "XP-2000" (Pneumatic)
+STR_NAME_MABP_J-HD							:Mitsubishi J-HD "HydroPod" (Hydraulic)-
+STR_NAME_MABP_CHIKATETSU_100				:TRTA E100 (Evacuatic)-
+STR_NAME_MABP_CHIKATETSU_200				:TRTA E200 (Evacuatic)-
+STR_NAME_MABP_CHIKATETSU_E1					:TRTA Chikatetsu DS1 (Pneumagnetic)
+STR_NAME_MABP_CHIKATETSU_C1					:CRH "SilkRail" CRHPM1-C CargoPod (Pneumagnetic)-
+STR_NAME_MABP_CHIKATETSU_E4					:TRTA Chikatetsu GS4 (Atmogravitic)
+STR_NAME_MABP_CHIKATETSU_C4					:TRTA Chikatetsu GSc (Atmogravitic)
 
-STR_NAME_MABV_SHINKU_RUPU_VTX      :Shinkū-Rūpu HLX001 (Hyperloop)-
-STR_NAME_MABV_CARGOVID_19          :VacWuhan CVD-19 "Fenglong" (Hyperloop)-
-STR_NAME_MABV_SHINKU_EKI_100       :Shinkū-eki "ZeroVac" H100 (Hyperloop)-
-STR_NAME_MABV_SHINKU_EKI_200       :Shinkū-eki "TrueVac" H200 (Hyperloop)-
-STR_NAME_MABV_SHINKU_EKI_V1        :KR-JR Asia "MetroVac" V1 (VacTrain)-
-STR_NAME_MABV_INDIAN_RAILWAYS_V4   :CR "CosmoVac" V4 (VacTrain)-
-STR_NAME_MABV_INDIAN_RAILWAYS_V4C  :CR "CargoVac" V4c (VacTrain)-
+STR_NAME_MABV_SHINKU_RUPU_VTX				:Shinkū-Rūpu HLX001 (Hyperloop)-
+STR_NAME_MABV_CARGOVID_19					:CRH "Fenglong" CVD-19 (Hyperloop)-
+STR_NAME_MABV_SHINKU_EKI_100				:Shinkū-eki "ZeroVac" H100 (Hyperloop)-
+STR_NAME_MABV_SHINKU_EKI_200				:Shinkū-eki "TrueVac" H200 (Hyperloop)-
+STR_NAME_MABV_SHINKU_EKI_V1        			:KR-JR Asia "MetroVac" V1 (VacTrain)
+STR_NAME_MABV_COSMOPOLITAN_RAILWAYS_V4		:CR "CosmoVac" V4 (VacTrain)
+STR_NAME_MABV_COSMOPOLITAN_RAILWAYS_V4C		:CR "CargoVac" V4c (VacTrain)
 
-STR_TUBE_PURCHASE_TEXT             :{}Available in 2-8 carriage consists.{}Capacity shown is for 8-carriage consist.
+STR_TUBE_PURCHASE_TEXT						:{}Available in 2-8 carriage consists.{}Capacity shown is for 8-carriage consist.
 
 
-STR_SUBTYPE_LENGTH_2               :(2 Carriages)
-STR_SUBTYPE_LENGTH_3               :(3 Carriages)
-STR_SUBTYPE_LENGTH_4               :(4 Carriages)
-STR_SUBTYPE_LENGTH_5               :(5 Carriages)
-STR_SUBTYPE_LENGTH_6               :(6 Carriages)
-STR_SUBTYPE_LENGTH_7               :(7 Carriages)
-STR_SUBTYPE_LENGTH_8               :(8 Carriages)
+STR_SUBTYPE_LENGTH_2						:(2 Carriages)
+STR_SUBTYPE_LENGTH_3						:(3 Carriages)
+STR_SUBTYPE_LENGTH_4						:(4 Carriages)
+STR_SUBTYPE_LENGTH_5						:(5 Carriages)
+STR_SUBTYPE_LENGTH_6						:(6 Carriages)
+STR_SUBTYPE_LENGTH_7						:(7 Carriages)
+STR_SUBTYPE_LENGTH_8						:(8 Carriages)

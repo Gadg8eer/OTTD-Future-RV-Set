@@ -26,26 +26,28 @@ Contents
 
 3. Vehicles
 	Sprites for several "futuristic" and "retrofuturistic" road vehicles are included in this GRF. Their creators and any non-GPL v2 licences are listed below.
+	
+	* Denotes "Coming soon!"
 
 	3a. Metro/Subway
 		A conversion of the "invisible subway trams" GRF by Supercheese and their graphical bases into surface trams that are compatible with the MAB3 tramtype label.
 	
 		You may recognize the London Underground stock from the UKRS2 Addon Set by PikkaBird, as they share the same sprites by oberhümer and have similar specs.
 
-			-London Underground '03 Stock "Gate" (1903)-
-			-London Underground '38 Stock "New Works" (1938)-
-			-London Underground '67 Stock "Victoria" (1964)-
-			-London Underground '92 Stock "Adtranz" (1991)-
+			-London Underground '03 Stock "Gate" (1903)
+			-London Underground '38 Stock "New Works" (1938)
+			-London Underground '67 Stock "Victoria" (1964)
+			-London Underground '92 Stock "Adtranz" (1991)
 	
 		You may recognize the futuristic subways and the VacTube variants from one of the Vactrain sets by EmperorJake, as they have sprites (and names) modified from that set.
 		
-			-Mitsubishi J-XP MetroPod (1997)-
-			-TRTA N100 (2002)-
-			-TRTA N200 (2008)-
-			-Hitachi Chikatetsu E1 (2015)-
-			-CRH "SubTerXpress" CRHC1-C (2022)-
-			-TRTA Chikatetsu E4 (2033)-
-			-IR "CargoSub" C4 (2038)-
+			-Mitsubishi J-XP MetroPod (1997)*
+			-TRTA N100 (2002)*
+			-TRTA N200 (2008)*
+			-Hitachi Chikatetsu E1 (2015)
+			-CRH "SubTerXpress" CRHC1-C (2022)*
+			-TRTA Chikatetsu E4 (2033)
+			-IR "CargoSub" C4 (2038)
 	
 3b. Pneumatic Metro/Subway (PneuMetro)
 		This is for all systems in which a pneumatic/hydraulic/vacuum pipe is used to push a piston that is part of the metro train on the rails.
@@ -54,20 +56,20 @@ Contents
 		
 		You may recognize the London Underground stock from the UKRS2 Addon Set, as they share the same sprites and similar specs.
 
-			-Medhurst Transit Co. Mk.I Stock "Janus" (1910)-
-			-Medhurst Transit Co. Mk.II Stock "Grand Works" (1939)-
-			-London Tubeways Mk.3 Stock "Rail Britannia" (1969)-
-			-qbCorp v4.0 Stock "XM-2000" (1996)-
+			-Medhurst Transit Co. Mk.I Stock "Janus" (1910)
+			-Medhurst Transit Co. Mk.II Stock "Grand Works" (1939)
+			-London Tubeways Mk.3 Stock "Rail Britannia" (1969)
+			-qbCorp v4.0 Stock "XM-2000" (1996)
 
 		You may recognize the futuristic subways and the VacTube variants from the Vactrain set, as they have sprites (and names) modified from that set.
 		
-			-Mitsubishi J-HD "HydroPod" (2008)-
-			-CRH "SilkRail" CRHPM1-C CargoPod (2030)-
-			-TRTA E100 (2033)-
-			-TRTA E200 (2049)-
-			-TRTA Chikatetsu DS1 (2077)-
-			-TRTA Chikatetsu GS4 (2099)-
-			-TRTA Chikatetsu GSc (2100)-
+			-Mitsubishi J-HD "HydroPod" (2008)*
+			-CRH "SilkRail" CRHPM1-C CargoPod (2030)*
+			-TRTA E100 (2033)*
+			-TRTA E200 (2049)*
+			-TRTA Chikatetsu DS1 (2077)
+			-TRTA Chikatetsu GS4 (2099)
+			-TRTA Chikatetsu GSc (2100)
 	
 3c. Optically-Guided and Magnetically-Guided Vehicles (SmarTram)
 		You may recognize these from the work of acs121 (an old version of NARVS) or from my "Articul8eer Test Set" (GRF ID reused by this GRF), as they share the same sprites.
@@ -84,24 +86,24 @@ Contents
 
 		You may recognize the futuristic subways and the VacTube variants from one of the Vactrain sets by EmperorJake, as they have sprites (and names) modified from that set.
 
-			-Toshiba Shinkū-Rūpu HLX001 (2018)-
-			-VacWuhan CVD-19 "Fenglong" (2019)-
-			-JR Central Shinkū-eki "ZeroVac" H100 (2025)-
-			-JR Kuril Shinkū-eki "TrueVac" H200 (2032)-
-			-KoRail-JR Asia "MetroVac" V1 (2040)-
-			-Cosmopolitan Railways "CosmoVac" V4 (2049)-
-			-Cosmopolitan Railways "CargoVac" V4c (2050)-
+			-Toshiba Shinkū-Rūpu HLX001 (2018)*
+			-CRH "Fenglong" CVD-19 (2019)*
+			-JR Central Shinkū-eki "ZeroVac" H100 (2025)*
+			-JR Kuril Shinkū-eki "TrueVac" H200 (2032)*
+			-KoRail-JR Asia "MetroVac" V1 (2040)
+			-Cosmopolitan Railways "CosmoVac" V4 (2049)
+			-Cosmopolitan Railways "CargoVac" V4c (2050)
 
 3f. Hovermobiles
 		A conversion of the "Hover Vehicles" GRF by Hazzard and their graphical bases to use standardized roadtype tables, they have sprites (and modified names) from that set. The sprites are derived from Zephyris' "eGRVTS" GRF.
 
-			-Chryslus Metroliner '78 HoverBus (2078)-
-			-BnL HAUL-E Flatbed Hover Truck (2080)-
-			-Argyle Coop Hopper Hover Truck (2083)-
-			-Mahir PetroX Hover Tanker (2087)-
-			-KaibaCorp HiSec Hover Van (2090)-
-			-Versatran MTR-X Refrigerations (2094)-
-			-CusCo. Omnimodal Hovercraft (2099)-
+			-Chryslus Metroliner '78 HoverBus (2078)
+			-BnL HAUL-E Flatbed Hover Truck (2080)
+			-Argyle Coop Hopper Hover Truck (2083)
+			-Mahir PetroX Hover Tanker (2087)
+			-KaibaCorp HiSec Hover Van (2090)
+			-Versatran MTR-X Refrigerations (2094)
+			-CusCo. Omnimodal Hovercraft (2099)
 
 4. Copyright
 	See license.txt

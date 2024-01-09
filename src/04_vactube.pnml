@@ -1,19 +1,19 @@
-// ======= BEGIN SHINKU-EKI E1 FUTURISTIC =======
+// ======= BEGIN METROVAC V1 FUTURISTIC =======
 
 // Shinku_eki Sprites
-spriteset(Shinku_eki_purchase_set, "gfx/vehicles/VACT/MetroVac V1/V1Purchase_0.png") {
+spriteset(MetroVac_purchase_set, "gfx/vehicles/VACT/MetroVac V1/V1Purchase_0.png") {
 	[-18, -6]
 }
 
-spriteset(Shinku_eki_head_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Head_0.png") {
+spriteset(MetroVac_head_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Head_0.png") {
 	[-16, -5]
 }
 
-spriteset(Shinku_eki_middle_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Middle_0.png") {
+spriteset(MetroVac_middle_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Middle_0.png") {
 	[-16, -5]
 }
 
-spriteset(Shinku_eki_tail_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Tail_0.png") {
+spriteset(MetroVac_tail_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Tail_0.png") {
 	[-16, -5]
 }
 
@@ -22,7 +22,7 @@ spriteset(Shinku_eki_tail_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Tail_0.p
 
 // Articulated consist generation
 
-switch (FEAT_ROADVEHS, SELF, Shinku_eki_switch_articulated, extra_callback_info1) {
+switch (FEAT_ROADVEHS, SELF, MetroVac_switch_articulated, extra_callback_info1) {
     1..7: return Shinku_eki;
     return CB_RESULT_NO_MORE_ARTICULATED_PARTS;
 }
@@ -30,138 +30,138 @@ switch (FEAT_ROADVEHS, SELF, Shinku_eki_switch_articulated, extra_callback_info1
 
 // Capacity switches
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_2_carriage_capacity_switch, position_in_consist) {
+switch(FEAT_ROADVEHS, SELF, MetroVac_2_carriage_capacity_switch, position_in_consist) {
 	0..1: return 80+(param_capacities*120);
     2..7: return 0;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_3_carriage_capacity_switch, position_in_consist) {
+switch(FEAT_ROADVEHS, SELF, MetroVac_3_carriage_capacity_switch, position_in_consist) {
 	0..2: return 80+(param_capacities*120);
 	3..7: return 0;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_4_carriage_capacity_switch, position_in_consist) {
+switch(FEAT_ROADVEHS, SELF, MetroVac_4_carriage_capacity_switch, position_in_consist) {
 	0..3: return 80+(param_capacities*120);
 	4..7: return 0;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_5_carriage_capacity_switch, position_in_consist) {
+switch(FEAT_ROADVEHS, SELF, MetroVac_5_carriage_capacity_switch, position_in_consist) {
 	0..4: return 80+(param_capacities*120);
 	5..7: return 0;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_6_carriage_capacity_switch, position_in_consist) {
+switch(FEAT_ROADVEHS, SELF, MetroVac_6_carriage_capacity_switch, position_in_consist) {
 	0..5: return 80+(param_capacities*120);
 	6..7: return 0;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_7_carriage_capacity_switch, position_in_consist) {
+switch(FEAT_ROADVEHS, SELF, MetroVac_7_carriage_capacity_switch, position_in_consist) {
 	0..6: return 80+(param_capacities*120);
 	7: return 0;
 	return CB_FAILED;
 }
 
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_cargo_capacities_switch, cargo_subtype) {
+switch(FEAT_ROADVEHS, SELF, MetroVac_cargo_capacities_switch, cargo_subtype) {
     /* Pass cargo subtype to next switch  */
-	0: Shinku_eki_2_carriage_capacity_switch;
-    1: Shinku_eki_3_carriage_capacity_switch;
-    2: Shinku_eki_4_carriage_capacity_switch;
-	3: Shinku_eki_5_carriage_capacity_switch;
-	4: Shinku_eki_6_carriage_capacity_switch;
-	5: Shinku_eki_7_carriage_capacity_switch;
+	0: MetroVac_2_carriage_capacity_switch;
+    1: MetroVac_3_carriage_capacity_switch;
+    2: MetroVac_4_carriage_capacity_switch;
+	3: MetroVac_5_carriage_capacity_switch;
+	4: MetroVac_6_carriage_capacity_switch;
+	5: MetroVac_7_carriage_capacity_switch;
 	// 8-carriage vehicles need no reduction in capacity
 	return 80+(param_capacities*120);
 }
 
 // Shinku_eki visible, positional graphics switches
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_2_carriage_graphics_switch, position_in_consist) {
-	0: 		Shinku_eki_head_visible_set;
-	1: 	    Shinku_eki_tail_visible_set;
+switch(FEAT_ROADVEHS, SELF, MetroVac_2_carriage_graphics_switch, position_in_consist) {
+	0: 		MetroVac_head_visible_set;
+	1: 	    MetroVac_tail_visible_set;
     2..7: 	invisible;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_3_carriage_graphics_switch, position_in_consist) {
-	0: 		Shinku_eki_head_visible_set;
-	1: 		Shinku_eki_middle_visible_set;
-	2: 		Shinku_eki_tail_visible_set;
+switch(FEAT_ROADVEHS, SELF, MetroVac_3_carriage_graphics_switch, position_in_consist) {
+	0: 		MetroVac_head_visible_set;
+	1: 		MetroVac_middle_visible_set;
+	2: 		MetroVac_tail_visible_set;
 	3..7: 	invisible;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_4_carriage_graphics_switch, position_in_consist) {
-	0: 		Shinku_eki_head_visible_set;
-	1..2: 	Shinku_eki_middle_visible_set;
-	3: 		Shinku_eki_tail_visible_set;
+switch(FEAT_ROADVEHS, SELF, MetroVac_4_carriage_graphics_switch, position_in_consist) {
+	0: 		MetroVac_head_visible_set;
+	1..2: 	MetroVac_middle_visible_set;
+	3: 		MetroVac_tail_visible_set;
 	4..7: 	invisible;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_5_carriage_graphics_switch, position_in_consist) {
-	0: 		Shinku_eki_head_visible_set;
-	1..3: 	Shinku_eki_middle_visible_set;
-	4: 		Shinku_eki_tail_visible_set;
+switch(FEAT_ROADVEHS, SELF, MetroVac_5_carriage_graphics_switch, position_in_consist) {
+	0: 		MetroVac_head_visible_set;
+	1..3: 	MetroVac_middle_visible_set;
+	4: 		MetroVac_tail_visible_set;
 	5..7: 	invisible;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_6_carriage_graphics_switch, position_in_consist) {
-	0: 		Shinku_eki_head_visible_set;
-	1..4: 	Shinku_eki_middle_visible_set;
-	5: 		Shinku_eki_tail_visible_set;
+switch(FEAT_ROADVEHS, SELF, MetroVac_6_carriage_graphics_switch, position_in_consist) {
+	0: 		MetroVac_head_visible_set;
+	1..4: 	MetroVac_middle_visible_set;
+	5: 		MetroVac_tail_visible_set;
 	6..7: 	invisible;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_7_carriage_graphics_switch, position_in_consist) {
-	0: 		Shinku_eki_head_visible_set;
-	1..5: 	Shinku_eki_middle_visible_set;
-	6: 		Shinku_eki_tail_visible_set;
+switch(FEAT_ROADVEHS, SELF, MetroVac_7_carriage_graphics_switch, position_in_consist) {
+	0: 		MetroVac_head_visible_set;
+	1..5: 	MetroVac_middle_visible_set;
+	6: 		MetroVac_tail_visible_set;
 	7: 		invisible;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_8_carriage_graphics_switch, position_in_consist) {
-	0: 		Shinku_eki_head_visible_set;
-	1..6: 	Shinku_eki_middle_visible_set;
-	7: 		Shinku_eki_tail_visible_set;
+switch(FEAT_ROADVEHS, SELF, MetroVac_8_carriage_graphics_switch, position_in_consist) {
+	0: 		MetroVac_head_visible_set;
+	1..6: 	MetroVac_middle_visible_set;
+	7: 		MetroVac_tail_visible_set;
 	return CB_FAILED;
 }
 
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_consist_GFX_switch, cargo_subtype) {
+switch(FEAT_ROADVEHS, SELF, MetroVac_consist_GFX_switch, cargo_subtype) {
     /* Pass cargo subtype to next switch  */
-	0: Shinku_eki_2_carriage_graphics_switch;
-    1: Shinku_eki_3_carriage_graphics_switch;
-    2: Shinku_eki_4_carriage_graphics_switch;
-	3: Shinku_eki_5_carriage_graphics_switch;
-	4: Shinku_eki_6_carriage_graphics_switch;
-	5: Shinku_eki_7_carriage_graphics_switch;
-	6: Shinku_eki_8_carriage_graphics_switch;
+	0: MetroVac_2_carriage_graphics_switch;
+    1: MetroVac_3_carriage_graphics_switch;
+    2: MetroVac_4_carriage_graphics_switch;
+	3: MetroVac_5_carriage_graphics_switch;
+	4: MetroVac_6_carriage_graphics_switch;
+	5: MetroVac_7_carriage_graphics_switch;
+	6: MetroVac_8_carriage_graphics_switch;
 	return CB_FAILED;
 }
 
 
 // Underground vs. window switch
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_GFX_switch, extra_callback_info1) {
+switch(FEAT_ROADVEHS, SELF, MetroVac_GFX_switch, extra_callback_info1) {
     /* Decide whether vehicle is drawn on map or in a special window  */
 	0x00:			underground_tube_GFX_switch;
-	0x10..0x12:		Shinku_eki_consist_GFX_switch;
-	return Shinku_eki_purchase_set;
+	0x10..0x12:		MetroVac_consist_GFX_switch;
+	return MetroVac_purchase_set;
 }
 
 
 // Refit cost switch
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_refit_cost_switch, var[0x10,8,0xFF] - cargo_subtype) {
+switch(FEAT_ROADVEHS, SELF, MetroVac_refit_cost_switch, var[0x10,8,0xFF] - cargo_subtype) {
     /* Refit cost based on difference between target cargo sybtype and current cargo subtype.
 	   Refitting to fewer carriages refunds money, while adding carriages costs money.        */
 	-6:				-(6*20);
@@ -183,7 +183,7 @@ switch(FEAT_ROADVEHS, SELF, Shinku_eki_refit_cost_switch, var[0x10,8,0xFF] - car
 
 // Running cost switch
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_running_cost_switch, current_speed) {
+switch(FEAT_ROADVEHS, SELF, MetroVac_running_cost_switch, current_speed) {
     /* Running cost reduced to 1/4 if vehicle is not moving. */
 	0: 				((cargo_subtype+2)*105)/4;
 	return 			(cargo_subtype+2)*105;
@@ -192,9 +192,9 @@ switch(FEAT_ROADVEHS, SELF, Shinku_eki_running_cost_switch, current_speed) {
 
 // Vehicle definition
 
-item(FEAT_ROADVEHS, Shinku_eki) {
+item(FEAT_ROADVEHS, MetroVac) {
 	property {
-		name:               			string(STR_NAME_SUBWAY_SHINKU_EKI);
+		name:               			string(STR_NAME_VACT_SHINKU_EKI_V1);
 		climates_available: 			bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
 		introduction_date: 				date(2042,1,1);
 		model_life:						VEHICLE_NEVER_EXPIRES;
@@ -214,14 +214,14 @@ item(FEAT_ROADVEHS, Shinku_eki) {
 		running_cost_factor:			255;
 		length:							7;
 		cargo_age_period:				128;
-		tram_type:                    	MABV;
+		tram_type:                    	Vact;
 	}
 	graphics {
-		articulated_part:				Shinku_eki_switch_articulated;
-		default:						Shinku_eki_GFX_switch;
-		purchase:						Shinku_eki_purchase_set;
-		cargo_capacity:					Shinku_eki_cargo_capacities_switch;
-		running_cost_factor:			Shinku_eki_running_cost_switch;
+		articulated_part:				MetroVac_switch_articulated;
+		default:						MetroVac_GFX_switch;
+		purchase:						MetroVac_purchase_set;
+		cargo_capacity:					MetroVac_cargo_capacities_switch;
+		running_cost_factor:			MetroVac_running_cost_switch;
 		purchase_running_cost_factor:	return 2*105;
 		power:							return (cargo_subtype+2)*60;
 		weight:							return (cargo_subtype+2)*121;
@@ -229,7 +229,7 @@ item(FEAT_ROADVEHS, Shinku_eki) {
 		sound_effect:					return sound("src/none.wav");
 		cargo_subtype_text:				tube_cargo_subtype_text;
 		additional_text:				return string(STR_TUBE_PURCHASE_TEXT);
-		refit_cost:						Shinku_eki_refit_cost_switch;
+		refit_cost:						MetroVac_refit_cost_switch;
 	}
 }
 
@@ -243,24 +243,24 @@ if (param_RV0_or_tram1 == 1) {
 	}
 }
 
-// ======= END SHINKU-EKI E1 FUTURISTIC =======
+// ======= END METROVAC V1 FUTURISTIC =======
 
 // ======= BEGIN SHINKU-EKI E4 FUTURISTIC =======
 
 // Shinku_eki Sprites
-spriteset(Shinku_eki_purchase_set, "gfx/vehicles/VACT/MetroVac V1/V1Purchase_0.png") {
+spriteset(CosmoVac_purchase_set, "gfx/vehicles/VACT/Cosmopolitan V4/V4Purchase_0.png") {
 	[-18, -6]
 }
 
-spriteset(Shinku_eki_head_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Head_0.png") {
+spriteset(CosmoVac_head_visible_set, "gfx/vehicles/VACT/CosmoVac V4/V4Head_0.png") {
 	[-16, -5]
 }
 
-spriteset(Shinku_eki_middle_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Middle_0.png") {
+spriteset(CosmoVac_middle_visible_set, "gfx/vehicles/VACT/CosmoVac V4/V4Middle_0.png") {
 	[-16, -5]
 }
 
-spriteset(Shinku_eki_tail_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Tail_0.png") {
+spriteset(CosmoVac_tail_visible_set, "gfx/vehicles/VACT/CosmoVac V4/V4Tail_0.png") {
 	[-16, -5]
 }
 
@@ -269,7 +269,7 @@ spriteset(Shinku_eki_tail_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Tail_0.p
 
 // Articulated consist generation
 
-switch (FEAT_ROADVEHS, SELF, Shinku_eki_switch_articulated, extra_callback_info1) {
+switch (FEAT_ROADVEHS, SELF, CosmoVac_switch_articulated, extra_callback_info1) {
     1..7: return Shinku_eki;
     return CB_RESULT_NO_MORE_ARTICULATED_PARTS;
 }
@@ -277,138 +277,138 @@ switch (FEAT_ROADVEHS, SELF, Shinku_eki_switch_articulated, extra_callback_info1
 
 // Capacity switches
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_2_carriage_capacity_switch, position_in_consist) {
+switch(FEAT_ROADVEHS, SELF, CosmoVac_2_carriage_capacity_switch, position_in_consist) {
 	0..1: return 80+(param_capacities*120);
     2..7: return 0;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_3_carriage_capacity_switch, position_in_consist) {
+switch(FEAT_ROADVEHS, SELF, CosmoVac_3_carriage_capacity_switch, position_in_consist) {
 	0..2: return 80+(param_capacities*120);
 	3..7: return 0;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_4_carriage_capacity_switch, position_in_consist) {
+switch(FEAT_ROADVEHS, SELF, CosmoVac_4_carriage_capacity_switch, position_in_consist) {
 	0..3: return 80+(param_capacities*120);
 	4..7: return 0;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_5_carriage_capacity_switch, position_in_consist) {
+switch(FEAT_ROADVEHS, SELF, CosmoVac_5_carriage_capacity_switch, position_in_consist) {
 	0..4: return 80+(param_capacities*120);
 	5..7: return 0;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_6_carriage_capacity_switch, position_in_consist) {
+switch(FEAT_ROADVEHS, SELF, CosmoVac_6_carriage_capacity_switch, position_in_consist) {
 	0..5: return 80+(param_capacities*120);
 	6..7: return 0;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_7_carriage_capacity_switch, position_in_consist) {
+switch(FEAT_ROADVEHS, SELF, CosmoVac_7_carriage_capacity_switch, position_in_consist) {
 	0..6: return 80+(param_capacities*120);
 	7: return 0;
 	return CB_FAILED;
 }
 
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_cargo_capacities_switch, cargo_subtype) {
+switch(FEAT_ROADVEHS, SELF, CosmoVac_cargo_capacities_switch, cargo_subtype) {
     /* Pass cargo subtype to next switch  */
-	0: Shinku_eki_2_carriage_capacity_switch;
-    1: Shinku_eki_3_carriage_capacity_switch;
-    2: Shinku_eki_4_carriage_capacity_switch;
-	3: Shinku_eki_5_carriage_capacity_switch;
-	4: Shinku_eki_6_carriage_capacity_switch;
-	5: Shinku_eki_7_carriage_capacity_switch;
+	0: CosmoVac_2_carriage_capacity_switch;
+    1: CosmoVac_3_carriage_capacity_switch;
+    2: CosmoVac_4_carriage_capacity_switch;
+	3: CosmoVac_5_carriage_capacity_switch;
+	4: CosmoVac_6_carriage_capacity_switch;
+	5: CosmoVac_7_carriage_capacity_switch;
 	// 8-carriage vehicles need no reduction in capacity
 	return 80+(param_capacities*120);
 }
 
 // Shinku_eki visible, positional graphics switches
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_2_carriage_graphics_switch, position_in_consist) {
-	0: 		Shinku_eki_head_visible_set;
-	1: 	    Shinku_eki_tail_visible_set;
+switch(FEAT_ROADVEHS, SELF, CosmoVac_2_carriage_graphics_switch, position_in_consist) {
+	0: 		CosmoVac_head_visible_set;
+	1: 	    CosmoVac_tail_visible_set;
     2..7: 	invisible;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_3_carriage_graphics_switch, position_in_consist) {
-	0: 		Shinku_eki_head_visible_set;
-	1: 		Shinku_eki_middle_visible_set;
-	2: 		Shinku_eki_tail_visible_set;
+switch(FEAT_ROADVEHS, SELF, CosmoVac_3_carriage_graphics_switch, position_in_consist) {
+	0: 		CosmoVac_head_visible_set;
+	1: 		CosmoVac_middle_visible_set;
+	2: 		CosmoVac_tail_visible_set;
 	3..7: 	invisible;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_4_carriage_graphics_switch, position_in_consist) {
-	0: 		Shinku_eki_head_visible_set;
-	1..2: 	Shinku_eki_middle_visible_set;
-	3: 		Shinku_eki_tail_visible_set;
+switch(FEAT_ROADVEHS, SELF, CosmoVac_4_carriage_graphics_switch, position_in_consist) {
+	0: 		CosmoVac_head_visible_set;
+	1..2: 	CosmoVac_middle_visible_set;
+	3: 		CosmoVac_tail_visible_set;
 	4..7: 	invisible;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_5_carriage_graphics_switch, position_in_consist) {
-	0: 		Shinku_eki_head_visible_set;
-	1..3: 	Shinku_eki_middle_visible_set;
-	4: 		Shinku_eki_tail_visible_set;
+switch(FEAT_ROADVEHS, SELF, CosmoVac_5_carriage_graphics_switch, position_in_consist) {
+	0: 		CosmoVac_head_visible_set;
+	1..3: 	CosmoVac_middle_visible_set;
+	4: 		CosmoVac_tail_visible_set;
 	5..7: 	invisible;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_6_carriage_graphics_switch, position_in_consist) {
-	0: 		Shinku_eki_head_visible_set;
-	1..4: 	Shinku_eki_middle_visible_set;
-	5: 		Shinku_eki_tail_visible_set;
+switch(FEAT_ROADVEHS, SELF, CosmoVac_6_carriage_graphics_switch, position_in_consist) {
+	0: 		CosmoVac_head_visible_set;
+	1..4: 	CosmoVac_middle_visible_set;
+	5: 		CosmoVac_tail_visible_set;
 	6..7: 	invisible;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_7_carriage_graphics_switch, position_in_consist) {
-	0: 		Shinku_eki_head_visible_set;
-	1..5: 	Shinku_eki_middle_visible_set;
-	6: 		Shinku_eki_tail_visible_set;
+switch(FEAT_ROADVEHS, SELF, CosmoVac_7_carriage_graphics_switch, position_in_consist) {
+	0: 		CosmoVac_head_visible_set;
+	1..5: 	CosmoVac_middle_visible_set;
+	6: 		CosmoVac_tail_visible_set;
 	7: 		invisible;
 	return CB_FAILED;
 }
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_8_carriage_graphics_switch, position_in_consist) {
-	0: 		Shinku_eki_head_visible_set;
-	1..6: 	Shinku_eki_middle_visible_set;
-	7: 		Shinku_eki_tail_visible_set;
+switch(FEAT_ROADVEHS, SELF, CosmoVac_8_carriage_graphics_switch, position_in_consist) {
+	0: 		CosmoVac_head_visible_set;
+	1..6: 	CosmoVac_middle_visible_set;
+	7: 		CosmoVac_tail_visible_set;
 	return CB_FAILED;
 }
 
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_consist_GFX_switch, cargo_subtype) {
+switch(FEAT_ROADVEHS, SELF, CosmoVac_consist_GFX_switch, cargo_subtype) {
     /* Pass cargo subtype to next switch  */
-	0: Shinku_eki_2_carriage_graphics_switch;
-    1: Shinku_eki_3_carriage_graphics_switch;
-    2: Shinku_eki_4_carriage_graphics_switch;
-	3: Shinku_eki_5_carriage_graphics_switch;
-	4: Shinku_eki_6_carriage_graphics_switch;
-	5: Shinku_eki_7_carriage_graphics_switch;
-	6: Shinku_eki_8_carriage_graphics_switch;
+	0: CosmoVac_2_carriage_graphics_switch;
+    1: CosmoVac_3_carriage_graphics_switch;
+    2: CosmoVac_4_carriage_graphics_switch;
+	3: CosmoVac_5_carriage_graphics_switch;
+	4: CosmoVac_6_carriage_graphics_switch;
+	5: CosmoVac_7_carriage_graphics_switch;
+	6: CosmoVac_8_carriage_graphics_switch;
 	return CB_FAILED;
 }
 
 
 // Underground vs. window switch
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_GFX_switch, extra_callback_info1) {
+switch(FEAT_ROADVEHS, SELF, CosmoVac_GFX_switch, extra_callback_info1) {
     /* Decide whether vehicle is drawn on map or in a special window  */
 	0x00:			underground_tube_GFX_switch;
-	0x10..0x12:		Shinku_eki_consist_GFX_switch;
-	return Shinku_eki_purchase_set;
+	0x10..0x12:		CosmoVac_consist_GFX_switch;
+	return CosmoVac_purchase_set;
 }
 
 
 // Refit cost switch
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_refit_cost_switch, var[0x10,8,0xFF] - cargo_subtype) {
+switch(FEAT_ROADVEHS, SELF, CosmoVac_refit_cost_switch, var[0x10,8,0xFF] - cargo_subtype) {
     /* Refit cost based on difference between target cargo sybtype and current cargo subtype.
 	   Refitting to fewer carriages refunds money, while adding carriages costs money.        */
 	-6:				-(6*20);
@@ -430,7 +430,7 @@ switch(FEAT_ROADVEHS, SELF, Shinku_eki_refit_cost_switch, var[0x10,8,0xFF] - car
 
 // Running cost switch
 
-switch(FEAT_ROADVEHS, SELF, Shinku_eki_running_cost_switch, current_speed) {
+switch(FEAT_ROADVEHS, SELF, CosmoVac_running_cost_switch, current_speed) {
     /* Running cost reduced to 1/4 if vehicle is not moving. */
 	0: 				((cargo_subtype+2)*105)/4;
 	return 			(cargo_subtype+2)*105;
@@ -439,9 +439,9 @@ switch(FEAT_ROADVEHS, SELF, Shinku_eki_running_cost_switch, current_speed) {
 
 // Vehicle definition
 
-item(FEAT_ROADVEHS, Shinku_eki) {
+item(FEAT_ROADVEHS, Cosmopolitan) {
 	property {
-		name:               			string(STR_NAME_SUBWAY_SHINKU_EKI);
+		name:               			string(STR_NAME_VACT_INDIAN_RAILWAYS_V4);
 		climates_available: 			bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
 		introduction_date: 				date(2042,1,1);
 		model_life:						VEHICLE_NEVER_EXPIRES;
@@ -461,14 +461,14 @@ item(FEAT_ROADVEHS, Shinku_eki) {
 		running_cost_factor:			255;
 		length:							7;
 		cargo_age_period:				128;
-		tram_type:                    	MABV;
+		tram_type:                    	VACT;
 	}
 	graphics {
-		articulated_part:				Shinku_eki_switch_articulated;
-		default:						Shinku_eki_GFX_switch;
-		purchase:						Shinku_eki_purchase_set;
-		cargo_capacity:					Shinku_eki_cargo_capacities_switch;
-		running_cost_factor:			Shinku_eki_running_cost_switch;
+		articulated_part:				CosmoVac_switch_articulated;
+		default:						CosmoVac_GFX_switch;
+		purchase:						CosmoVac_purchase_set;
+		cargo_capacity:					CosmoVac_cargo_capacities_switch;
+		running_cost_factor:			CosmoVac_running_cost_switch;
 		purchase_running_cost_factor:	return 2*105;
 		power:							return (cargo_subtype+2)*60;
 		weight:							return (cargo_subtype+2)*121;
@@ -476,7 +476,7 @@ item(FEAT_ROADVEHS, Shinku_eki) {
 		sound_effect:					return sound("src/none.wav");
 		cargo_subtype_text:				tube_cargo_subtype_text;
 		additional_text:				return string(STR_TUBE_PURCHASE_TEXT);
-		refit_cost:						Shinku_eki_refit_cost_switch;
+		refit_cost:						CosmoVac_refit_cost_switch;
 	}
 }
 
@@ -490,4 +490,4 @@ if (param_RV0_or_tram1 == 1) {
 	}
 }
 
-// ======= END SHINKU-EKI FUTURISTIC =======
+// ======= END SHINKU-EKI E4 FUTURISTIC =======
