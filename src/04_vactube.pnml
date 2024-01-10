@@ -1,19 +1,19 @@
 // ======= BEGIN METROVAC V1 FUTURISTIC =======
 
 // Shinku_eki Sprites
-spriteset(MetroVac_purchase_set, "gfx/vehicles/VACT/MetroVac V1/V1Purchase_0.png") {
+spriteset(MetroVac_purchase_set, "gfx/graphics/tram/VACT/MetroVac V1/V1Purchase_0.png") {
 	[-18, -6]
 }
 
-spriteset(MetroVac_head_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Head_0.png") {
+spriteset(MetroVac_head_visible_set, "gfx/graphics/tram/VACT/MetroVac V1/V1Head_0.png") {
 	[-16, -5]
 }
 
-spriteset(MetroVac_middle_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Middle_0.png") {
+spriteset(MetroVac_middle_visible_set, "gfx/graphics/tram/VACT/MetroVac V1/V1Middle_0.png") {
 	[-16, -5]
 }
 
-spriteset(MetroVac_tail_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Tail_0.png") {
+spriteset(MetroVac_tail_visible_set, "gfx/graphics/tram/VACT/MetroVac V1/V1Tail_0.png") {
 	[-16, -5]
 }
 
@@ -248,19 +248,19 @@ if (param_RV0_or_tram1 == 1) {
 // ======= BEGIN SHINKU-EKI E4 FUTURISTIC =======
 
 // Shinku_eki Sprites
-spriteset(CosmoVac_purchase_set, "gfx/vehicles/VACT/Cosmopolitan V4/V4Purchase_0.png") {
+spriteset(CosmoVac_purchase_set, "gfx/graphics/tram/VACT/Cosmopolitan V4/V4Purchase_0.png") {
 	[-18, -6]
 }
 
-spriteset(CosmoVac_head_visible_set, "gfx/vehicles/VACT/CosmoVac V4/V4Head_0.png") {
+spriteset(CosmoVac_head_visible_set, "gfx/graphics/tram/VACT/CosmoVac V4/V4Head_0.png") {
 	[-16, -5]
 }
 
-spriteset(CosmoVac_middle_visible_set, "gfx/vehicles/VACT/CosmoVac V4/V4Middle_0.png") {
+spriteset(CosmoVac_middle_visible_set, "gfx/graphics/tram/VACT/CosmoVac V4/V4Middle_0.png") {
 	[-16, -5]
 }
 
-spriteset(CosmoVac_tail_visible_set, "gfx/vehicles/VACT/CosmoVac V4/V4Tail_0.png") {
+spriteset(CosmoVac_tail_visible_set, "gfx/graphics/tram/VACT/CosmoVac V4/V4Tail_0.png") {
 	[-16, -5]
 }
 

@@ -1,0 +1,6024 @@
+# 1 "futuRVs.pnml"
+# 1 "src/00_header.pnml" 1
+/* This is the Header. Change the grfid to something like "YOU/01" or "SET/01" to start creating a new set. */
+grf {
+    grfid: "G8R\05";
+    name: string(STR_GRF_NAME);
+    desc: string(STR_GRF_DESCRIPTION);
+    version: 11;
+    min_compatible_version: 11;
+	param {
+		param_disable_bus {
+			type: bool;
+			name: string(STR_PARAM_NAME_BUS);
+			desc: string(STR_PARAM_DESC_BUS);
+		}
+	}
+	param {
+		param_enable_univ {
+			type: bool;
+			name: string(STR_PARAM_NAME_UNIV);
+			desc: string(STR_PARAM_DESC_UNIV);
+		}
+	}
+	param {
+		param_capacities {
+			name: string(STR_CAPACITY_PARAM_NAME);
+			desc: string(STR_CAPACITY_PARAM_DESC);
+			min_value: 0;
+			max_value: 1;
+			def_value: 1;
+			names: {
+				0: string(STR_CAPACITY_PARAM_SEATED);
+				1: string(STR_CAPACITY_PARAM_STANDING);
+			};
+		}
+	}
+	param {
+		param_RV0_or_tram1 {
+			name: string(STR_TRAM_PARAM_NAME);
+			desc: string(STR_TRAM_PARAM_DESC);
+			min_value: 0;
+			max_value: 1;
+			def_value: 0;
+			names: {
+				0: string(STR_ROADVEHICLES);
+				1: string(STR_TRAMS);
+			};
+		}
+	}
+}
+
+template template_tram_28(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [x,         y,          10,        28,           -4,         -11+2]
+    [x+ 20,     y,          26,        28,          -17,         -14+2]
+    [x+ 50,     y,          36,        28,          -20,         -20+2]
+    [x+ 90,     y,          26,        28,           -9,         -15+2]
+    [x+120,     y,          10,        28,           -4,         -13+2]
+    [x+140,     y,          26,        28,          -16,         -16+2]
+    [x+170,     y,          36,        28,          -16,         -20+2]
+    [x+210,     y,          26,        28,           -12,        -16+2]
+}
+
+basecost {
+   	PR_RUNNING_ROADVEH :     2;
+	PR_BUILD_VEHICLE_ROAD :  2;
+}
+
+
+// --- Sprite sets
+
+// Underground sprites
+spriteset(underground_vehicle, "gfx/Shadows.png") {
+	template_tram_28(0, 60)
+}
+
+alternative_sprites (underground_vehicle, ZOOM_LEVEL_NORMAL, BIT_DEPTH_32BPP, "gfx/Shadows32.png") {
+	template_tram_28(0, 60)
+}
+
+spriteset(invisible, "gfx/empty.png") {
+	[0, 0]
+}
+
+
+// --- BEGIN VEHICLE-AGNOSTIC SWITCHES ---
+
+// Cargo subtypes -- no. of carriages
+
+switch(FEAT_ROADVEHS, SELF, tube_cargo_subtype_text, cargo_subtype) {
+    0: return string(STR_SUBTYPE_LENGTH_2);
+    1: return string(STR_SUBTYPE_LENGTH_3);
+	2: return string(STR_SUBTYPE_LENGTH_4);
+	3: return string(STR_SUBTYPE_LENGTH_5);
+	4: return string(STR_SUBTYPE_LENGTH_6);
+	5: return string(STR_SUBTYPE_LENGTH_7);
+	6: return string(STR_SUBTYPE_LENGTH_8);
+    return CB_RESULT_NO_TEXT;
+}
+
+
+// Length switches
+
+switch(FEAT_ROADVEHS, SELF, shorten_2_carriage_vehicle, position_in_consist) {
+    /* Make carriages 3-8 invisible, extend carriage 2  */
+	0: return 7;
+	1..7: return 1;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, shorten_3_carriage_vehicle, position_in_consist) {
+    /* Make carriages 4-8 invisible, extend carriage 3  */
+	0..1: return 7;
+    2..7: return 1;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, shorten_4_carriage_vehicle, position_in_consist) {
+    /* Make carriages 5-8 invisible, extend carriage 4  */
+	0..2: return 7;
+	3..7: return 1;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, shorten_5_carriage_vehicle, position_in_consist) {
+    /* Make carriages 6-8 invisible, extend carriage 5  */
+	0..3: return 7;
+	4..7: return 1;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, shorten_6_carriage_vehicle, position_in_consist) {
+    /* Make carriages 7-8 invisible, extend carriage 6  */
+	0..4: return 7;
+	5..7: return 1;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, shorten_7_carriage_vehicle, position_in_consist) {
+    /* Make carriage 8 invisible, extend carriage 7  */
+	0..5: return 7;
+	6..7: return 1;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, tube_shorten_vehicles, cargo_subtype) {
+    0: shorten_2_carriage_vehicle;
+	1: shorten_3_carriage_vehicle;
+	2: shorten_4_carriage_vehicle;
+	3: shorten_5_carriage_vehicle;
+	4: shorten_6_carriage_vehicle;
+	5: shorten_7_carriage_vehicle;
+	// 8-carriage vehicle needs no shortening
+    return 7;
+}
+
+
+// Capacity switches
+
+switch(FEAT_ROADVEHS, SELF, tube_2_carriage_capacity_switch, position_in_consist) {
+	0..1: return 40+(param_capacities*60);
+    2..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_3_carriage_capacity_switch, position_in_consist) {
+	0..2: return 40+(param_capacities*60);
+	3..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_4_carriage_capacity_switch, position_in_consist) {
+	0..3: return 40+(param_capacities*60);
+	4..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_5_carriage_capacity_switch, position_in_consist) {
+	0..4: return 40+(param_capacities*60);
+	5..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_6_carriage_capacity_switch, position_in_consist) {
+	0..5: return 40+(param_capacities*60);
+	6..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_7_carriage_capacity_switch, position_in_consist) {
+	0..6: return 40+(param_capacities*60);
+	7: return 0;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, tube_cargo_capacities_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: tube_2_carriage_capacity_switch;
+    1: tube_3_carriage_capacity_switch;
+    2: tube_4_carriage_capacity_switch;
+	3: tube_5_carriage_capacity_switch;
+	4: tube_6_carriage_capacity_switch;
+	5: tube_7_carriage_capacity_switch;
+	// 8-carriage vehicles need no reduction in capacity
+	return 40+(param_capacities*60);
+}
+
+
+// Underground Invisibility switches
+
+switch(FEAT_ROADVEHS, SELF, tube_2_carriage_graphics_switch, position_in_consist) {
+	0..1: underground_vehicle;
+	2..7: invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_3_carriage_graphics_switch, position_in_consist) {
+	0..2: underground_vehicle;
+	3..7: invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_4_carriage_graphics_switch, position_in_consist) {
+	0..3: underground_vehicle;
+	4..7: invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_5_carriage_graphics_switch, position_in_consist) {
+	0..4: underground_vehicle;
+	5..7: invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_6_carriage_graphics_switch, position_in_consist) {
+	0..5: underground_vehicle;
+	6..7: invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_7_carriage_graphics_switch, position_in_consist) {
+	0..6: underground_vehicle;
+	7: invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_8_carriage_graphics_switch, position_in_consist) {
+	0..7: underground_vehicle;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, underground_tube_GFX_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: tube_2_carriage_graphics_switch;
+    1: tube_3_carriage_graphics_switch;
+    2: tube_4_carriage_graphics_switch;
+	3: tube_5_carriage_graphics_switch;
+	4: tube_6_carriage_graphics_switch;
+	5: tube_7_carriage_graphics_switch;
+	6: tube_8_carriage_graphics_switch;
+	return CB_FAILED;
+}
+
+
+// --- END VEHICLE AGNOSTIC SWITCHES ---
+
+/*
+ * *********************
+ * Define roadtype table
+ * *********************
+ */
+ 
+/* This is the Road Type Table. You can add roadtype labels (such as ROAD) to extend compatibility. */
+
+// == SAMPLE ==
+/*
+roadtypetable {
+ 	//ROAD,
+	RAaN, RAAN, RABN, RAbN, RACN, RAcN,
+	RBaN, RBBN, RBBN, RBbN, RBCN, RBcN,
+	RCaN, RCAN, RCBN,// RCbN, RCCN, RCcN,
+	RDaN, RDAN, RDBN,// RDbN, RDCN, RDcN,
+	REaN, REAN,// REBN, REbN, RECN, REcN,
+	//ELRD,
+	RAaE, RAAE, RABE, RAbE, RACE, RAcE,
+	RBaE, RBAE, RBBE, RBbE, RBCE, RBcE,
+	RCaE, RCAE, RCBE,// RCbE, RCCE, RCcE,
+	RDaE, RDAE, RDBE,// RDbE, RDCE, RDcE,
+	REaE, REAE,// REBE, REbE, RECE, REcE,
+	//SMTS, SMRT,
+	RAaI, RAAI, RABI, RAbI, RACI, RAcI,
+	RBaI, RBAI, RBBI, RBbI, RBCI, RBcI,
+	RCaI, RCAI, RCBI,// RCbI, RCCI, RCcI,
+	RDaI, RDAI,// RDBI, RDbI, RDCI, RDcI,
+	REaI, REAI,// REBI, REbI, RECI, REcI,
+	//BUSN,
+	GAaN, GAAN, GABN, GAbN, GACN, GAcN,
+	GBaN, GBAN, GBBN, GBbN, GBCN, GBcN,
+	GCaN, GCAN, GCBN,// GCbN, GCCN, GCcN,
+	GDaN, GDAN, GDBN,// GDbN, GDCN, GDcN,
+	GEaN, GEAN,// GEBN, GEbN, GECN, GEcN,
+	//BUSE,
+	GAaE, GAAE, GABE, GAbE, GACE, GAcE,
+	GBaE, GBAE, GBBE, GBbE, GBCE, GBcE,
+	GCaE, GCAE, GCBE,// GCbE, GCCE, GCcE,
+	GDaE, GDAE, GDBE,// GDbE, GDCE, GDcE,
+	GEaE, GEAE,// GEbE, GEBE, GECE, GEcE,
+	//BUSI,
+	GAaI, GAAI, GABI, GAbI, GACI, GAcI,
+	GBaI, GBAI, GBBI, GBbI, GBCI, GBcI,
+	GCaI, GCAI, GCBI,// GCbI, GCCI, GCcI,
+	GDaI, GDAI,// GDBI, GDbI, GDCI, GDcI,
+	GEaI, GEAI//, GEBI, GEbI, GECI, GEcI,
+}
+*/
+
+roadtypetable {
+	// -- Roads --
+	ROAD,
+	//RAAN, RABN, RAbN, RACN,
+	ELRD,
+	//RAAE, RABE, RAbE, RACE,
+	// -- Self-Driving Vehicles --
+	AUTO, Auto,
+	AUTT, AutT,
+	//PAAS, PABS, PAbS, PACS,
+	//PAAS, PABS, PAbS, PACS,
+	//PBAS, PBBS, PBbS, PBCS,
+	//PCAS, PCBS, PCbS, PCCS,
+	//PDAS, PDBS, PDbS, PDCS,
+	//PEAS, PEBS, PEbS, PECS,
+	//RAAS, RABS, RAbS, RACS,
+	//RAAS, RABS, RAbS, RACS,
+	//RBAS, RBBS, RBbS, RBCS,
+	//RCAS, RCBS, RCbS, RCCS,
+	//RDAS, RDBS, RDbS, RDCS,
+	//REAS, REBS, REbS, RECS,
+	PABE, PAbE,
+	//PABP,
+	PAbP,
+	// -- Curb-Guided Busways --
+	//BUSN,
+	//GAAN, GABN, GAbN, GACN,
+	//GBAN, GBBN, GBbN, GBCN,
+	//GCAN, GCBN, GCbN, GCCN,
+	//GDAN, GDBN, GDbN, GDCN,
+	//GEAN, GEBN, GEbN, GECN,
+	//BUSE,
+	//GAAE, GABE, GAbE, GACE,
+	//GBAE, GBBE, GBbE, GBCE,
+	//GCAE, GCBE, GCbE, GCCE,
+	//GDAE, GDBE, GDbE, GDCE,
+	//GEAE, GEbE, GEBE, GECE,
+	//BUSI,
+	//GAAI, GABI, GAbI, GACI,
+	//GBAI, GBBI, GBbI, GBCI,
+	//GCAI, GCBI, GCbI, GCCI,
+	//GDAI, GDBI, GDbI, GDCI,
+	//GEAI, GEBI, GEbI, GECI,
+	// -- Pipeline Pumps --
+	Pipe//,
+}
+
+//ROAD with Low Clearance
+item(FEAT_ROADTYPES, item_road) {
+	property {
+		label:							"ROAD";
+		powered_roadtype_list:			[
+										"RAAN", "RABN", "RACN",
+										"RAAE", "RABE", "RACE",
+										"RAAG", "RABG", "RACG",
+										"RAAZ", "RABZ", "RACZ",
+										"RAAI", "RABI", "RACI",
+										"RAAS", "RABS", "RACS",
+										"RAAX", "RABX", "RACX",
+										"RAAx", "RABx", "RACx",
+										"RAAi", "RABi", "RACi",
+										"RAAL", "RABL", "RACL",
+										"RAAV", "RABV", "RACV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_TOWN_BUILD, ROADTYPE_FLAG_HIDDEN);
+		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		roadtype_collision_mode:		bitmask(ROADTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_ROADTYPES, item_lowclear) {
+	property {
+		label:							"Road";
+		powered_roadtype_list:			[
+												"ROAD",
+										"RAAN", "RABN", "RACN",
+												"RAbN",
+										"RAAE", "RABE", "RACE",
+												"RAbE",
+										"RAAG", "RABG", "RACG",
+												"RAbG",
+										"RAAZ", "RABZ", "RACZ",
+												"RAbZ",
+										"RAAI", "RABI", "RACI",
+												"RAbI",
+										"RAAS", "RABS", "RACS",
+												"RAbS",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"RAAx", "RABx", "RACx",
+												"RAbX",
+										"RAAi", "RABi", "RACi",
+												"RAbi",
+										"RAAL", "RABL", "RACL",
+												"RAbL",
+										"RAAV", "RABV", "RACV",
+												"RAbV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_NO_LEVEL_CROSSING);
+		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, ROADTYPE_EXTRA_FLAG_NO_TOWN_MODIFY);
+		roadtype_collision_mode:		bitmask(ROADTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+
+//Pipeline Pumps
+item(FEAT_ROADTYPES, item_pipeline) {
+	property {
+		label:							"Pipe";
+		powered_roadtype_list:			[
+										"Road",
+										"RAaN", "RAAN", "RABN", "RACN", "RAcN",
+														"RAbN",
+										"RAaE", "RAAE", "RABE", "RACE", "RAcE",
+														"RAbE",
+										"RAaG", "RAAG", "RABG", "RACG", "RAcG",
+														"RAbG",
+										"RAaZ", "RAAZ", "RABZ", "RACZ", "RAcZ",
+														"RAbZ",
+										"RAaI", "RAAI", "RABI", "RACI", "RAcI",
+														"RAbI",
+										"RAaS", "RAAS", "RABS", "RACS", "RAcS",
+														"RAbS",
+										"RAaX", "RAAX", "RABX", "RACX", "RAcX",
+														"RAbX",
+										"RAax", "RAAx", "RABx", "RACx", "RAcx",
+														"RAbx",
+										"RAai", "RAAi", "RABi", "RACi", "RAci",
+														"RAbi",
+										"RAaL", "RAAL", "RABL", "RACL", "RAcL",
+														"RAbL",
+										"RAaP", "RAAP", "RABP", "RACP", "RAcP",
+														"RAbP",
+										"RAaS", "RAAS", "RABS", "RACS", "RAcS",
+														"RAbS",
+										"RAaV", "RAAV", "RABV", "RACV", "RAcV",
+														"RAbV",
+										"PAaN", "PAAN", "PABN", "PACN", "PAcN",
+														"PAbN",
+										"PAaE", "PAAE", "PABE", "PACE", "PAcE",
+														"PAbE",
+										"PAaG", "PAAG", "PABG", "PACG", "PAcG",
+														"PAbG",
+										"PAaZ", "PAAZ", "PABZ", "PACZ", "PAcZ",
+														"PAbZ",
+										"PAaI", "PAAI", "PABI", "PACI", "PAcI",
+														"PAbI",
+										"PAaS", "PAAS", "PABS", "PACS", "PAcS",
+														"PAbS",
+										"PAaX", "PAAX", "PABX", "PACX", "PAcX",
+														"PAbX",
+										"PAax", "PAAx", "PABx", "PACx", "PAcx",
+														"PAbx",
+										"PAai", "PAAi", "PABi", "PACi", "PAci",
+														"PAbi",
+										"PAaL", "PAAL", "PABL", "PACL", "PAcL",
+														"PAbL",
+										"PAaP", "PAAP", "PABP", "PACP", "PAcP",
+														"PAbP",
+										"PAaS", "PAAS", "PABS", "PACS", "PAcS",
+														"PAbS",
+										"PAaV", "PAAV", "PABV", "PACV", "PAcV",
+														"PAbV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_NO_LEVEL_CROSSING);
+		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, ROADTYPE_EXTRA_FLAG_NO_TOWN_MODIFY);
+		roadtype_collision_mode:		bitmask(ROADTYPE_COLLISION_MODE_NONE);
+	}
+}
+
+// Self-Driving Road Vehicles
+item(FEAT_ROADTYPES, item_selfdriving_bus_doubledeck) {
+	property {
+		label:							"AUTO";
+		powered_roadtype_list:			[
+										"RAAN", "RABN", "RACN",
+										"RAAE", "RABE", "RACE",
+										"RAAG", "RABG", "RACG",
+										"RAAZ", "RABZ", "RACZ",
+										"RAAI", "RABI", "RACI",
+										"RAAS", "RABS", "RACS",
+										"RAAX", "RABX", "RACX",
+										"RAAx", "RABx", "RACx",
+										"RAAi", "RABi", "RACi",
+										"RAAL", "RABL", "RACL",
+										"RAAS", "RABS", "RACS",
+										"RAAV", "RABV", "RACV",
+										"PAAN", "PABN", "PACN",
+										"PAAE", "PABE", "PACE",
+										"PAAI", "PABI", "PACI",
+										"PAAS", "PABS", "PACS",
+										"PAAX", "PABX", "PACX",
+										"PAAx", "PABx", "PACx",
+										"PAAi", "PABi", "PACi",
+										"PAAL", "PABL", "PACL",
+										"PAAS", "PABS", "PACS",
+										"PAAV", "PABV", "PACV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
+	}
+}
+item(FEAT_ROADTYPES, item_selfdriving_bus_lowclear) {
+	property {
+		label:							"Auto";
+		powered_roadtype_list:			[
+										"RAAN", "RABN", "RAbN", "RACN",
+										"RAAE", "RABE", "RAbE", "RACE",
+										"RAAG", "RABG", "RAbG", "RACG",
+										"RAAZ", "RABZ", "RAbZ", "RACZ",
+										"RAAI", "RABI", "RAbI", "RACI",
+										"RAAS", "RABS", "RAbS", "RACS",
+										"RAAX", "RABX", "RAbX", "RACX",
+										"RAAx", "RABx", "RAbx", "RACx",
+										"RAAi", "RABi", "RAbi", "RACi",
+										"RAAL", "RABL", "RAbL", "RACL",
+										"RAAS", "RABS", "RAbS", "RACS",
+										"RAAV", "RABV", "RAbV", "RACV",
+										"PAAN", "PABN", "PAbN", "PACN",
+										"PAAE", "PABE", "PAbE", "PACE",
+										"PAAG", "PABG", "PAbG", "PACG",
+										"PAAZ", "PABZ", "PAbZ", "PACZ",
+										"PAAI", "PABI", "PAbI", "PACI",
+										"PAAS", "PABS", "PAbS", "PACS",
+										"PAAX", "PABX", "PAbX", "PACX",
+										"PAAx", "PABx", "PAbx", "PACx",
+										"PAAi", "PABi", "PAbi", "PACi",
+										"PAAL", "PABL", "PAbL", "PACL",
+										"PAAS", "PABS", "PAbS", "PACS",
+										"PAAV", "PABV", "PAbV", "PACV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
+	}
+}
+item(FEAT_ROADTYPES, item_selfdriving_truck) {
+	property {
+		label:							"AUTT";
+		powered_roadtype_list:			[
+										"RAAN", "RABN", "RACN",
+										"RAAE", "RABE", "RACE",
+										"RAAG", "RABG", "RACG",
+										"RAAZ", "RABZ", "RACZ",
+										"RAAI", "RABI", "RACI",
+										"RAAS", "RABS", "RACS",
+										"RAAX", "RABX", "RACX",
+										"RAAx", "RABx", "RACx",
+										"RAA0", "RAB0", "RACi",
+										"RAA1", "RAB1", "RACL",
+										"RAA2", "RAB2", "RACS",
+										"RAA5", "RAB5", "RACV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
+	}
+}
+item(FEAT_ROADTYPES, item_selfdriving_truck_lowclear) {
+	property {
+		label:							"AutT";
+		powered_roadtype_list:			[
+										"RAAN", "RABN", "RAbN", "RACN",
+										"RAAE", "RABE", "RAbE", "RACE",
+										"RAAG", "RABG", "RAbG", "RACG",
+										"RAAZ", "RABZ", "RAbZ", "RACZ",
+										"RAAI", "RABI", "RAbI", "RACI",
+										"RAAS", "RABS", "RAbS", "RACS",
+										"RAAX", "RABX", "RAbX", "RACX",
+										"RAAx", "RABx", "RAbx", "RACx",
+										"RAAi", "RABi", "RAbi", "RACi",
+										"RAAL", "RABL", "RAbL", "RACL",
+										"RAAS", "RABS", "RAbS", "RACS",
+										"RAAV", "RABV", "RAbV", "RACV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
+	}
+}
+// Trolleybus
+item(FEAT_ROADTYPES, item_trolleybus_doubledeck) {
+	property {
+		label:							"PABE";
+		powered_roadtype_list:			[
+										"RAAN", "RABN", "RACN",
+										"RAAE", "RABE", "RACE",
+										"RAAG", "RABG", "RACG",
+										"RAAZ", "RABZ", "RACZ",
+										"RAAI", "RABI", "RACI",
+										"RAAS", "RABS", "RACS",
+										"RAAX", "RABX", "RACX",
+										"RAAx", "RABx", "RACx",
+										"RAAi", "RABi", "RACi",
+										"RAAL", "RABL", "RACL",
+										"RAAS", "RABS", "RACS",
+										"RAAV", "RABV", "RACV",
+										"PAAN", "PABN", "PACN",
+										"PAAE", "PABE", "PACE",
+										"PAAI", "PABI", "PACI",
+										"PAAS", "PABS", "PACS",
+										"PAAX", "PABX", "PACX",
+										"PAAx", "PABx", "PACx",
+										"PAAi", "PABi", "PACi",
+										"PAAL", "PABL", "PACL",
+										"PAAS", "PABS", "PACS",
+										"PAAV", "PABV", "PACV",
+										];
+//		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
+	}
+}
+item(FEAT_ROADTYPES, item_trolleybus_lowclear) {
+	property {
+		label:							"PAbE";
+		powered_roadtype_list:			[
+										//ROAD
+										"RAAE", "RABE", "RACE",
+												"RAbE",
+										"RAAZ", "RABZ", "RACZ",
+												"RAbZ",
+										//Passenger-Only
+										"PAAE", "PABE", "PAbE", "PACE",
+										"PAAZ", "PABZ", "PAbZ", "PACZ"
+										];
+//		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
+	}
+}
+
+item(FEAT_ROADTYPES, item_car) {
+	property {
+		label:							"PAbP";
+		powered_roadtype_list:			[
+										//ROAD
+										"RAAN", "RABN", "RACN",
+												"RAbN",
+										"RAAE", "RABE", "RACE",
+												"RAbE",
+										"RAAG", "RABG", "RACG",
+												"RAbG",
+										"RAAZ", "RABZ", "RACZ",
+												"RAbZ",
+										"RAAI", "RABI", "RACI",
+												"RAbI",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"RAAx", "RABx", "RACx",
+												"RAbx",
+										"RAAi", "RABi", "RACi",
+												"RAbi",
+										"RAAL", "RABL", "RACL",
+												"RAbL",
+										"RAAV", "RABV", "RACV",
+												"RAbV",
+										"RAAP", "RABP", "RACP",
+												"RAbP",
+										//Passenger-Only
+										"PAAN", "PABN", "PACN",
+												"PAbN",
+										"PAAE", "PABE", "PACE",
+												"PAbE",
+										"PAAG", "PABG", "PACG",
+												"PAbG",
+										"PAAZ", "PABZ", "PACZ",
+												"PAbZ",
+										"PAAI", "PABI", "PACI",
+												"PAbI",
+										"PAAX", "PABX", "PACX",
+												"PAbX",
+										"PAAx", "PABx", "PACx",
+												"PAbx",
+										"PAAi", "PABi", "PACi",
+												"PAbi",
+										"PAAL", "PABL", "PACL",
+												"PAbL",
+										"PAAV", "PABV", "PACV",
+												"PAbV",
+										"PAAP", "PABP", "PACP",
+												"PAbP",
+										];
+//		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
+	}
+}
+
+item(FEAT_ROADTYPES, item_selfdriving_car) {
+	property {
+		label:							"AutC";
+		powered_roadtype_list:			[
+										//ROAD
+										"RAAN", "RABN", "RACN",
+												"RAbN",
+										"RAAE", "RABE", "RACE",
+												"RAbE",
+										"RAAG", "RABG", "RACG",
+												"RAbG",
+										"RAAZ", "RABZ", "RACZ",
+												"RAbZ",
+										"RAAI", "RABI", "RACI",
+												"RAbI",
+										"RAAS", "RABS", "RACS",
+												"RAbS",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"RAAx", "RABx", "RACx",
+												"RAbx",
+										"RAAi", "RABi", "RACi",
+												"RAbi",
+										"RAAL", "RABL", "RACL",
+												"RAbL",
+										"RAAV", "RABV", "RACV",
+												"RAbV",
+										"RAAP", "RABP", "RACP",
+												"RAbP",
+										//Passenger-Only
+										"PAAN", "PABN", "PACN",
+												"PAbN",
+										"PAAE", "PABE", "PACE",
+												"PAbE",
+										"PAAG", "PABG", "PACG",
+												"PAbG",
+										"PAAZ", "PABZ", "PACZ",
+												"PAbZ",
+										"PAAI", "PABI", "PACI",
+												"PAbI",
+										"PAAS", "PABS", "PACS",
+												"PAbS",
+										"PAAX", "PABX", "PACX",
+												"PAbX",
+										"PAAx", "PABx", "PACx",
+												"PAbx",
+										"PAAi", "PABi", "PACi",
+												"PAbi",
+										"PAAL", "PABL", "PACL",
+												"PAbL",
+										"PAAV", "PABV", "PACV",
+												"PAbV",
+										"PAAP", "PABP", "PACP",
+												"PAbP",
+										];
+//		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
+	}
+}
+
+//HOVR with Low Clearance
+item(FEAT_ROADTYPES, item_hovertruck) {
+	property {
+		label:							"HOVR";
+		powered_roadtype_list:			[
+										"HOVR",
+										"RAAI", "RABI", "RACI",
+										"RAAS", "RABS", "RACS",
+										"RAAX", "RABX", "RACX",
+										"RAAx", "RABx", "RACx",
+										"RAAi", "RABi", "RACi",
+										"RAAL", "RABL", "RACL",
+										"RAAV", "RABV", "RACV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_TOWN_BUILD, ROADTYPE_FLAG_HIDDEN);
+		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		roadtype_collision_mode:		bitmask(ROADTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_ROADTYPES, item_hovertruck_short) {
+	property {
+		label:							"Hovr";
+		powered_roadtype_list:			[
+										"HOVR",
+										"RAAI", "RABI", "RACI",
+										"RAAS", "RABS", "RACS",
+										"RAAX", "RABX", "RACX",
+										"RAAx", "RABx", "RACx",
+										"RAAi", "RABi", "RACi",
+										"RAAL", "RABL", "RACL",
+										"RAAV", "RABV", "RACV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_TOWN_BUILD, ROADTYPE_FLAG_HIDDEN);
+		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		roadtype_collision_mode:		bitmask(ROADTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_ROADTYPES, item_hoverbus_tall) {
+	property {
+		label:							"HBUS";
+		powered_roadtype_list:			[
+										"RAAI", "RABI", "RACI",
+										"RAAS", "RABS", "RACS",
+										"RAAX", "RABX", "RACX",
+										"RAAx", "RABx", "RACx",
+										"RAAi", "RABi", "RACi",
+										"RAAL", "RABL", "RACL",
+										"RAAV", "RABV", "RACV",
+										"PAAI", "PABI", "PACI",
+										"PAAS", "PABS", "PACS",
+										"PAAX", "PABX", "PACX",
+										"PAAx", "PABx", "PACx",
+										"PAAi", "PABi", "PACi",
+										"PAAL", "PABL", "PACL",
+										"PAAV", "PABV", "PACV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_NO_LEVEL_CROSSING);
+		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, ROADTYPE_EXTRA_FLAG_NO_TOWN_MODIFY);
+		roadtype_collision_mode:		bitmask(ROADTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_ROADTYPES, item_hoverbus_lowclear) {
+	property {
+		label:							"HBus";
+		powered_roadtype_list:			[
+										"HOVR", "Hovr",
+										"RAAI", "RABI", "RACI",
+												"RAbI",
+										"RAAS", "RABS", "RACS",
+												"RAbS",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"RAAx", "RABx", "RACx",
+												"RAbX",
+										"RAAi", "RABi", "RACi",
+												"RAbi",
+										"RAAL", "RABL", "RACL",
+												"RAbL",
+										"RAAV", "RABV", "RACV",
+												"RAbV",
+										"PAAI", "PABI", "PACI",
+												"PAbI",
+										"PAAS", "PABS", "PACS",
+												"PAbS",
+										"PAAX", "PABX", "PACX",
+												"PAbX",
+										"PAAx", "PABx", "PACx",
+												"RAbX",
+										"PAAi", "PABi", "PACi",
+												"PAbi",
+										"PAAL", "PABL", "PACL",
+												"PAbL",
+										"PAAV", "PABV", "PACV",
+												"PAbV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_NO_LEVEL_CROSSING);
+		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, ROADTYPE_EXTRA_FLAG_NO_TOWN_MODIFY);
+		roadtype_collision_mode:		bitmask(ROADTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_ROADTYPES, item_hovercar) {
+	property {
+		label:							"HCar";
+		powered_roadtype_list:			[
+										"RAAI", "RABI", "RACI",
+												"RAbI",
+										"RAAS", "RABS", "RACS",
+												"RAbS",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"RAAx", "RABx", "RACx",
+												"RAbX",
+										"RAAi", "RABi", "RACi",
+												"RAbi",
+										"RAAL", "RABL", "RACL",
+												"RAbL",
+										"RAAV", "RABV", "RACV",
+												"RAbV",
+										"RAAP", "RABP", "RACP",
+												"RAbP",
+										"PAAI", "PABI", "PACI",
+												"PAbI",
+										"PAAS", "PABS", "PACS",
+												"PAbS",
+										"PAAX", "PABX", "PACX",
+												"PAbX",
+										"PAAx", "PABx", "PACx",
+												"RAbX",
+										"PAAi", "PABi", "PACi",
+												"PAbi",
+										"PAAL", "PABL", "PACL",
+												"PAbL",
+										"PAAV", "PABV", "PACV",
+												"PAbV",
+										"PAAP", "PABP", "PACP",
+												"PAbP"
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_NO_LEVEL_CROSSING);
+		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, ROADTYPE_EXTRA_FLAG_NO_TOWN_MODIFY);
+		roadtype_collision_mode:		bitmask(ROADTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+
+/*
+ * *********************
+ * Define tramtype table
+ * *********************
+ */
+
+// == SAMPLE ==
+/*
+tramtypetable {
+	//RAIL,
+	//RAaN, RAAN, RABN, RAbN, RACN, RAcN,
+	//RBaN, RBBN, RBBN, RBbN, RBCN, RBcN,
+	//RCaN, RCAN, RCBN, RCbN, RCCN, RCcN,
+	//ELRL,
+	//RAaE, RAAE, RABE, RAbE, RACE, RAcE,
+	//RBaE, RBAE, RBBE, RBbE, RBCE, RBcE,
+	//RCaE, RCAE, RCBE, RCbE, RCCE, RCcE,
+	//
+// -- Optic-Guided "Trackless Tram" Bus --
+	//AUTO,
+	OAaI, OAAI, OABI, OAbI, OACI, OACI, OAcI,
+	OBaI, OBAI, OBBI, OBbI, OBCI, OBCI,
+	OCaI, OCAI, OCBI,// OCbI OCCI, OCCI,
+	ODaI, ODAI,// ODBI, ODbI, ODCI, ODCI,
+	OEaI, OEAI,// OEBI, OEbI, OECI, OEcI,
+	//Auto,
+	OAaS, OAAS, OABS, OAbS, OACS, OACS, OAcS,
+	OBaS, OBAS, OBBS, OBbS, OBCS, OBCS, OBcS,
+	OCaS, OCAS, OCBS,// OCbS, OCCS, OCcS,
+	ODaS, ODAS,// ODBS, ODbS, ODCS, ODcS,
+	OEaS, OEAS,// OEBS, OEbS, OECS, OEcS,
+	
+	OEcS,
+// -- Pneumatic "PneuMetro" Metro/Subway --
+	//MTRO,
+	MAB3, MAb3,
+	//PNEU,
+	MABP, MAbP,
+// -- VacTrain "VacTube" Metro/Subway --
+	//VACT,
+	MABV, MAbV//,
+	//
+	}
+*/
+
+tramtypetable {
+	RAIL, Rail,
+	//RAAN, RABN, RAbN, RACN,
+	//RAAE, RABE, RAbE, RACE,
+	/*OAaS,*/
+	Auto,
+	//OAAI, OABI, OAbI, OACI,
+	//OAAS, OABS, OAbS, OACS,
+	/* Metro/Subway */
+	MTRO, Mtro,
+	//MAB3, MAb3,
+	/* Pneumatic "PneuMetro" Metro/Subway */
+	PNEU, Pneu,
+	//MABP, MAbP,
+	/* VacTrain "VacTube" Metro/Subway */
+	VACT, Vact
+	//MABV, MAbV//,
+	//
+	}
+
+//RAIL with low clearance
+item(FEAT_TRAMTYPES, item_rail) {
+	property {
+		label:							"RAIL";
+		powered_tramtype_list:			[
+												"RAIL",
+										"RAAN", "RABN", "RACN",
+												"ELRL",
+										"RAAE", "RABE", "RACE",
+										"RAAG", "RABG", "RACG",
+										"RAAZ", "RABZ", "RACZ",
+										"RAA3", "RAB3", "RAC3",
+										"RAA4", "RAB4", "RAC4",
+										"RAAC", "RABC", "RACC",
+										"RAAI", "RABI", "RACI",
+										"RAAS", "RABS", "RACS",
+										"RAAi", "RABi", "RACi",
+										"XAAN", "XABN", "XACN",
+										"XAAE", "XABE", "XACE",
+										"XAAG", "XABG", "XACG",
+										"XAAZ", "XABZ", "XACZ",
+										"XAA3", "XAB3", "XAC3",
+										"XAB4", "XAB4", "XAC4",
+										"XAAC", "XABC", "XACC",
+										"XAAI", "XABI", "XACI",
+										"XAAS", "XABS", "XACS",
+										"XAAi", "XABi", "XACi",
+										"xAAN", "xABN", "xACN",
+										"xAAE", "xABE", "xACE",
+										"xAAG", "xABG", "xACG",
+										"xAAZ", "xABZ", "xACZ",
+										"xAA3", "xAB3", "xAC3",
+										"xAB4", "xAB4", "xAC4",
+										"xAAC", "xABC", "xACC",
+										"xAAI", "xABI", "xACI",
+										"xAAS", "xABS", "xACS",
+										"xAAi", "xABi", "xACi"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_ROADTYPES, item_rail_lowclear) {
+	property {
+		label:							"Rail";
+		powered_tramtype_list:			[
+												"RAIL",
+										"RAAN", "RABN", "RACN",
+										"Rail", "RAbN",
+												"ELRL",
+										"RAAE", "RABE", "RACE",
+										"ElRl", "RAbE",
+										"RAAG", "RABG", "RACG",
+												"RAbG",
+										"RAAZ", "RABZ", "RACZ",
+												"RAbZ",
+										"RAA3", "RAB3", "RAC3",
+												"RAb3",
+										"RAB4", "RAB4", "RAC4",
+												"RAb4",
+										"RAAC", "RABC", "RACC",
+												"RAbC",
+										"RAAI", "RABI", "RACI",
+												"RAbI",
+										"RAAS", "RABS", "RACS",
+												"RAbS",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"RAAx", "RABx", "RACx",
+												"RAbx",
+										"RAAi", "RABi", "RACi",
+												"RAbi",
+										"rAAN", "rABN", "rACN",
+												"rAbN",
+										"rAAE", "rABE", "rACE",
+												"rAbE",
+										"rAAG", "rABG", "rACG",
+												"rAbG",
+										"rAAZ", "rABZ", "rACZ",
+												"rAbZ",
+										"rAA3", "rAB3", "rAC3",
+												"rAb3",
+										"rAB4", "rAB4", "rAC4",
+												"rAb4",
+										"rAAC", "rABC", "rACC",
+												"rAbC",
+										"rAAI", "rABI", "rACI",
+												"rAbI",
+										"rAAS", "rABS", "rACS",
+												"rAbS",
+										"rAAi", "rABi", "rACi",
+												"rAbi",
+										"rAAX", "rABX", "rACX",
+												"rAbX",
+										"rAAx", "rABx", "rACx",
+												"rAbx",
+										"XAAN", "XABN", "XACN",
+												"XAbN",
+										"XAAE", "XABE", "XACE",
+												"XAbE",
+										"XAAG", "XABG", "XACG",
+												"XAbG",
+										"XAAZ", "XABZ", "XACZ",
+												"XAbZ",
+										"XAA3", "XAB3", "XAC3",
+												"XAb3",
+										"XAB4", "XAB4", "XAC4",
+												"XAb4",
+										"XAAC", "XABC", "XACC",
+												"XAbC",
+										"XAAI", "XABI", "XACI",
+												"XAbI",
+										"XAAS", "XABS", "XACS",
+												"XAbS",
+										"XAAi", "XABi", "XACi",
+												"XAbi",
+										"XAAX", "XABX", "XACX",
+												"XAbX",
+										"XAAx", "XABx", "XACx",
+												"XAbx",
+										"xAAN", "xABN", "xACN",
+												"xAbN",
+										"xAAE", "xABE", "xACE",
+												"xAbE",
+										"xAAG", "xABG", "xACG",
+												"xAbG",
+										"xAAZ", "xABZ", "xACZ",
+												"xAbZ",
+										"xAA3", "xAB3", "xAC3",
+												"xAb3",
+										"xAB4", "xAB4", "xAC4",
+												"xAb4",
+										"xAAC", "xABC", "xACC",
+												"xAbC",
+										"xAAI", "xABI", "xACI",
+												"xAbI",
+										"xAAS", "xABS", "xACS",
+												"xAbS",
+										"xAAi", "xABi", "xACi",
+												"xAbi",
+										"xAAX", "xABX", "xACX",
+												"xAbX",
+										"xAAx", "xABx", "xACx",
+												"xAbx",
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+//ELRL with low clearance
+item(FEAT_TRAMTYPES, item_elrl) {
+	property {
+		label:							"ELRL";
+		powered_tramtype_list:			[
+												"ELRL",
+										"RAAE", "RABE", "RACE",
+										"RAAZ", "RABZ", "RACZ",
+										"RAAX", "RABX", "RACX",
+										"RAAx", "RABx", "RACx",
+										"rAAE", "rABE", "rACE",
+										"rAAZ", "rABZ", "rACZ",
+										"rAAX", "rABX", "rACX",
+										"rAAx", "rABx", "rACx",
+										"XAAE", "XABE", "XACE",
+										"XAAZ", "XABZ", "XACZ",
+										"XAAX", "XABX", "XACX",
+										"XAAx", "XABx", "XACx",
+										"xAAE", "xABE", "xACE",
+										"xAAZ", "xABZ", "xACZ",
+										"xAAX", "xABX", "xACX",
+										"xAAx", "xABx", "xACx",
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_TRAMTYPES, item_elrl_lowcatenary) {
+	property {
+		label:							"ElRl";
+		powered_tramtype_list:			[
+												"ELRL",
+										"RAAE", "RABE", "RACE",
+										"ElRl", "RAbE",
+										"RAAZ", "RABZ", "RACZ",
+												"RAbZ",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"RAAx", "RABx", "RACx",
+												"RAbx",
+										"rAAE", "rABE", "rACE",
+												"rAbE",
+										"rAAZ", "rABZ", "rACZ",
+												"rAbZ",
+										"rAAX", "rABX", "rACX",
+												"rAbX",
+										"rAAx", "rABx", "rACx",
+												"rAbx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+
+//Trackless Trams
+item(FEAT_TRAMTYPES, item_auto) {
+	property {
+		label:							"AUTO";
+		powered_tramtype_list:			[
+										"AUTO",
+										"OAAN", "OABN", "OACN",
+										"OAAE", "OABE", "OACE",
+										"OAAG", "OABG", "OACG",
+										"OAAZ", "OABZ", "OACZ",
+										"OAAI", "OABI", "OACI",
+										"OAAS", "OABS", "OACS",
+										"OAAX", "OABX", "OACX",
+										"OAAx", "OABx", "OACx",
+										"XAAN", "XABN", "XACN",
+										"XAAE", "XABE", "XACE",
+										"XAAG", "XABG", "XACG",
+										"XAAZ", "XABZ", "XACZ",
+										"XAAI", "XABI", "XACI",
+										"XAAS", "XABS", "XACS",
+										"XAAX", "XABX", "XACX",
+										"XAAx", "XABx", "XACx",
+										"xAAN", "xABN", "xACN",
+										"xAAE", "xABE", "xACE",
+										"xAAG", "xABG", "xACG",
+										"xAAZ", "xABZ", "xACZ",
+										"xAAI", "xABI", "xACI",
+										"xAAS", "xABS", "xACS",
+										"xAAX", "xABX", "xACX",
+										"xAAx", "xABx", "xACx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_TRAMTYPES, item_auto_lowclear) {
+	property {
+		label:							"Auto";
+		powered_tramtype_list:			[
+										"AUTO",
+										"OAAN", "OABN", "OACN",
+										"Auto", "OAbN",
+										"OAAE", "OABE", "OACE",
+												"OAbE",
+										"OAAG", "OABG", "OACG",
+												"OAbG",
+										"OAAZ", "OABZ", "OACZ",
+												"OAbZ",
+										"OAAI", "OABI", "OACI",
+												"OAbI",
+										"OAAS", "OABS", "OACS",
+												"OAbS",
+										"OAAX", "OABX", "OACX",
+												"OAbX",
+										"OAAx", "OABx", "OACx",
+												"OAbx",
+										"XAAN", "XABN", "XACN",
+												"XAbN",
+										"XAAE", "XABE", "XACE",
+												"XAbE",
+										"XAAG", "XABG", "XACG",
+												"XAbG",
+										"XAAZ", "XABZ", "XACZ",
+												"XAbZ",
+										"XAAI", "XABI", "XACI",
+												"XAbI",
+										"XAAS", "XABS", "XACS",
+												"XAbS",
+										"XAAX", "XABX", "XACX",
+												"XAbX",
+										"XAAx", "XABx", "XACx",
+												"XAbx",
+										"xAAN", "xABN", "xACN",
+												"xAbN",
+										"xAAE", "xABE", "xACE",
+												"xAbE",
+										"xAAG", "xABG", "xACG",
+												"xAbG",
+										"xAAZ", "xABZ", "xACZ",
+												"xAbZ",
+										"xAAI", "xABI", "xACI",
+												"xAbI",
+										"xAAS", "xABS", "xACS",
+												"xAbS",
+										"xAAX", "xABX", "xACX",
+												"xAbX",
+										"xAAx", "xABx", "xACx",
+												"xAbx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+
+//MTRO Metros/Subways with low clearance
+item(FEAT_TRAMTYPES, item_metro) {
+	property {
+		label:							"MTRO";
+		powered_tramtype_list:			[
+										"MTRO",
+										"MAA3", "MAB3", "MAC3",
+										"RAA3", "RAB3", "RAC3",
+										"PAA3", "PAB3", "PAC3",
+										"rAA3", "rAB3", "rAC3",
+										"XAA3", "XAB3", "XAC3",
+										"xAA3", "xAB3", "xAC3",
+										"MAAX", "MABX", "MACX",
+										"RAAX", "RABX", "RACX",
+										"PAAX", "PABX", "PACX",
+										"rAAX", "rABX", "rACX",
+										"XAAX", "XABX", "XACX",
+										"xAAX", "xABX", "xACX",
+										"MAAx", "MABx", "MACx",
+										"RAAx", "RABx", "RACx",
+										"PAAx", "PABx", "PACx",
+										"rAAx", "rABx", "rACx",
+										"XAAx", "XABx", "XACx",
+										"xAAx", "xABx", "xACx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_TRAMTYPES, item_metro_lowclear) {
+	property {
+		label:							"Mtro";
+		powered_tramtype_list:			[
+										"MTRO", "Mtro",
+										"MAA3", "MAB3", "MAC3",
+												"MAb3",
+										"RAA3", "RAB3", "RAC3",
+												"RAb3",
+										"PAA3", "PAB3", "PAC3",
+												"PAb3",
+										"rAA3", "rAB3", "rAC3",
+												"rAb3",
+										"XAA3", "XAB3", "XAC3",
+												"XAb3",
+										"xAA3", "xAB3", "xAC3",
+												"xAb3",
+										"MAAX", "MABX", "MACX",
+												"MAbX",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"PAAX", "PABX", "PACX",
+												"PAbX",
+										"rAAX", "rABX", "rACX",
+												"rAbX",
+										"XAAX", "XABX", "XACX",
+												"XAbX",
+										"xAAX", "xABX", "xACX",
+												"xAbX",
+										"MAAx", "MABx", "MACx",
+												"MAbx",
+										"RAAx", "RABx", "RACx",
+												"RAbx",
+										"PAAx", "PABx", "PACx",
+												"PAbx",
+										"rAAx", "rABx", "rACx",
+												"rAbx",
+										"XAAx", "XABx", "XACx",
+												"XAbx",
+										"xAAx", "xABx", "xACx",
+												"xAbx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+
+//MTRO Cargo Metros/Subways with low clearance
+item(FEAT_TRAMTYPES, item_metro_cargo) {
+	property {
+		label:							"CRGO";
+		powered_tramtype_list:			[
+										"CRGO",
+										"MAA3", "MAB3", "MAC3",
+										"RAA3", "RAB3", "RAC3",
+										"rAA3", "rAB3", "rAC3",
+										"XAA3", "XAB3", "XAC3",
+										"xAA3", "xAB3", "xAC3",
+										"MAAX", "MABX", "MACX",
+										"RAAX", "RABX", "RACX",
+										"rAAX", "rABX", "rACX",
+										"XAAX", "XABX", "XACX",
+										"xAAX", "xABX", "xACX",
+										"MAAx", "MABx", "MACx",
+										"RAAx", "RABx", "RACx",
+										"rAAx", "rABx", "rACx",
+										"XAAx", "XABx", "XACx",
+										"xAAx", "xABx", "xACx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_TRAMTYPES, item_metro_cargo_lowclear) {
+	property {
+		label:							"Crgo";
+		powered_tramtype_list:			[
+										"CRGO", "Crgo",
+										"MAA3", "MAB3", "MAC3",
+												"MAb3",
+										"RAA3", "RAB3", "RAC3",
+												"RAb3",
+										"rAA3", "rAB3", "rAC3",
+												"rAb3",
+										"XAA3", "XAB3", "XAC3",
+												"XAb3",
+										"xAA3", "xAB3", "xAC3",
+												"xAb3",
+										"MAAX", "MABX", "MACX",
+												"MAbX",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"rAAX", "rABX", "rACX",
+												"rAbX",
+										"XAAX", "XABX", "XACX",
+												"XAbX",
+										"xAAX", "xABX", "xACX",
+												"xAbX",
+										"MAAx", "MABx", "MACx",
+												"MAbx",
+										"RAAx", "RABx", "RACx",
+												"RAbx",
+										"rAAx", "rABx", "rACx",
+												"rAbx",
+										"XAAx", "XABx", "XACx",
+												"XAbx",
+										"xAAx", "xABx", "xACx",
+												"xAbx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+
+
+//PNEU Metros/Subways with low clearance
+item(FEAT_TRAMTYPES, item_pneumetro) {
+	property {
+		label:							"PNEU";
+		powered_tramtype_list:			[
+										"PNEU",
+										"ZAAP", "ZABP", "ZACP",
+										"zAAP", "zABP", "zACP",
+										"ZAAX", "ZABX", "ZACX",
+										"zAAX", "zABX", "zACX",
+										"ZAAx", "ZABx", "ZACx",
+										"zAAx", "zABx", "zACx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
+	}
+}
+item(FEAT_TRAMTYPES, item_pneumetro_lowclear) {
+	property {
+		label:							"Pneu";
+		powered_tramtype_list:			[
+										//"PNEU",
+										"Pneu",
+										"ZAAP", "ZABP", "ZACP",
+												"ZAbP",
+										"zAAP", "zABP", "zACP",
+												"zAbP",
+										"ZAAX", "ZABX", "ZACX",
+												"ZAbX",
+										"zAAX", "zABX", "zACX",
+												"zAbX",
+										"ZAAx", "ZABx", "ZACx",
+												"ZAbx",
+										"zAAx", "zABx", "zACx",
+												"zAbx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
+	}
+}
+//PNEU Cargo Metros/Subways with low clearance
+item(FEAT_TRAMTYPES, item_pneumetro_cargo) {
+	property {
+		label:							"TUBE";
+		powered_tramtype_list:			[
+										"PNEU",
+										"ZAAP", "ZABP", "ZACP",
+										"XAAP", "XABP", "XACP",
+										"xAAP", "xABP", "xACP",
+										"ZAAX", "ZABX", "ZACX",
+										"XAAX", "XABX", "XACX",
+										"xAAX", "xABX", "xACX",//,
+//										"ZAAx", "ZABx", "ZACx",
+//										"XAAx", "XABx", "XACx",
+//										"xAAx", "xABx", "xACx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
+	}
+}
+item(FEAT_TRAMTYPES, item_pneumetro_cargo_lowclear) {
+	property {
+		label:							"Tube";
+		powered_tramtype_list:			[
+										//"PNEU",
+										"Pneu",
+										"ZAAP", "ZABP", "ZACP",
+												"ZAbP",
+										"ZAAX", "ZABX", "ZACX",
+												"ZAbX",
+//										"ZAAx", "ZABx", "ZACx",
+//												"ZAbx",
+										"XAAP", "XABP", "XACP",
+												"XAbP",
+										"XAAX", "XABX", "XACX",
+												"XAbX",
+//										"XAAx", "XABx", "XACx",
+//												"XAbx",
+										"xAAP", "xABP", "xACP",
+												"xAbP",
+										"xAAX", "xABX", "xACX",
+												"xAbX",//,
+//										"xAAx", "xABx", "xACx",
+//												"xAbx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
+	}
+}
+
+//VACT with small and large tubes
+item(FEAT_TRAMTYPES, item_vactransit) {
+	property {
+		label:							"VACT";
+		powered_tramtype_list:			[
+										"VACT",
+										"ZAAV", "ZABV", "ZACV",
+										"zAAV", "zABV", "zACV",
+										"XAAV", "XABV", "XACV",
+										"xAAV", "xABV", "xACV",
+										"ZAAX", "ZABX", "ZACX",
+										"XAAX", "XABX", "XACX",
+										"xAAX", "xABX", "xACX",//,
+//										"ZAAx", "ZABx", "ZACx",
+//										"XAAx", "XABx", "XACx",
+//										"xAAx", "xABx", "xACx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		//tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
+	}
+}
+item(FEAT_TRAMTYPES, item_vactransit_smalltube) {
+	property {
+		label:							"Vact";
+		powered_tramtype_list:			[
+										//"VACT",
+										"Vact",
+										"ZAAV", "ZABV", "ZACV",
+												"ZAbV",
+										"XAAV", "XABV", "XACV",
+												"XAbV",
+										"xAAV", "xABV", "xACV",
+												"ZAbV",
+										"ZAAX", "ZABX", "ZACX",
+												"ZAbX",
+										"XAAX", "XABX", "XACX",
+												"XAbX",
+										"xAAX", "xABX", "xACX",
+												"xAbX",//,
+//										"ZAAx", "ZABx", "ZACx",
+//												"ZAbx",
+//										"XAAx", "XABx", "XACx",
+//												"XAbx",
+//										"xAAx", "xABx", "xACx",
+//												"xAbx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
+	}
+}
+//VACT with small and large cargo tubes
+item(FEAT_TRAMTYPES, item_vactransit) {
+	property {
+		label:							"PACK";
+		powered_tramtype_list:			[
+										"VACT",
+										"ZAAV", "ZABV", "ZACV",
+										"XAAV", "XABV", "XACV",
+										"xAAV", "xABV", "xACV",
+										"ZAAX", "ZABX", "ZACX",
+										"XAAX", "XABX", "XACX",
+										"xAAX", "xABX", "xACX",//,
+//										"ZAAx", "ZABx", "ZACx",
+//										"XAAx", "XABx", "XACx",
+//										"xAAx", "xABx", "xACx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		//tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
+	}
+}
+item(FEAT_TRAMTYPES, item_vactransit_smalltube) {
+	property {
+		label:							"Pack";
+		powered_tramtype_list:			[
+										//"VACT",
+										"Vact",
+										"ZAAV", "ZABV", "ZACV",
+												"ZAbV",
+										"XAAV", "XABV", "XACV",
+												"XAbV",
+										"xAAV", "xABV", "xACV",
+												"ZAbV",
+										"ZAAX", "ZABX", "ZACX",
+												"ZAbX",
+										"XAAX", "XABX", "XACX",
+												"XAbX",
+										"xAAX", "xABX", "xACX",
+												"xAbX",//,
+//										"ZAAx", "ZABx", "ZACx",
+//												"ZAbx",
+//										"XAAx", "XABx", "XACx",
+//												"XAbx",
+//										"xAAx", "xABx", "xACx",
+//												"xAbx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
+	}
+}
+
+/*
+* ********************************************
+* Define cargo translation table and refits
+* ********************************************
+*/
+ 
+/* This is the cargo table. Check https://newgrf-specs.tt-wiki.net/wiki/CargoTypes to find cargo labels and add them to the cargo table. */
+ 
+// cargotable {
+//	Default cargos
+//   PASS, MAIL
+//   }
+ 
+
+//Cargotable
+cargotable {
+	PASS, //Passengers
+	GOOD, //Goods
+	MAIL, //Mail
+	COAL, //Coal
+	WOOD, //Wood
+	PAPR, //Paper
+	STEL, //Steel
+	BATT, //Batteries
+	BUBL, //Bubbles
+	FZDR, //Fizzy Drinks
+	LVST, //Livestock
+	FRUT, //Fruit
+	GRAI, //Grain
+	WHEA, //Wheat
+	MAIZ, //Maize
+	IORE, //Iron Ore
+	CORE, //Copper Ore
+	TOFF, //Toffee
+	SUGR, //Sugar
+	CTCD, //Candyfloss
+	SWET, //Candy (sweets)
+	//
+	OIL_, //Oil
+	RUBR, //Rubber
+	WATR, //Water
+	COLA, //Cola
+	PLST, //Plastic (toyland)
+	PETR, //Petrol
+	RFPR, //Refined Products
+	//Special
+	BEER, //Alcohol
+	FRVG, //FRUIT
+	WDPR, //Wood Products
+	WOOL, //Wool
+	CERE, //Cereal
+	OLSD, //Oil Seed
+	FERT, //Fertilizer
+	LIME, //Limestone
+	PLaI, //Plastic
+	MILK, //Milk
+	FISH, //Fish
+	ENSP, //Enigneering Supplies
+	FMSP, //Farm Supplies
+	MNSP, //Manufacturing Supplies
+	TOUR, //Tourists (high-end passengers)
+	PCL_//, //Parcels (high-value mail)
+}
+# 1 "futuRVs.pnml" 1
+# 1 "src/01_subway-metro.pnml" 1
+// ======= BEGIN GATE TUBE =======
+
+// Gate Tube Sprites
+spriteset(gate_purchase_set, "gfx/graphics/tram/MTRO/Gate/GTubePurchase_0.png") {
+	[-18, -5]
+}
+
+/* DISABLED
+spriteset(gate_head_visible_set, "gfx/graphics/tram/MTRO/Gate/GTubeHead_0.png") {
+	[-16, -5]
+}
+
+spriteset(gate_middle_visible_set, "gfx/graphics/tram/MTRO/Gate/GTubeMiddle_0.png") {
+	[-16, -5]
+}
+
+spriteset(gate_tail_visible_set, "gfx/graphics/tram/MTRO/Gate/GTubeTail_0.png") {
+	[-16, -5]
+}
+*/
+
+spriteset(gate_head_visible_set, "gfx/graphics/tram/MTRO/Gate/GateFront_0.png") {
+	template_tram_28(0, 60)
+}
+
+spriteset(gate_middle_visible_set, "gfx/graphics/tram/MTRO/Gate/GateMiddle_0.png") {
+	template_tram_28(0, 60)
+}
+
+spriteset(gate_tail_visible_set, "gfx/graphics/tram/MTRO/Gate/GateBack_0.png") {
+	template_tram_28(0, 60)
+}
+
+
+
+// Switches
+
+// Articulated consist generation
+
+switch (FEAT_ROADVEHS, SELF, gate_switch_articulated, extra_callback_info1) {
+    1..7: return gate_tube;
+    return CB_RESULT_NO_MORE_ARTICULATED_PARTS;
+}
+
+
+// Gate tube visible, positional graphics switches
+
+switch(FEAT_ROADVEHS, SELF, gate_tube_2_carriage_graphics_switch, position_in_consist) {
+	0: 		gate_head_visible_set;
+	1: 	    gate_tail_visible_set;
+    2..7: 		invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, gate_tube_3_carriage_graphics_switch, position_in_consist) {
+	0: 		gate_head_visible_set;
+	1: 		gate_middle_visible_set;
+	2: 		gate_tail_visible_set;
+	3..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, gate_tube_4_carriage_graphics_switch, position_in_consist) {
+	0: 		gate_head_visible_set;
+	1..2: 	gate_middle_visible_set;
+	3: 		gate_tail_visible_set;
+	4..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, gate_tube_5_carriage_graphics_switch, position_in_consist) {
+	0: 		gate_head_visible_set;
+	1..3: 	gate_middle_visible_set;
+	4: 		gate_tail_visible_set;
+	5..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, gate_tube_6_carriage_graphics_switch, position_in_consist) {
+	0: 		gate_head_visible_set;
+	1..4: 	gate_middle_visible_set;
+	5: 		gate_tail_visible_set;
+	6..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, gate_tube_7_carriage_graphics_switch, position_in_consist) {
+	0: 		gate_head_visible_set;
+	1..5: 	gate_middle_visible_set;
+	6: 		gate_tail_visible_set;
+	7: 		invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, gate_tube_8_carriage_graphics_switch, position_in_consist) {
+	0: 		gate_head_visible_set;
+	1..6: 	gate_middle_visible_set;
+	7: 		gate_tail_visible_set;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, gate_tube_consist_GFX_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: gate_tube_2_carriage_graphics_switch;
+    1: gate_tube_3_carriage_graphics_switch;
+    2: gate_tube_4_carriage_graphics_switch;
+	3: gate_tube_5_carriage_graphics_switch;
+	4: gate_tube_6_carriage_graphics_switch;
+	5: gate_tube_7_carriage_graphics_switch;
+	6: gate_tube_8_carriage_graphics_switch;
+	return CB_FAILED;
+}
+
+
+// Underground vs. window switch
+
+switch(FEAT_ROADVEHS, SELF, gate_tube_GFX_switch, extra_callback_info1) {
+    /* Decide whether vehicle is drawn on map or in a special window  */
+	0x00:			underground_tube_GFX_switch;
+	0x10..0x12:		gate_tube_consist_GFX_switch;
+	return gate_purchase_set;
+}
+
+
+// Refit cost switch
+
+switch(FEAT_ROADVEHS, SELF, gate_refit_cost_switch, var[0x10,8,0xFF] - cargo_subtype) {
+    /* Refit cost based on difference between target cargo sybtype and current cargo subtype.
+	   Refitting to fewer carriages refunds money, while adding carriages costs money.        */
+	-6:				-(6*5);
+	-5:				-(5*5);
+	-4:				-(4*5);
+	-3:				-(3*5);
+	-2:				-(2*5);
+	-1:				-(1*5);
+	0:				0;
+	1:				(1*5);
+	2:				(2*5);
+	3:				(3*5);
+	4:				(4*5);
+	5:				(5*5);
+	6:				(6*5);
+	return CB_FAILED;
+}
+
+
+// Running cost switch
+
+switch(FEAT_ROADVEHS, SELF, gate_running_cost_switch, current_speed) {
+    /* Running cost reduced to 1/4 if vehicle is not moving. */
+	0: 				((cargo_subtype+2)*33)/4;
+	return 			(cargo_subtype+2)*33;
+}
+
+
+// Vehicle definition
+
+item(FEAT_ROADVEHS, gate_tube) {
+	property {
+		name:               			string(STR_NAME_TUBE_GATE);
+		climates_available: 			bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
+		introduction_date: 				date(1903,1,1);
+		model_life:						52;
+		misc_flags:						bitmask(ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+		retire_early:					10;
+		vehicle_life:					30;
+		sprite_id:						SPRITE_ID_NEW_ROADVEH;
+		speed:            	 			65 km/h;
+		power:							300 hp;
+		tractive_effort_coefficient:	0.123;
+		weight:							46 ton;
+		cargo_capacity:					40;
+		loading_speed:					100;
+		refittable_cargo_classes:		bitmask(CC_PASSENGERS, CC_MAIL);
+		refit_cost:						0;
+		cost_factor:					65;
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		running_cost_factor:			132;
+		length:							7;
+		cargo_age_period:				90;
+		tram_type:                    	Mtro;
+	}
+	graphics {
+		articulated_part:				gate_switch_articulated;
+		default:						gate_tube_GFX_switch;
+		purchase:						gate_purchase_set;
+		cargo_capacity:					tube_cargo_capacities_switch;
+		running_cost_factor:			gate_running_cost_switch;
+		purchase_running_cost_factor:	return 2*33;
+		power:							return (cargo_subtype+2)*15;
+		weight:							return (cargo_subtype+2)*93;
+		length:							tube_shorten_vehicles;
+		sound_effect:					return sound("src/none.wav");
+		cargo_subtype_text:				tube_cargo_subtype_text;
+		additional_text:				return string(STR_TUBE_PURCHASE_TEXT);
+		refit_cost:						gate_refit_cost_switch;
+	}
+}
+
+// If the tram param is set, make this a tram
+
+if (param_RV0_or_tram1 == 1) {
+	item (FEAT_ROADVEHS, gate_tube) {
+		property {
+			misc_flags:						bitmask(ROADVEH_FLAG_NO_BREAKDOWN_SMOKE, ROADVEH_FLAG_TRAM);
+		}
+	}
+}
+
+// ======= END GATE TUBE =======
+
+//====================================================================================================================================
+
+// ======= BEGIN NEW WORKS TUBE =======
+
+// New Works Tube Sprites
+spriteset(new_works_purchase_set, "gfx/graphics/tram/MTRO/New Works/NWTubePurchase_0.png") {
+	[-18, -5]
+}
+
+spriteset(new_works_head_visible_set, "gfx/graphics/tram/MTRO/New Works/NWTubeHead_0.png") {
+	[-16, -5]
+}
+
+spriteset(new_works_middle_visible_set, "gfx/graphics/tram/MTRO/New Works/NWTubeMiddle_0.png") {
+	[-16, -5]
+}
+
+spriteset(new_works_tail_visible_set, "gfx/graphics/tram/MTRO/New Works/NWTubeTail_0.png") {
+	[-16, -5]
+}
+
+
+// Switches
+
+// Articulated consist generation
+
+switch (FEAT_ROADVEHS, SELF, new_works_switch_articulated, extra_callback_info1) {
+    1..7: return new_works_tube;
+    return CB_RESULT_NO_MORE_ARTICULATED_PARTS;
+}
+
+
+// New works tube visible, positional graphics switches
+
+switch(FEAT_ROADVEHS, SELF, new_works_tube_2_carriage_graphics_switch, position_in_consist) {
+	0: 		new_works_head_visible_set;
+	1: 	    new_works_tail_visible_set;
+    2..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, new_works_tube_3_carriage_graphics_switch, position_in_consist) {
+	0: 		new_works_head_visible_set;
+	1: 		new_works_middle_visible_set;
+	2: 		new_works_tail_visible_set;
+	3..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, new_works_tube_4_carriage_graphics_switch, position_in_consist) {
+	0: 		new_works_head_visible_set;
+	1..2: 	new_works_middle_visible_set;
+	3: 		new_works_tail_visible_set;
+	4..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, new_works_tube_5_carriage_graphics_switch, position_in_consist) {
+	0: 		new_works_head_visible_set;
+	1..3: 	new_works_middle_visible_set;
+	4: 		new_works_tail_visible_set;
+	5..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, new_works_tube_6_carriage_graphics_switch, position_in_consist) {
+	0: 		new_works_head_visible_set;
+	1..4: 	new_works_middle_visible_set;
+	5: 		new_works_tail_visible_set;
+	6..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, new_works_tube_7_carriage_graphics_switch, position_in_consist) {
+	0: 		new_works_head_visible_set;
+	1..5: 	new_works_middle_visible_set;
+	6: 		new_works_tail_visible_set;
+	7: 		invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, new_works_tube_8_carriage_graphics_switch, position_in_consist) {
+	0: 		new_works_head_visible_set;
+	1..6: 	new_works_middle_visible_set;
+	7: 		new_works_tail_visible_set;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, new_works_tube_consist_GFX_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: new_works_tube_2_carriage_graphics_switch;
+    1: new_works_tube_3_carriage_graphics_switch;
+    2: new_works_tube_4_carriage_graphics_switch;
+	3: new_works_tube_5_carriage_graphics_switch;
+	4: new_works_tube_6_carriage_graphics_switch;
+	5: new_works_tube_7_carriage_graphics_switch;
+	6: new_works_tube_8_carriage_graphics_switch;
+	return CB_FAILED;
+}
+
+
+// Underground vs. window switch
+
+switch(FEAT_ROADVEHS, SELF, new_works_tube_GFX_switch, extra_callback_info1) {
+    /* Decide whether vehicle is drawn on map or in a special window  */
+	0x00:			underground_tube_GFX_switch;
+	0x10..0x12:		new_works_tube_consist_GFX_switch;
+	return new_works_purchase_set;
+}
+
+
+// Refit cost switch
+
+switch(FEAT_ROADVEHS, SELF, new_works_refit_cost_switch, var[0x10,8,0xFF] - cargo_subtype) {
+    /* Refit cost based on difference between target cargo sybtype and current cargo subtype.
+	   Refitting to fewer carriages refunds money, while adding carriages costs money.        */
+	-6:				-(6*7);
+	-5:				-(5*7);
+	-4:				-(4*7);
+	-3:				-(3*7);
+	-2:				-(2*7);
+	-1:				-(1*7);
+	0:				0;
+	1:				(1*7);
+	2:				(2*7);
+	3:				(3*7);
+	4:				(4*7);
+	5:				(5*7);
+	6:				(6*7);
+	return CB_FAILED;
+}
+
+
+// Running cost switch
+
+switch(FEAT_ROADVEHS, SELF, new_works_running_cost_switch, current_speed) {
+    /* Running cost reduced to 1/4 if vehicle is not moving. */
+	0: 				((cargo_subtype+2)*40)/4;
+	return 			(cargo_subtype+2)*40;
+}
+
+
+// Vehicle definition
+
+item(FEAT_ROADVEHS, new_works_tube) {
+	property {
+		name:               			string(STR_NAME_TUBE_NEW_WORKS);
+		climates_available: 			bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
+		introduction_date: 				date(1938,1,1);
+		model_life:						57;
+		misc_flags:						bitmask(ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+		retire_early:					10;
+		vehicle_life:					30;
+		sprite_id:						SPRITE_ID_NEW_ROADVEH;
+		speed:            	 			72 km/h;
+		power:							400 hp;
+		tractive_effort_coefficient:	0.138;
+		weight:							48 ton;
+		cargo_capacity:					40;
+		loading_speed:					100;
+		refittable_cargo_classes:		bitmask(CC_PASSENGERS, CC_MAIL);
+		refit_cost:						0;
+		cost_factor:					86;
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		running_cost_factor:			158;
+		length:							7;
+		cargo_age_period:				92;
+		tram_type:                    	Mtro;
+	}
+	graphics {
+		articulated_part:				new_works_switch_articulated;
+		default:						new_works_tube_GFX_switch;
+		purchase:						new_works_purchase_set;
+		cargo_capacity:					tube_cargo_capacities_switch;
+		running_cost_factor:			new_works_running_cost_switch;
+		purchase_running_cost_factor:	return 2*40;
+		power:							return (cargo_subtype+2)*20;
+		weight:							return (cargo_subtype+2)*96;
+		length:							tube_shorten_vehicles;
+		sound_effect:					return sound("src/none.wav");
+		cargo_subtype_text:				tube_cargo_subtype_text;
+		additional_text:				return string(STR_TUBE_PURCHASE_TEXT);
+		refit_cost:						new_works_refit_cost_switch;
+	}
+}
+
+// If the tram param is set, make this a tram
+
+if (param_RV0_or_tram1 == 1) {
+	item (FEAT_ROADVEHS, new_works_tube) {
+		property {
+			misc_flags:						bitmask(ROADVEH_FLAG_NO_BREAKDOWN_SMOKE, ROADVEH_FLAG_TRAM);
+		}
+	}
+}
+
+// ======= END NEW WORKS TUBE =======
+
+//====================================================================================================================================
+
+// ======= BEGIN VICTORIA TUBE =======
+
+// Victoria Tube Sprites
+spriteset(victoria_purchase_set, "gfx/graphics/tram/MTRO/Victoria/VTubePurchase_0.png") {
+	[-18, -5]
+}
+
+spriteset(victoria_head_visible_set, "gfx/graphics/tram/MTRO/Victoria/VTubeHead_0.png") {
+	[-16, -5]
+}
+
+spriteset(victoria_middle_visible_set, "gfx/graphics/tram/MTRO/Victoria/VTubeMiddle_0.png") {
+	[-16, -5]
+}
+
+spriteset(victoria_tail_visible_set, "gfx/graphics/tram/MTRO/Victoria/VTubeTail_0.png") {
+	[-16, -5]
+}
+
+
+// Switches
+
+// Articulated consist generation
+
+switch (FEAT_ROADVEHS, SELF, victoria_switch_articulated, extra_callback_info1) {
+    1..7: return victoria_tube;
+    return CB_RESULT_NO_MORE_ARTICULATED_PARTS;
+}
+
+
+// Victoria tube visible, positional graphics switches
+
+switch(FEAT_ROADVEHS, SELF, victoria_tube_2_carriage_graphics_switch, position_in_consist) {
+	0: 		victoria_head_visible_set;
+	1: 	    victoria_tail_visible_set;
+    2..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, victoria_tube_3_carriage_graphics_switch, position_in_consist) {
+	0: 		victoria_head_visible_set;
+	1: 		victoria_middle_visible_set;
+	2: 		victoria_tail_visible_set;
+	3..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, victoria_tube_4_carriage_graphics_switch, position_in_consist) {
+	0: 		victoria_head_visible_set;
+	1..2: 	victoria_middle_visible_set;
+	3: 		victoria_tail_visible_set;
+	4..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, victoria_tube_5_carriage_graphics_switch, position_in_consist) {
+	0: 		victoria_head_visible_set;
+	1..3: 	victoria_middle_visible_set;
+	4: 		victoria_tail_visible_set;
+	5..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, victoria_tube_6_carriage_graphics_switch, position_in_consist) {
+	0: 		victoria_head_visible_set;
+	1..4: 	victoria_middle_visible_set;
+	5: 		victoria_tail_visible_set;
+	6..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, victoria_tube_7_carriage_graphics_switch, position_in_consist) {
+	0: 		victoria_head_visible_set;
+	1..5: 	victoria_middle_visible_set;
+	6: 		victoria_tail_visible_set;
+	7: 		invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, victoria_tube_8_carriage_graphics_switch, position_in_consist) {
+	0: 		victoria_head_visible_set;
+	1..6: 	victoria_middle_visible_set;
+	7: 		victoria_tail_visible_set;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, victoria_tube_consist_GFX_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: victoria_tube_2_carriage_graphics_switch;
+    1: victoria_tube_3_carriage_graphics_switch;
+    2: victoria_tube_4_carriage_graphics_switch;
+	3: victoria_tube_5_carriage_graphics_switch;
+	4: victoria_tube_6_carriage_graphics_switch;
+	5: victoria_tube_7_carriage_graphics_switch;
+	6: victoria_tube_8_carriage_graphics_switch;
+	return CB_FAILED;
+}
+
+
+// Underground vs. window switch
+
+switch(FEAT_ROADVEHS, SELF, victoria_tube_GFX_switch, extra_callback_info1) {
+    /* Decide whether vehicle is drawn on map or in a special window  */
+	0x00:			underground_tube_GFX_switch;
+	0x10..0x12:		victoria_tube_consist_GFX_switch;
+	return victoria_purchase_set;
+}
+
+
+// Refit cost switch
+
+switch(FEAT_ROADVEHS, SELF, victoria_refit_cost_switch, var[0x10,8,0xFF] - cargo_subtype) {
+    /* Refit cost based on difference between target cargo sybtype and current cargo subtype.
+	   Refitting to fewer carriages refunds money, while adding carriages costs money.        */
+	-6:				-(6*8);
+	-5:				-(5*8);
+	-4:				-(4*8);
+	-3:				-(3*8);
+	-2:				-(2*8);
+	-1:				-(1*8);
+	0:				0;
+	1:				(1*8);
+	2:				(2*8);
+	3:				(3*8);
+	4:				(4*8);
+	5:				(5*8);
+	6:				(6*8);
+	return CB_FAILED;
+}
+
+
+// Running cost switch
+
+switch(FEAT_ROADVEHS, SELF, victoria_running_cost_switch, current_speed) {
+    /* Running cost reduced to 1/4 if vehicle is not moving. */
+	0: 				((cargo_subtype+2)*46)/4;
+	return 			(cargo_subtype+2)*46;
+}
+
+
+// Vehicle definition
+
+item(FEAT_ROADVEHS, victoria_tube) {
+	property {
+		name:               			string(STR_NAME_TUBE_VICTORIA);
+		climates_available: 			bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
+		introduction_date: 				date(1967,1,1);
+		model_life:						53;
+		misc_flags:						bitmask(ROADVEH_FLAG_2CC, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+		retire_early:					10;
+		vehicle_life:					30;
+		sprite_id:						SPRITE_ID_NEW_ROADVEH;
+		speed:            	 			80 km/h;
+		power:							500 hp;
+		tractive_effort_coefficient:	0.186;
+		weight:							44 ton;
+		cargo_capacity:					40;
+		loading_speed:					100;
+		refittable_cargo_classes:		bitmask(CC_PASSENGERS, CC_MAIL);
+		refit_cost:						0;
+		cost_factor:					95;
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		running_cost_factor:			184;
+		length:							7;
+		cargo_age_period:				108;
+		tram_type:                    	Mtro;
+	}
+	graphics {
+		articulated_part:				victoria_switch_articulated;
+		default:						victoria_tube_GFX_switch;
+		purchase:						victoria_purchase_set;
+		cargo_capacity:					tube_cargo_capacities_switch;
+		running_cost_factor:			victoria_running_cost_switch;
+		purchase_running_cost_factor:	return 2*46;
+		power:							return (cargo_subtype+2)*25;
+		weight:							return (cargo_subtype+2)*88;
+		length:							tube_shorten_vehicles;
+		sound_effect:					return sound("src/none.wav");
+		cargo_subtype_text:				tube_cargo_subtype_text;
+		additional_text:				return string(STR_TUBE_PURCHASE_TEXT);
+		refit_cost:						victoria_refit_cost_switch;
+	}
+}
+
+// If the tram param is set, make this a tram
+
+if (param_RV0_or_tram1 == 1) {
+	item (FEAT_ROADVEHS, victoria_tube) {
+		property {
+			misc_flags:						bitmask(ROADVEH_FLAG_TRAM, ROADVEH_FLAG_2CC, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+		}
+	}
+}
+
+// ======= END VICTORIA TUBE =======
+
+//====================================================================================================================================
+
+// ======= BEGIN ADTRANZ TUBE =======
+
+// Adtranz Tube Sprites
+spriteset(adtranz_purchase_set, "gfx/graphics/tram/MTRO/Adtranz/ATubePurchase_0.png") {
+	[-18, -5]
+}
+
+spriteset(adtranz_head_visible_set, "gfx/graphics/tram/MTRO/Adtranz/ATubeHead_0.png") {
+	[-16, -5]
+}
+
+spriteset(adtranz_middle_visible_set, "gfx/graphics/tram/MTRO/Adtranz/ATubeMiddle_0.png") {
+	[-16, -5]
+}
+
+spriteset(adtranz_tail_visible_set, "gfx/graphics/tram/MTRO/Adtranz/ATubeTail_0.png") {
+	[-16, -5]
+}
+
+
+// Switches
+
+// Articulated consist generation
+
+switch (FEAT_ROADVEHS, SELF, adtranz_switch_articulated, extra_callback_info1) {
+    1..7: return adtranz_tube;
+    return CB_RESULT_NO_MORE_ARTICULATED_PARTS;
+}
+
+
+// Adtranz tube visible, positional graphics switches
+
+switch(FEAT_ROADVEHS, SELF, adtranz_tube_2_carriage_graphics_switch, position_in_consist) {
+	0: 		adtranz_head_visible_set;
+	1:   	adtranz_tail_visible_set;
+    2..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, adtranz_tube_3_carriage_graphics_switch, position_in_consist) {
+	0: 		adtranz_head_visible_set;
+	1: 		adtranz_middle_visible_set;
+	2: 		adtranz_tail_visible_set;
+	3..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, adtranz_tube_4_carriage_graphics_switch, position_in_consist) {
+	0: 		adtranz_head_visible_set;
+	1..2: 	adtranz_middle_visible_set;
+	3: 		adtranz_tail_visible_set;
+	4..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, adtranz_tube_5_carriage_graphics_switch, position_in_consist) {
+	0: 		adtranz_head_visible_set;
+	1..3: 	adtranz_middle_visible_set;
+	4: 		adtranz_tail_visible_set;
+	5..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, adtranz_tube_6_carriage_graphics_switch, position_in_consist) {
+	0: 		adtranz_head_visible_set;
+	1..4: 	adtranz_middle_visible_set;
+	5: 		adtranz_tail_visible_set;
+	6..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, adtranz_tube_7_carriage_graphics_switch, position_in_consist) {
+	0: 		adtranz_head_visible_set;
+	1..5: 	adtranz_middle_visible_set;
+	6: 		adtranz_tail_visible_set;
+	7: 		invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, adtranz_tube_8_carriage_graphics_switch, position_in_consist) {
+	0: 		adtranz_head_visible_set;
+	1..6: 	adtranz_middle_visible_set;
+	7: 		adtranz_tail_visible_set;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, adtranz_tube_consist_GFX_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: adtranz_tube_2_carriage_graphics_switch;
+    1: adtranz_tube_3_carriage_graphics_switch;
+    2: adtranz_tube_4_carriage_graphics_switch;
+	3: adtranz_tube_5_carriage_graphics_switch;
+	4: adtranz_tube_6_carriage_graphics_switch;
+	5: adtranz_tube_7_carriage_graphics_switch;
+	6: adtranz_tube_8_carriage_graphics_switch;
+	return CB_FAILED;
+}
+
+
+// Underground vs. window switch
+
+switch(FEAT_ROADVEHS, SELF, adtranz_tube_GFX_switch, extra_callback_info1) {
+    /* Decide whether vehicle is drawn on map or in a special window  */
+	0x00:			underground_tube_GFX_switch;
+	0x10..0x12:		adtranz_tube_consist_GFX_switch;
+	return adtranz_purchase_set;
+}
+
+
+// Refit cost switch
+
+switch(FEAT_ROADVEHS, SELF, adtranz_refit_cost_switch, var[0x10,8,0xFF] - cargo_subtype) {
+    /* Refit cost based on difference between target cargo sybtype and current cargo subtype.
+	   Refitting to fewer carriages refunds money, while adding carriages costs money.        */
+	-6:				-(6*10);
+	-5:				-(5*10);
+	-4:				-(4*10);
+	-3:				-(3*10);
+	-2:				-(2*10);
+	-1:				-(1*10);
+	0:				0;
+	1:				(1*10);
+	2:				(2*10);
+	3:				(3*10);
+	4:				(4*10);
+	5:				(5*10);
+	6:				(6*10);
+	return CB_FAILED;
+}
+
+
+// Running cost switch
+
+switch(FEAT_ROADVEHS, SELF, adtranz_running_cost_switch, current_speed) {
+    /* Running cost reduced to 1/4 if vehicle is not moving. */
+	0: 				((cargo_subtype+2)*53)/4;
+	return 			(cargo_subtype+2)*53;
+}
+
+
+// Vehicle definition
+
+item(FEAT_ROADVEHS, adtranz_tube) {
+	property {
+		name:               			string(STR_NAME_TUBE_ADTRANZ);
+		climates_available: 			bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
+		introduction_date: 				date(1992,1,1);
+		model_life:						75;
+		misc_flags:						bitmask(ROADVEH_FLAG_2CC, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+		vehicle_life:					30;
+		sprite_id:						SPRITE_ID_NEW_ROADVEH;
+		speed:            	 			100 km/h;
+		power:							600 hp;
+		tractive_effort_coefficient:	0.179;
+		weight:							46 ton;
+		cargo_capacity:					40;
+		loading_speed:					100;
+		refittable_cargo_classes:		bitmask(CC_PASSENGERS, CC_MAIL);
+		refit_cost:						0;
+		cost_factor:					119;
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		running_cost_factor:			212;
+		length:							7;
+		cargo_age_period:				120;
+		tram_type:                    	Mtro;
+	}
+	graphics {
+		articulated_part:				adtranz_switch_articulated;
+		default:						adtranz_tube_GFX_switch;
+		purchase:						adtranz_purchase_set;
+		cargo_capacity:					tube_cargo_capacities_switch;
+		running_cost_factor:			adtranz_running_cost_switch;
+		purchase_running_cost_factor:	return 2*53;
+		power:							return (cargo_subtype+2)*30;
+		weight:							return (cargo_subtype+2)*93;
+		length:							tube_shorten_vehicles;
+		sound_effect:					return sound("src/none.wav");
+		cargo_subtype_text:				tube_cargo_subtype_text;
+		additional_text:				return string(STR_TUBE_PURCHASE_TEXT);
+		refit_cost:						adtranz_refit_cost_switch;
+	}
+}
+
+// If the tram param is set, make this a tram
+
+if (param_RV0_or_tram1 == 1) {
+	item (FEAT_ROADVEHS, adtranz_tube) {
+		property {
+			misc_flags:						bitmask(ROADVEH_FLAG_TRAM, ROADVEH_FLAG_2CC, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+		}
+	}
+}
+
+// ======= END ADTRANZ TUBE =======
+
+// ======= BEGIN CHIKATETSU E1 FUTURISTIC =======
+
+// ChikatetsuE4 Sprites
+spriteset(ChikatetsuE1_purchase_set, "gfx/graphics/tram/MTRO/Chikatetsu/ChikatetsuE1Purchase_0.png") {
+	[-18, -6]
+}
+
+spriteset(ChikatetsuE1_head_visible_set, "gfx/graphics/tram/MTRO/Chikatetsu/ChikatetsuE1Head_0.png") {
+	[-16, -5]
+}
+
+spriteset(ChikatetsuE1_middle_visible_set, "gfx/graphics/tram/MTRO/Chikatetsu/ChikatetsuE1Middle_0.png") {
+	[-16, -5]
+}
+
+spriteset(ChikatetsuE1_tail_visible_set, "gfx/graphics/tram/MTRO/Chikatetsu/ChikatetsuE1Tail_0.png") {
+	[-16, -5]
+}
+
+
+// Switches
+
+// Articulated consist generation
+
+switch (FEAT_ROADVEHS, SELF, ChikatetsuE1_switch_articulated, extra_callback_info1) {
+    1..7: return ChikatetsuE1;
+    return CB_RESULT_NO_MORE_ARTICULATED_PARTS;
+}
+
+
+// Capacity switches
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_2_carriage_capacity_switch, position_in_consist) {
+	0..1: return 80+(param_capacities*120);
+    2..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_3_carriage_capacity_switch, position_in_consist) {
+	0..2: return 80+(param_capacities*120);
+	3..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_4_carriage_capacity_switch, position_in_consist) {
+	0..3: return 80+(param_capacities*120);
+	4..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_5_carriage_capacity_switch, position_in_consist) {
+	0..4: return 80+(param_capacities*120);
+	5..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_6_carriage_capacity_switch, position_in_consist) {
+	0..5: return 80+(param_capacities*120);
+	6..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_7_carriage_capacity_switch, position_in_consist) {
+	0..6: return 80+(param_capacities*120);
+	7: return 0;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_cargo_capacities_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: ChikatetsuE1_2_carriage_capacity_switch;
+    1: ChikatetsuE1_3_carriage_capacity_switch;
+    2: ChikatetsuE1_4_carriage_capacity_switch;
+	3: ChikatetsuE1_5_carriage_capacity_switch;
+	4: ChikatetsuE1_6_carriage_capacity_switch;
+	5: ChikatetsuE1_7_carriage_capacity_switch;
+	// 8-carriage vehicles need no reduction in capacity
+	return 80+(param_capacities*120);
+}
+
+// ChikatetsuE1 visible, positional graphics switches
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_2_carriage_graphics_switch, position_in_consist) {
+	0: 		ChikatetsuE1_head_visible_set;
+	1: 	    ChikatetsuE1_tail_visible_set;
+    2..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_3_carriage_graphics_switch, position_in_consist) {
+	0: 		ChikatetsuE1_head_visible_set;
+	1: 		ChikatetsuE1_middle_visible_set;
+	2: 		ChikatetsuE1_tail_visible_set;
+	3..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_4_carriage_graphics_switch, position_in_consist) {
+	0: 		ChikatetsuE1_head_visible_set;
+	1..2: 	ChikatetsuE1_middle_visible_set;
+	3: 		ChikatetsuE1_tail_visible_set;
+	4..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_5_carriage_graphics_switch, position_in_consist) {
+	0: 		ChikatetsuE1_head_visible_set;
+	1..3: 	ChikatetsuE1_middle_visible_set;
+	4: 		ChikatetsuE1_tail_visible_set;
+	5..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_6_carriage_graphics_switch, position_in_consist) {
+	0: 		ChikatetsuE1_head_visible_set;
+	1..4: 	ChikatetsuE1_middle_visible_set;
+	5: 		ChikatetsuE1_tail_visible_set;
+	6..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_7_carriage_graphics_switch, position_in_consist) {
+	0: 		ChikatetsuE1_head_visible_set;
+	1..5: 	ChikatetsuE1_middle_visible_set;
+	6: 		ChikatetsuE1_tail_visible_set;
+	7: 		invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_8_carriage_graphics_switch, position_in_consist) {
+	0: 		ChikatetsuE1_head_visible_set;
+	1..6: 	ChikatetsuE1_middle_visible_set;
+	7: 		ChikatetsuE1_tail_visible_set;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_consist_GFX_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: ChikatetsuE1_2_carriage_graphics_switch;
+    1: ChikatetsuE1_3_carriage_graphics_switch;
+    2: ChikatetsuE1_4_carriage_graphics_switch;
+	3: ChikatetsuE1_5_carriage_graphics_switch;
+	4: ChikatetsuE1_6_carriage_graphics_switch;
+	5: ChikatetsuE1_7_carriage_graphics_switch;
+	6: ChikatetsuE1_8_carriage_graphics_switch;
+	return CB_FAILED;
+}
+
+
+// Underground vs. window switch
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_GFX_switch, extra_callback_info1) {
+    /* Decide whether vehicle is drawn on map or in a special window  */
+	0x00:			underground_tube_GFX_switch;
+	0x10..0x12:		ChikatetsuE1_consist_GFX_switch;
+	return ChikatetsuE1_purchase_set;
+}
+
+
+// Refit cost switch
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_refit_cost_switch, var[0x10,8,0xFF] - cargo_subtype) {
+    /* Refit cost based on difference between target cargo sybtype and current cargo subtype.
+	   Refitting to fewer carriages refunds money, while adding carriages costs money.        */
+	-6:				-(6*20);
+	-5:				-(5*20);
+	-4:				-(4*20);
+	-3:				-(3*20);
+	-2:				-(2*20);
+	-1:				-(1*20);
+	0:				0;
+	1:				(1*20);
+	2:				(2*20);
+	3:				(3*20);
+	4:				(4*20);
+	5:				(5*20);
+	6:				(6*20);
+	return CB_FAILED;
+}
+
+
+// Running cost switch
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE1_running_cost_switch, current_speed) {
+    /* Running cost reduced to 1/4 if vehicle is not moving. */
+	0: 				((cargo_subtype+2)*105)/4;
+	return 			(cargo_subtype+2)*105;
+}
+
+
+// Vehicle definition
+
+item(FEAT_ROADVEHS, ChikatetsuE1) {
+	property {
+		name:               			string(STR_NAME_MAB3_CHIKATETSU_E1);
+		climates_available: 			bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
+		introduction_date: 				date(2015,4,1);
+		model_life:						VEHICLE_NEVER_EXPIRES;
+		misc_flags:						bitmask(ROADVEH_FLAG_NO_BREAKDOWN_SMOKE, ROADVEH_FLAG_2CC);
+		vehicle_life:					30;
+		sprite_id:						SPRITE_ID_NEW_ROADVEH;
+		speed:            	 			511 km/h;
+		power:							1200 hp;
+		tractive_effort_coefficient:	0.18;
+		weight:							60 ton;
+		cargo_capacity:					80;
+		loading_speed:					200;
+		refittable_cargo_classes:		bitmask(CC_PASSENGERS, CC_MAIL);
+		refit_cost:						0;
+		cost_factor:					238;
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		running_cost_factor:			255;
+		length:							7;
+		cargo_age_period:				128;
+		tram_type:                    	MTRO;
+	}
+	graphics {
+		articulated_part:				ChikatetsuE1_switch_articulated;
+		default:						ChikatetsuE1_GFX_switch;
+		purchase:						ChikatetsuE1_purchase_set;
+		cargo_capacity:					ChikatetsuE1_cargo_capacities_switch;
+		running_cost_factor:			ChikatetsuE1_running_cost_switch;
+		purchase_running_cost_factor:	return 2*105;
+		power:							return (cargo_subtype+2)*60;
+		weight:							return (cargo_subtype+2)*121;
+		length:							tube_shorten_vehicles;
+		sound_effect:					return sound("src/none.wav");
+		cargo_subtype_text:				tube_cargo_subtype_text;
+		additional_text:				return string(STR_TUBE_PURCHASE_TEXT);
+		refit_cost:						ChikatetsuE1_refit_cost_switch;
+	}
+}
+
+// If the tram param is set, make this a tram
+
+if (param_RV0_or_tram1 == 1) {
+	item (FEAT_ROADVEHS, ChikatetsuE1) {
+		property {
+			misc_flags:						bitmask(ROADVEH_FLAG_TRAM, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE, ROADVEH_FLAG_2CC);
+		}
+	}
+}
+
+// ======= END CHIKATETSU E1 FUTURISTIC =======
+
+
+// ======= BEGIN CHIKATETSU E4 FUTURISTIC =======
+
+// ChikatetsuE4 Sprites
+spriteset(ChikatetsuE4_purchase_set, "gfx/graphics/tram/MTRO/Chikatetsu/ChikatetsuE4Purchase_0.png") {
+	[-18, -6]
+}
+
+spriteset(ChikatetsuE4_head_visible_set, "gfx/graphics/tram/MTRO/Chikatetsu/ChikatetsuE4Head_0.png") {
+	[-16, -5]
+}
+
+spriteset(ChikatetsuE4_middle_visible_set, "gfx/graphics/tram/MTRO/Chikatetsu/ChikatetsuE4Middle_0.png") {
+	[-16, -5]
+}
+
+spriteset(ChikatetsuE4_tail_visible_set, "gfx/graphics/tram/MTRO/Chikatetsu/ChikatetsuE4Tail_0.png") {
+	[-16, -5]
+}
+
+
+// Switches
+
+// Articulated consist generation
+
+switch (FEAT_ROADVEHS, SELF, ChikatetsuE4_switch_articulated, extra_callback_info1) {
+    1..7: return ChikatetsuE4;
+    return CB_RESULT_NO_MORE_ARTICULATED_PARTS;
+}
+
+
+// Capacity switches
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_2_carriage_capacity_switch, position_in_consist) {
+	0..1: return 80+(param_capacities*120);
+    2..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_3_carriage_capacity_switch, position_in_consist) {
+	0..2: return 80+(param_capacities*120);
+	3..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_4_carriage_capacity_switch, position_in_consist) {
+	0..3: return 80+(param_capacities*120);
+	4..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_5_carriage_capacity_switch, position_in_consist) {
+	0..4: return 80+(param_capacities*120);
+	5..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_6_carriage_capacity_switch, position_in_consist) {
+	0..5: return 80+(param_capacities*120);
+	6..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_7_carriage_capacity_switch, position_in_consist) {
+	0..6: return 80+(param_capacities*120);
+	7: return 0;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_cargo_capacities_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: ChikatetsuE4_2_carriage_capacity_switch;
+    1: ChikatetsuE4_3_carriage_capacity_switch;
+    2: ChikatetsuE4_4_carriage_capacity_switch;
+	3: ChikatetsuE4_5_carriage_capacity_switch;
+	4: ChikatetsuE4_6_carriage_capacity_switch;
+	5: ChikatetsuE4_7_carriage_capacity_switch;
+	// 8-carriage vehicles need no reduction in capacity
+	return 80+(param_capacities*120);
+}
+
+// ChikatetsuE4 visible, positional graphics switches
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_2_carriage_graphics_switch, position_in_consist) {
+	0: 		ChikatetsuE4_head_visible_set;
+	1: 	    ChikatetsuE4_tail_visible_set;
+    2..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_3_carriage_graphics_switch, position_in_consist) {
+	0: 		ChikatetsuE4_head_visible_set;
+	1: 		ChikatetsuE4_middle_visible_set;
+	2: 		ChikatetsuE4_tail_visible_set;
+	3..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_4_carriage_graphics_switch, position_in_consist) {
+	0: 		ChikatetsuE4_head_visible_set;
+	1..2: 	ChikatetsuE4_middle_visible_set;
+	3: 		ChikatetsuE4_tail_visible_set;
+	4..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_5_carriage_graphics_switch, position_in_consist) {
+	0: 		ChikatetsuE4_head_visible_set;
+	1..3: 	ChikatetsuE4_middle_visible_set;
+	4: 		ChikatetsuE4_tail_visible_set;
+	5..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_6_carriage_graphics_switch, position_in_consist) {
+	0: 		ChikatetsuE4_head_visible_set;
+	1..4: 	ChikatetsuE4_middle_visible_set;
+	5: 		ChikatetsuE4_tail_visible_set;
+	6..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_7_carriage_graphics_switch, position_in_consist) {
+	0: 		ChikatetsuE4_head_visible_set;
+	1..5: 	ChikatetsuE4_middle_visible_set;
+	6: 		ChikatetsuE4_tail_visible_set;
+	7: 		invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_8_carriage_graphics_switch, position_in_consist) {
+	0: 		ChikatetsuE4_head_visible_set;
+	1..6: 	ChikatetsuE4_middle_visible_set;
+	7: 		ChikatetsuE4_tail_visible_set;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_consist_GFX_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: ChikatetsuE4_2_carriage_graphics_switch;
+    1: ChikatetsuE4_3_carriage_graphics_switch;
+    2: ChikatetsuE4_4_carriage_graphics_switch;
+	3: ChikatetsuE4_5_carriage_graphics_switch;
+	4: ChikatetsuE4_6_carriage_graphics_switch;
+	5: ChikatetsuE4_7_carriage_graphics_switch;
+	6: ChikatetsuE4_8_carriage_graphics_switch;
+	return CB_FAILED;
+}
+
+
+// Underground vs. window switch
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_GFX_switch, extra_callback_info1) {
+    /* Decide whether vehicle is drawn on map or in a special window  */
+	0x00:			underground_tube_GFX_switch;
+	0x10..0x12:		ChikatetsuE4_consist_GFX_switch;
+	return ChikatetsuE4_purchase_set;
+}
+
+
+// Refit cost switch
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_refit_cost_switch, var[0x10,8,0xFF] - cargo_subtype) {
+    /* Refit cost based on difference between target cargo sybtype and current cargo subtype.
+	   Refitting to fewer carriages refunds money, while adding carriages costs money.        */
+	-6:				-(6*20);
+	-5:				-(5*20);
+	-4:				-(4*20);
+	-3:				-(3*20);
+	-2:				-(2*20);
+	-1:				-(1*20);
+	0:				0;
+	1:				(1*20);
+	2:				(2*20);
+	3:				(3*20);
+	4:				(4*20);
+	5:				(5*20);
+	6:				(6*20);
+	return CB_FAILED;
+}
+
+
+// Running cost switch
+
+switch(FEAT_ROADVEHS, SELF, ChikatetsuE4_running_cost_switch, current_speed) {
+    /* Running cost reduced to 1/4 if vehicle is not moving. */
+	0: 				((cargo_subtype+2)*105)/4;
+	return 			(cargo_subtype+2)*105;
+}
+
+
+// Vehicle definition
+
+item(FEAT_ROADVEHS, ChikatetsuE4) {
+	property {
+		name:               			string(STR_NAME_MAB3_SHINKU_EKI);
+		climates_available: 			bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
+		introduction_date: 				date(2024,1,1);
+		model_life:						VEHICLE_NEVER_EXPIRES;
+		misc_flags:						bitmask(ROADVEH_FLAG_NO_BREAKDOWN_SMOKE, ROADVEH_FLAG_2CC);
+		vehicle_life:					30;
+		sprite_id:						SPRITE_ID_NEW_ROADVEH;
+		speed:            	 			511 km/h;
+		power:							1200 hp;
+		tractive_effort_coefficient:	0.18;
+		weight:							60 ton;
+		cargo_capacity:					80;
+		loading_speed:					200;
+		refittable_cargo_classes:		bitmask(CC_PASSENGERS, CC_MAIL);
+		refit_cost:						0;
+		cost_factor:					238;
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		running_cost_factor:			255;
+		length:							7;
+		cargo_age_period:				128;
+		tram_type:                    	MTRO;
+	}
+	graphics {
+		articulated_part:				ChikatetsuE4_switch_articulated;
+		default:						ChikatetsuE4_GFX_switch;
+		purchase:						ChikatetsuE4_purchase_set;
+		cargo_capacity:					ChikatetsuE4_cargo_capacities_switch;
+		running_cost_factor:			ChikatetsuE4_running_cost_switch;
+		purchase_running_cost_factor:	return 2*105;
+		power:							return (cargo_subtype+2)*60;
+		weight:							return (cargo_subtype+2)*121;
+		length:							tube_shorten_vehicles;
+		sound_effect:					return sound("src/none.wav");
+		cargo_subtype_text:				tube_cargo_subtype_text;
+		additional_text:				return string(STR_TUBE_PURCHASE_TEXT);
+		refit_cost:						ChikatetsuE4_refit_cost_switch;
+	}
+}
+
+// If the tram param is set, make this a tram
+
+if (param_RV0_or_tram1 == 1) {
+	item (FEAT_ROADVEHS, ChikatetsuE4) {
+		property {
+			misc_flags:						bitmask(ROADVEH_FLAG_TRAM, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE, ROADVEH_FLAG_2CC);
+		}
+	}
+}
+
+// ======= END CHIKATETSU E4 FUTURISTIC =======
+# 1 "futuRVs.pnml" 1
+# 1 "src/02_pneumetro.pnml" 1
+// ======= BEGIN GATE PNEU =======
+
+// Janus Tube Sprites
+spriteset(janus_purchase_set, "gfx/graphics/tram/PNEU/Gate/GTubePurchase_0.png") {
+	[-18, -5]
+}
+
+spriteset(janus_head_visible_set, "gfx/graphics/tram/PNEU/Gate/GTubeHead_0.png") {
+	[-16, -5]
+}
+
+spriteset(janus_middle_visible_set, "gfx/graphics/tram/PNEU/Gate/GTubeMiddle_0.png") {
+	[-16, -5]
+}
+
+spriteset(janus_tail_visible_set, "gfx/graphics/tram/PNEU/Gate/GTubeTail_0.png") {
+	[-16, -5]
+}
+
+
+// Switches
+
+// Articulated consist generation
+
+switch (FEAT_ROADVEHS, SELF, janus_switch_articulated, extra_callback_info1) {
+    1..7: return janus_tube;
+    return CB_RESULT_NO_MORE_ARTICULATED_PARTS;
+}
+
+
+// Gate tube visible, positional graphics switches
+
+switch(FEAT_ROADVEHS, SELF, janus_tube_2_carriage_graphics_switch, position_in_consist) {
+	0: 		janus_head_visible_set;
+	1: 	    janus_tail_visible_set;
+    2..7: 		invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, janus_tube_3_carriage_graphics_switch, position_in_consist) {
+	0: 		janus_head_visible_set;
+	1: 		janus_middle_visible_set;
+	2: 		janus_tail_visible_set;
+	3..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, janus_tube_4_carriage_graphics_switch, position_in_consist) {
+	0: 		janus_head_visible_set;
+	1..2: 	janus_middle_visible_set;
+	3: 		janus_tail_visible_set;
+	4..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, janus_tube_5_carriage_graphics_switch, position_in_consist) {
+	0: 		janus_head_visible_set;
+	1..3: 	janus_middle_visible_set;
+	4: 		janus_tail_visible_set;
+	5..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, janus_tube_6_carriage_graphics_switch, position_in_consist) {
+	0: 		janus_head_visible_set;
+	1..4: 	janus_middle_visible_set;
+	5: 		janus_tail_visible_set;
+	6..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, janus_tube_7_carriage_graphics_switch, position_in_consist) {
+	0: 		janus_head_visible_set;
+	1..5: 	janus_middle_visible_set;
+	6: 		janus_tail_visible_set;
+	7: 		invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, janus_tube_8_carriage_graphics_switch, position_in_consist) {
+	0: 		janus_head_visible_set;
+	1..6: 	janus_middle_visible_set;
+	7: 		janus_tail_visible_set;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, janus_tube_consist_GFX_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: janus_tube_2_carriage_graphics_switch;
+    1: janus_tube_3_carriage_graphics_switch;
+    2: janus_tube_4_carriage_graphics_switch;
+	3: janus_tube_5_carriage_graphics_switch;
+	4: janus_tube_6_carriage_graphics_switch;
+	5: janus_tube_7_carriage_graphics_switch;
+	6: janus_tube_8_carriage_graphics_switch;
+	return CB_FAILED;
+}
+
+
+// Underground vs. window switch
+
+switch(FEAT_ROADVEHS, SELF, janus_tube_GFX_switch, extra_callback_info1) {
+    /* Decide whether vehicle is drawn on map or in a special window  */
+	0x00:			underground_tube_GFX_switch;
+	0x10..0x12:		janus_tube_consist_GFX_switch;
+	return janus_purchase_set;
+}
+
+
+// Refit cost switch
+
+switch(FEAT_ROADVEHS, SELF, janus_refit_cost_switch, var[0x10,8,0xFF] - cargo_subtype) {
+    /* Refit cost based on difference between target cargo sybtype and current cargo subtype.
+	   Refitting to fewer carriages refunds money, while adding carriages costs money.        */
+	-6:				-(6*5);
+	-5:				-(5*5);
+	-4:				-(4*5);
+	-3:				-(3*5);
+	-2:				-(2*5);
+	-1:				-(1*5);
+	0:				0;
+	1:				(1*5);
+	2:				(2*5);
+	3:				(3*5);
+	4:				(4*5);
+	5:				(5*5);
+	6:				(6*5);
+	return CB_FAILED;
+}
+
+
+// Running cost switch
+
+switch(FEAT_ROADVEHS, SELF, janus_running_cost_switch, current_speed) {
+    /* Running cost reduced to 1/4 if vehicle is not moving. */
+	0: 				((cargo_subtype+2)*33)/4;
+	return 			(cargo_subtype+2)*33;
+}
+
+
+// Vehicle definition
+
+item(FEAT_ROADVEHS, janus_tube) {
+	property {
+		name:               			string(STR_NAME_PNEU_GATE);
+		climates_available: 			bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
+		introduction_date: 				date(1903,1,1);
+		model_life:						52;
+		misc_flags:						bitmask(ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+		retire_early:					10;
+		vehicle_life:					30;
+		sprite_id:						SPRITE_ID_NEW_ROADVEH;
+		speed:            	 			65 km/h;
+		power:							300 hp;
+		tractive_effort_coefficient:	0.123;
+		weight:							46 ton;
+		cargo_capacity:					40;
+		loading_speed:					100;
+		refittable_cargo_classes:		bitmask(CC_PASSENGERS, CC_MAIL);
+		refit_cost:						0;
+		cost_factor:					65;
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		running_cost_factor:			132;
+		length:							7;
+		cargo_age_period:				90;
+		tram_type:                    	Pneu;
+	}
+	graphics {
+		articulated_part:				janus_switch_articulated;
+		default:						janus_tube_GFX_switch;
+		purchase:						janus_purchase_set;
+		cargo_capacity:					tube_cargo_capacities_switch;
+		running_cost_factor:			janus_running_cost_switch;
+		purchase_running_cost_factor:	return 2*33;
+		power:							return (cargo_subtype+2)*15;
+		weight:							return (cargo_subtype+2)*93;
+		length:							tube_shorten_vehicles;
+		sound_effect:					return sound("src/none.wav");
+		cargo_subtype_text:				tube_cargo_subtype_text;
+		additional_text:				return string(STR_PNEU_PURCHASE_TEXT);
+		refit_cost:						janus_refit_cost_switch;
+	}
+}
+
+// If the tram param is set, make this a tram
+
+if (param_RV0_or_tram1 == 1) {
+	item (FEAT_ROADVEHS, janus_tube) {
+		property {
+			misc_flags:						bitmask(ROADVEH_FLAG_NO_BREAKDOWN_SMOKE, ROADVEH_FLAG_TRAM);
+		}
+	}
+}
+
+// ======= END GATE PNEU =======
+
+//====================================================================================================================================
+
+// ======= BEGIN GRAND WORKS PNEU =======
+
+// Grand Works Tube Sprites
+spriteset(grand_works_purchase_set, "gfx/graphics/tram/PNEU/Grand Works/GWTubePurchase_0.png") {
+	[-18, -5]
+}
+
+spriteset(grand_works_head_visible_set, "gfx/graphics/tram/PNEU/Grand Works/GWTubeHead_0.png") {
+	[-16, -5]
+}
+
+spriteset(grand_works_middle_visible_set, "gfx/graphics/tram/PNEU/Grand Works/GWTubeMiddle_0.png") {
+	[-16, -5]
+}
+
+spriteset(grand_works_tail_visible_set, "gfx/graphics/tram/PNEU/Grand Works/GWTubeTail_0.png") {
+	[-16, -5]
+}
+
+
+// Switches
+
+// Articulated consist generation
+
+switch (FEAT_ROADVEHS, SELF, grand_works_switch_articulated, extra_callback_info1) {
+    1..7: return grand_works_tube;
+    return CB_RESULT_NO_MORE_ARTICULATED_PARTS;
+}
+
+
+// New works tube visible, positional graphics switches
+
+switch(FEAT_ROADVEHS, SELF, grand_works_tube_2_carriage_graphics_switch, position_in_consist) {
+	0: 		grand_works_head_visible_set;
+	1: 	    grand_works_tail_visible_set;
+    2..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, grand_works_tube_3_carriage_graphics_switch, position_in_consist) {
+	0: 		grand_works_head_visible_set;
+	1: 		grand_works_middle_visible_set;
+	2: 		grand_works_tail_visible_set;
+	3..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, grand_works_tube_4_carriage_graphics_switch, position_in_consist) {
+	0: 		grand_works_head_visible_set;
+	1..2: 	grand_works_middle_visible_set;
+	3: 		grand_works_tail_visible_set;
+	4..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, grand_works_tube_5_carriage_graphics_switch, position_in_consist) {
+	0: 		grand_works_head_visible_set;
+	1..3: 	grand_works_middle_visible_set;
+	4: 		grand_works_tail_visible_set;
+	5..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, grand_works_tube_6_carriage_graphics_switch, position_in_consist) {
+	0: 		grand_works_head_visible_set;
+	1..4: 	grand_works_middle_visible_set;
+	5: 		grand_works_tail_visible_set;
+	6..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, grand_works_tube_7_carriage_graphics_switch, position_in_consist) {
+	0: 		grand_works_head_visible_set;
+	1..5: 	grand_works_middle_visible_set;
+	6: 		grand_works_tail_visible_set;
+	7: 		invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, grand_works_tube_8_carriage_graphics_switch, position_in_consist) {
+	0: 		grand_works_head_visible_set;
+	1..6: 	grand_works_middle_visible_set;
+	7: 		grand_works_tail_visible_set;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, grand_works_tube_consist_GFX_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: grand_works_tube_2_carriage_graphics_switch;
+    1: grand_works_tube_3_carriage_graphics_switch;
+    2: grand_works_tube_4_carriage_graphics_switch;
+	3: grand_works_tube_5_carriage_graphics_switch;
+	4: grand_works_tube_6_carriage_graphics_switch;
+	5: grand_works_tube_7_carriage_graphics_switch;
+	6: grand_works_tube_8_carriage_graphics_switch;
+	return CB_FAILED;
+}
+
+
+// Underground vs. window switch
+
+switch(FEAT_ROADVEHS, SELF, grand_works_tube_GFX_switch, extra_callback_info1) {
+    /* Decide whether vehicle is drawn on map or in a special window  */
+	0x00:			underground_tube_GFX_switch;
+	0x10..0x12:		grand_works_tube_consist_GFX_switch;
+	return grand_works_purchase_set;
+}
+
+
+// Refit cost switch
+
+switch(FEAT_ROADVEHS, SELF, grand_works_refit_cost_switch, var[0x10,8,0xFF] - cargo_subtype) {
+    /* Refit cost based on difference between target cargo sybtype and current cargo subtype.
+	   Refitting to fewer carriages refunds money, while adding carriages costs money.        */
+	-6:				-(6*7);
+	-5:				-(5*7);
+	-4:				-(4*7);
+	-3:				-(3*7);
+	-2:				-(2*7);
+	-1:				-(1*7);
+	0:				0;
+	1:				(1*7);
+	2:				(2*7);
+	3:				(3*7);
+	4:				(4*7);
+	5:				(5*7);
+	6:				(6*7);
+	return CB_FAILED;
+}
+
+
+// Running cost switch
+
+switch(FEAT_ROADVEHS, SELF, grand_works_running_cost_switch, current_speed) {
+    /* Running cost reduced to 1/4 if vehicle is not moving. */
+	0: 				((cargo_subtype+2)*40)/4;
+	return 			(cargo_subtype+2)*40;
+}
+
+
+// Vehicle definition
+
+item(FEAT_ROADVEHS, grand_works_tube) {
+	property {
+		name:               			string(STR_NAME_PNEU_NEW_WORKS);
+		climates_available: 			bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
+		introduction_date: 				date(1938,1,1);
+		model_life:						57;
+		misc_flags:						bitmask(ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+		retire_early:					10;
+		vehicle_life:					30;
+		sprite_id:						SPRITE_ID_NEW_ROADVEH;
+		speed:            	 			72 km/h;
+		power:							400 hp;
+		tractive_effort_coefficient:	0.138;
+		weight:							48 ton;
+		cargo_capacity:					40;
+		loading_speed:					100;
+		refittable_cargo_classes:		bitmask(CC_PASSENGERS, CC_MAIL);
+		refit_cost:						0;
+		cost_factor:					86;
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		running_cost_factor:			158;
+		length:							7;
+		cargo_age_period:				92;
+		tram_type:                    	Pneu;
+	}
+	graphics {
+		articulated_part:				grand_works_switch_articulated;
+		default:						grand_works_tube_GFX_switch;
+		purchase:						grand_works_purchase_set;
+		cargo_capacity:					tube_cargo_capacities_switch;
+		running_cost_factor:			grand_works_running_cost_switch;
+		purchase_running_cost_factor:	return 2*40;
+		power:							return (cargo_subtype+2)*20;
+		weight:							return (cargo_subtype+2)*96;
+		length:							tube_shorten_vehicles;
+		sound_effect:					return sound("src/none.wav");
+		cargo_subtype_text:				tube_cargo_subtype_text;
+		additional_text:				return string(STR_PNEU_PURCHASE_TEXT);
+		refit_cost:						grand_works_refit_cost_switch;
+	}
+}
+
+// If the tram param is set, make this a tram
+
+if (param_RV0_or_tram1 == 1) {
+	item (FEAT_ROADVEHS, grand_works_tube) {
+		property {
+			misc_flags:						bitmask(ROADVEH_FLAG_NO_BREAKDOWN_SMOKE, ROADVEH_FLAG_TRAM);
+		}
+	}
+}
+
+// ======= END NEW WORKS PNEU =======
+
+//====================================================================================================================================
+
+// ======= BEGIN RAIL BRITANNIA PNEU =======
+
+// Rail Britannia Tube Sprites
+spriteset(rail_britannia_purchase_set, "gfx/graphics/tram/PNEU/Rail Britannia/RBTubePurchase_0.png") {
+	[-18, -5]
+}
+
+spriteset(rail_britannia_head_visible_set, "gfx/graphics/tram/PNEU/Rail Britannia/RBTubeHead_0.png") {
+	[-16, -5]
+}
+
+spriteset(rail_britannia_middle_visible_set, "gfx/graphics/tram/PNEU/Rail Britannia/RBTubeMiddle_0.png") {
+	[-16, -5]
+}
+
+spriteset(rail_britannia_tail_visible_set, "gfx/graphics/tram/PNEU/Rail Britannia/RBTubeTail_0.png") {
+	[-16, -5]
+}
+
+
+// Switches
+
+// Articulated consist generation
+
+switch (FEAT_ROADVEHS, SELF, rail_britannia_switch_articulated, extra_callback_info1) {
+    1..7: return rail_britannia_tube;
+    return CB_RESULT_NO_MORE_ARTICULATED_PARTS;
+}
+
+
+// Rail Britannia tube visible, positional graphics switches
+
+switch(FEAT_ROADVEHS, SELF, rail_britannia_tube_2_carriage_graphics_switch, position_in_consist) {
+	0: 		rail_britannia_head_visible_set;
+	1: 	    rail_britannia_tail_visible_set;
+    2..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, rail_britannia_tube_3_carriage_graphics_switch, position_in_consist) {
+	0: 		rail_britannia_head_visible_set;
+	1: 		rail_britannia_middle_visible_set;
+	2: 		rail_britannia_tail_visible_set;
+	3..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, rail_britannia_tube_4_carriage_graphics_switch, position_in_consist) {
+	0: 		rail_britannia_head_visible_set;
+	1..2: 	rail_britannia_middle_visible_set;
+	3: 		rail_britannia_tail_visible_set;
+	4..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, rail_britannia_tube_5_carriage_graphics_switch, position_in_consist) {
+	0: 		rail_britannia_head_visible_set;
+	1..3: 	rail_britannia_middle_visible_set;
+	4: 		rail_britannia_tail_visible_set;
+	5..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, rail_britannia_tube_6_carriage_graphics_switch, position_in_consist) {
+	0: 		rail_britannia_head_visible_set;
+	1..4: 	rail_britannia_middle_visible_set;
+	5: 		rail_britannia_tail_visible_set;
+	6..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, rail_britannia_tube_7_carriage_graphics_switch, position_in_consist) {
+	0: 		rail_britannia_head_visible_set;
+	1..5: 	rail_britannia_middle_visible_set;
+	6: 		rail_britannia_tail_visible_set;
+	7: 		invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, rail_britannia_tube_8_carriage_graphics_switch, position_in_consist) {
+	0: 		rail_britannia_head_visible_set;
+	1..6: 	rail_britannia_middle_visible_set;
+	7: 		rail_britannia_tail_visible_set;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, rail_britannia_tube_consist_GFX_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: rail_britannia_tube_2_carriage_graphics_switch;
+    1: rail_britannia_tube_3_carriage_graphics_switch;
+    2: rail_britannia_tube_4_carriage_graphics_switch;
+	3: rail_britannia_tube_5_carriage_graphics_switch;
+	4: rail_britannia_tube_6_carriage_graphics_switch;
+	5: rail_britannia_tube_7_carriage_graphics_switch;
+	6: rail_britannia_tube_8_carriage_graphics_switch;
+	return CB_FAILED;
+}
+
+
+// Underground vs. window switch
+
+switch(FEAT_ROADVEHS, SELF, rail_britannia_tube_GFX_switch, extra_callback_info1) {
+    /* Decide whether vehicle is drawn on map or in a special window  */
+	0x00:			underground_tube_GFX_switch;
+	0x10..0x12:		rail_britannia_tube_consist_GFX_switch;
+	return rail_britannia_purchase_set;
+}
+
+
+// Refit cost switch
+
+switch(FEAT_ROADVEHS, SELF, rail_britannia_refit_cost_switch, var[0x10,8,0xFF] - cargo_subtype) {
+    /* Refit cost based on difference between target cargo sybtype and current cargo subtype.
+	   Refitting to fewer carriages refunds money, while adding carriages costs money.        */
+	-6:				-(6*8);
+	-5:				-(5*8);
+	-4:				-(4*8);
+	-3:				-(3*8);
+	-2:				-(2*8);
+	-1:				-(1*8);
+	0:				0;
+	1:				(1*8);
+	2:				(2*8);
+	3:				(3*8);
+	4:				(4*8);
+	5:				(5*8);
+	6:				(6*8);
+	return CB_FAILED;
+}
+
+
+// Running cost switch
+
+switch(FEAT_ROADVEHS, SELF, rail_britannia_running_cost_switch, current_speed) {
+    /* Running cost reduced to 1/4 if vehicle is not moving. */
+	0: 				((cargo_subtype+2)*46)/4;
+	return 			(cargo_subtype+2)*46;
+}
+
+
+// Vehicle definition
+
+item(FEAT_ROADVEHS, rail_britannia_tube) {
+	property {
+		name:               			string(STR_NAME_PNEU_RAIL_BRITANNIA);
+		climates_available: 			bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
+		introduction_date: 				date(1967,1,1);
+		model_life:						53;
+		misc_flags:						bitmask(ROADVEH_FLAG_2CC, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+		retire_early:					10;
+		vehicle_life:					30;
+		sprite_id:						SPRITE_ID_NEW_ROADVEH;
+		speed:            	 			80 km/h;
+		power:							500 hp;
+		tractive_effort_coefficient:	0.186;
+		weight:							44 ton;
+		cargo_capacity:					40;
+		loading_speed:					100;
+		refittable_cargo_classes:		bitmask(CC_PASSENGERS, CC_MAIL);
+		refit_cost:						0;
+		cost_factor:					95;
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		running_cost_factor:			184;
+		length:							7;
+		cargo_age_period:				108;
+		tram_type:                    	Pneu;
+	}
+	graphics {
+		articulated_part:				rail_britannia_switch_articulated;
+		default:						rail_britannia_tube_GFX_switch;
+		purchase:						rail_britannia_purchase_set;
+		cargo_capacity:					tube_cargo_capacities_switch;
+		running_cost_factor:			rail_britannia_running_cost_switch;
+		purchase_running_cost_factor:	return 2*46;
+		power:							return (cargo_subtype+2)*25;
+		weight:							return (cargo_subtype+2)*88;
+		length:							tube_shorten_vehicles;
+		sound_effect:					return sound("src/none.wav");
+		cargo_subtype_text:				tube_cargo_subtype_text;
+		additional_text:				return string(STR_PNEU_PURCHASE_TEXT);
+		refit_cost:						rail_britannia_refit_cost_switch;
+	}
+}
+
+// If the tram param is set, make this a tram
+
+if (param_RV0_or_tram1 == 1) {
+	item (FEAT_ROADVEHS, rail_britannia_tube) {
+		property {
+			misc_flags:						bitmask(ROADVEH_FLAG_TRAM, ROADVEH_FLAG_2CC, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+		}
+	}
+}
+
+// ======= END RAIL BRITANNIA PNEU =======
+
+//====================================================================================================================================
+
+// ======= BEGIN XM-2000 PNEU =======
+
+// XM-2000 Sprites
+spriteset(xm2000_purchase_set, "gfx/graphics/tram/PNEU/XM-2000/XMTubePurchase_0.png") {
+	[-18, -5]
+}
+
+spriteset(xm2000_head_visible_set, "gfx/graphics/tram/PNEU/XM-2000/XMTubeHead_0.png") {
+	[-16, -5]
+}
+
+spriteset(xm2000_middle_visible_set, "gfx/graphics/tram/PNEU/XM-2000/XMTubeMiddle_0.png") {
+	[-16, -5]
+}
+
+spriteset(xm2000_tail_visible_set, "gfx/graphics/tram/PNEU/XM-2000/XMTubeTail_0.png") {
+	[-16, -5]
+}
+
+
+// Switches
+
+// Articulated consist generation
+
+switch (FEAT_ROADVEHS, SELF, xm2000_switch_articulated, extra_callback_info1) {
+    1..7: return xm2000_tube;
+    return CB_RESULT_NO_MORE_ARTICULATED_PARTS;
+}
+
+
+// XM-2000 tube visible, positional graphics switches
+
+switch(FEAT_ROADVEHS, SELF, xm2000_tube_2_carriage_graphics_switch, position_in_consist) {
+	0: 		xm2000_head_visible_set;
+	1:   	xm2000_tail_visible_set;
+    2..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, xm2000_tube_3_carriage_graphics_switch, position_in_consist) {
+	0: 		xm2000_head_visible_set;
+	1: 		xm2000_middle_visible_set;
+	2: 		xm2000_tail_visible_set;
+	3..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, xm2000_tube_4_carriage_graphics_switch, position_in_consist) {
+	0: 		xm2000_head_visible_set;
+	1..2: 	xm2000_middle_visible_set;
+	3: 		xm2000_tail_visible_set;
+	4..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, xm2000_tube_5_carriage_graphics_switch, position_in_consist) {
+	0: 		xm2000_head_visible_set;
+	1..3: 	xm2000_middle_visible_set;
+	4: 		xm2000_tail_visible_set;
+	5..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, xm2000_tube_6_carriage_graphics_switch, position_in_consist) {
+	0: 		xm2000_head_visible_set;
+	1..4: 	xm2000_middle_visible_set;
+	5: 		xm2000_tail_visible_set;
+	6..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, xm2000_tube_7_carriage_graphics_switch, position_in_consist) {
+	0: 		xm2000_head_visible_set;
+	1..5: 	xm2000_middle_visible_set;
+	6: 		xm2000_tail_visible_set;
+	7: 		invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, xm2000_tube_8_carriage_graphics_switch, position_in_consist) {
+	0: 		xm2000_head_visible_set;
+	1..6: 	xm2000_middle_visible_set;
+	7: 		xm2000_tail_visible_set;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, xm2000_tube_consist_GFX_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: xm2000_tube_2_carriage_graphics_switch;
+    1: xm2000_tube_3_carriage_graphics_switch;
+    2: xm2000_tube_4_carriage_graphics_switch;
+	3: xm2000_tube_5_carriage_graphics_switch;
+	4: xm2000_tube_6_carriage_graphics_switch;
+	5: xm2000_tube_7_carriage_graphics_switch;
+	6: xm2000_tube_8_carriage_graphics_switch;
+	return CB_FAILED;
+}
+
+
+// Underground vs. window switch
+
+switch(FEAT_ROADVEHS, SELF, xm2000_tube_GFX_switch, extra_callback_info1) {
+    /* Decide whether vehicle is drawn on map or in a special window  */
+	0x00:			underground_tube_GFX_switch;
+	0x10..0x12:		xm2000_tube_consist_GFX_switch;
+	return xm2000_purchase_set;
+}
+
+
+// Refit cost switch
+
+switch(FEAT_ROADVEHS, SELF, xm2000_refit_cost_switch, var[0x10,8,0xFF] - cargo_subtype) {
+    /* Refit cost based on difference between target cargo sybtype and current cargo subtype.
+	   Refitting to fewer carriages refunds money, while adding carriages costs money.        */
+	-6:				-(6*10);
+	-5:				-(5*10);
+	-4:				-(4*10);
+	-3:				-(3*10);
+	-2:				-(2*10);
+	-1:				-(1*10);
+	0:				0;
+	1:				(1*10);
+	2:				(2*10);
+	3:				(3*10);
+	4:				(4*10);
+	5:				(5*10);
+	6:				(6*10);
+	return CB_FAILED;
+}
+
+
+// Running cost switch
+
+switch(FEAT_ROADVEHS, SELF, xm2000_running_cost_switch, current_speed) {
+    /* Running cost reduced to 1/4 if vehicle is not moving. */
+	0: 				((cargo_subtype+2)*53)/4;
+	return 			(cargo_subtype+2)*53;
+}
+
+
+// Vehicle definition
+
+item(FEAT_ROADVEHS, xm2000_tube) {
+	property {
+		name:               			string(STR_NAME_PNEU_ADTRANZ);
+		climates_available: 			bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
+		introduction_date: 				date(1992,1,1);
+		model_life:						75;
+		misc_flags:						bitmask(ROADVEH_FLAG_2CC, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+		vehicle_life:					30;
+		sprite_id:						SPRITE_ID_NEW_ROADVEH;
+		speed:            	 			100 km/h;
+		power:							600 hp;
+		tractive_effort_coefficient:	0.179;
+		weight:							46 ton;
+		cargo_capacity:					40;
+		loading_speed:					100;
+		refittable_cargo_classes:		bitmask(CC_PASSENGERS, CC_MAIL);
+		refit_cost:						0;
+		cost_factor:					119;
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		running_cost_factor:			212;
+		length:							7;
+		cargo_age_period:				120;
+		tram_type:                    	Pneu;
+	}
+	graphics {
+		articulated_part:				xm2000_switch_articulated;
+		default:						xm2000_tube_GFX_switch;
+		purchase:						xm2000_purchase_set;
+		cargo_capacity:					tube_cargo_capacities_switch;
+		running_cost_factor:			xm2000_running_cost_switch;
+		purchase_running_cost_factor:	return 2*53;
+		power:							return (cargo_subtype+2)*30;
+		weight:							return (cargo_subtype+2)*93;
+		length:							tube_shorten_vehicles;
+		sound_effect:					return sound("src/none.wav");
+		cargo_subtype_text:				tube_cargo_subtype_text;
+		additional_text:				return string(STR_PNEU_PURCHASE_TEXT);
+		refit_cost:						xm2000_refit_cost_switch;
+	}
+}
+
+// If the tram param is set, make this a tram
+
+if (param_RV0_or_tram1 == 1) {
+	item (FEAT_ROADVEHS, xm2000_tube) {
+		property {
+			misc_flags:						bitmask(ROADVEH_FLAG_TRAM, ROADVEH_FLAG_2CC, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+		}
+	}
+}
+
+// ======= END XM-2000 PNEU =======
+# 1 "futuRVs.pnml" 1
+# 1 "src/03_autobus.pnml" 1
+/* This is the template. When you're more experienced, you can try editing this, but if it's all gibberish then just modify "FooBarTramVehicleTemplates.png" in GIMP to create a vehicle. Each template below refers to a specific vehicle length, so make sure to put the vehicle sprites in the right part of "FooBarTramVehicleTemplates.png" when drawing a vehicle. */
+
+template template_bus_32(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         20,         10,        28,           -4,         -11]
+    [0+ 20,     20,         26,        28,          -17,         -14]
+    [0+ 50,     20,         36,        28,          -18,         -20]
+    [0+ 90,     20,         26,        28,           -9,         -15]
+    [0+120,     20,         10,        28,           -4,         -11]
+    [0+140,     20,         26,        28,          -16,         -16]
+    [0+170,     20,         36,        28,          -18,         -20]
+    [0+210,     20,         26,        28,           -8,         -16]
+}
+
+template template_bus_28(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         60,         10,        28,           -4,         -11]
+    [0+ 20,     60,         26,        28,          -17,         -14]
+    [0+ 50,     60,         36,        28,          -20,         -20]
+    [0+ 90,     60,         26,        28,           -9,         -15]
+    [0+120,     60,         10,        28,           -4,         -13]
+    [0+140,     60,         26,        28,          -16,         -16]
+    [0+170,     60,         36,        28,          -16,         -20]
+    [0+210,     60,         26,        28,           -8,         -16]
+}
+
+template template_bus_24(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         100,        10,        28,           -4,         -11]
+    [0+ 20,     100,        26,        28,          -17,         -14]
+    [0+ 50,     100,        36,        28,          -22,         -20]
+    [0+ 90,     100,        26,        28,           -9,         -15]
+    [0+120,     100,        10,        28,           -4,         -15]
+    [0+140,     100,        26,        28,          -16,         -16]
+    [0+170,     100,        36,        28,          -14,         -20]
+    [0+210,     100,        26,        28,           -8,         -16]
+}
+
+template template_bus_20(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         140,        10,        28,           -4,         -10]
+    [0+ 20,     140,        26,        28,          -17,         -14]
+    [0+ 50,     140,        36,        28,          -24,         -20]
+    [0+ 90,     140,        26,        28,           -9,         -15]
+    [0+120,     140,        10,        28,           -4,         -16]
+    [0+140,     140,        26,        28,          -16,         -16]
+    [0+170,     140,        36,        28,          -12,         -20]
+    [0+210,     140,        26,        28,           -8,         -16]
+}
+
+template template_bus_16(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         180,        10,        28,           -4,          -9]
+    [0+ 20,     180,        26,        28,          -17,         -14]
+    [0+ 50,     180,        36,        28,          -26,         -20]
+    [0+ 90,     180,        26,        28,           -9,         -15]
+    [0+120,     180,        10,        28,           -4,         -17]
+    [0+140,     180,        26,        28,          -16,         -16]
+    [0+170,     180,        36,        28,          -10,         -20]
+    [0+210,     180,        26,        28,           -8,         -16]
+}
+
+template template_bus_12(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         220,        10,        28,           -4,          -8]
+    [0+ 20,     220,        26,        28,          -17,         -14]
+    [0+ 50,     220,        36,        28,          -28,         -20]
+    [0+ 90,     220,        26,        28,           -9,         -15]
+    [0+120,     220,        10,        28,           -4,         -18]
+    [0+140,     220,        26,        28,          -16,         -16]
+    [0+170,     220,        36,        28,           -8,         -20]
+    [0+210,     220,        26,        28,           -8,         -16]
+}
+
+template template_bus_8(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         260,        10,        28,           -4,          -7]
+    [0+ 20,     260,        26,        28,          -17,         -14]
+    [0+ 50,     260,        36,        28,          -30,         -20]
+    [0+ 90,     260,        26,        28,           -9,         -15]
+    [0+120,     260,        10,        28,           -4,         -19]
+    [0+140,     260,        26,        28,          -16,         -16]
+    [0+170,     260,        36,        28,           -6,         -20]
+    [0+210,     260,        26,        28,           -8,         -16]
+}
+
+template template_bus_4(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         300,        10,        28,           -4,          -6]
+    [0+ 20,     300,        26,        28,          -17,         -14]
+    [0+ 50,     300,        36,        28,          -32,         -20]
+    [0+ 90,     300,        26,        28,           -9,         -15]
+    [0+120,     300,        10,        28,           -4,         -20]
+    [0+140,     300,        26,        28,          -16,         -16]
+    [0+170,     300,        36,        28,           -4,         -20]
+    [0+210,     300,        26,        28,           -8,         -16]
+}
+
+template template_purchase(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         340,        50,        12,          -25,          -6]
+}
+
+/* These are the spritesets. */
+
+//Step 1: Give your png file a name that makes sense to you.
+
+//Step 2: Change "set_autobus_... to set_<insertlabelhere>_... and "gfx/graphics/road/AUTO/autobus_0.png" to "gfx/<insert full path here>/<insertgrfnamehere>.png".
+
+//Step 3: Change "template_bus_28" to "template_bus_xx", replacing xx with the length of the FRONT section of the articulated vehicle. Remember that you can only use 32, 28, 24, 20, 16, 12, 8 and 4 unless you change the templates.
+
+//Step 4: Change "template_bus_22" to "template_bus_xx", replacing xx with the length of the REAR section of the articulated vehicle. Remember that you can only use 32, 28, 24, 20, 16, 12, 8 and 4 unless you change the templates.
+
+spriteset (set_smartram_front_lighted,	"gfx/graphics/tram/AUTO/smartram_0.png") { template_bus_28(2, 2) }
+spriteset (set_smartram_rear_lighted,	"gfx/graphics/tram/AUTO/smartram_0.png") { template_bus_20(386, 2) }
+spriteset (set_smartram_purchase,		"gfx/graphics/tram/AUTO/smartram_0.png") { template_purchase(290, 2) }
+
+spriteset (set_autobus_front_lighted,	"gfx/graphics/road/AUTO/autobus_0.png") { template_bus_28(2, 2) }
+spriteset (set_autobus_rear_lighted,	"gfx/graphics/road/AUTO/autobus_0.png") { template_bus_20(386, 2) }
+spriteset (set_autobus_purchase,		"gfx/graphics/road/AUTO/autobus_0.png") { template_purchase(290, 2) }
+
+//--- Tram
+
+switch (FEAT_ROADVEHS, SELF, switch_articulated_smartram, extra_callback_info1)
+{ 1: return item_smartram_0_rear; return CB_RESULT_NO_MORE_ARTICULATED_PARTS;
+}
+
+/*
+switch (FEAT_ROADVEHS, SELF, switch_smartram_0_speed, current_tramtype) {
+	// OABI
+	OAaI: return 10;
+	OAAI: return 20;
+	OABI: return 30;
+	OAbI: return 30;
+	OACI: return 40;
+	OAcI: return 50;
+	OBaI: return 20;
+	OBAI: return 40;
+	OBBI: return 60;
+	OBbI: return 60;
+	OBCI: return 80;
+	OBcI: return 100;
+	OCaI: return 30;
+	OCAI: return 60;
+	OCBI: return 90;
+	OCbI: return 90;
+	//OCCI: return 120;
+	//OCcI: return 150;
+	ODaI: return 40;
+	ODAI: return 80;
+	//ODBI: return 120;
+	//ODbI: return 120;
+	//ODCI: return 160;
+	//ODcI: return 200;
+	OEaI: return 50;
+	OEAI: return 100;
+	//OEBI: return 150;
+	//OEbI: return 150;
+	//OECI: return 200;
+	//OEcI: return 250;
+	// OABS
+	OAaS: return 10;
+	OAAS: return 20;
+	OABS: return 30;
+	OAbS: return 30;
+	OACS: return 40;
+	OAcS: return 50;
+	OBaS: return 20;
+	OBAS: return 40;
+	OBBS: return 60;
+	OBbS: return 60;
+	OBCS: return 80;
+	//OBcS: return 100;
+	OCaS: return 30;
+	OCAS: return 60;
+	OCBS: return 90;
+	OCbS: return 90;
+	//OCCS: return 120;
+	//OCcS: return 150;
+	ODaS: return 40;
+	ODAS: return 80;
+	//ODBS: return 120;
+	//ODbS: return 120;
+	//ODCS: return 160;
+	//ODcS: return 200;
+	OEaS: return 50;
+	//OEAS: return 100;
+	//OEBS: return 150;
+	//OEbS: return 150;
+	//OECS: return 200;
+	//OEcS: return 250;
+	// Error(?)
+	CB_FAILED;
+}
+*/
+
+switch (FEAT_ROADVEHS, SELF, switch_smartram_0_energy, current_tramtype) {
+	// OABI
+	OAaI: return 10;
+	OAAI: return 20;
+	OABI: return 30;
+	OAbI: return 30;
+	OACI: return 40;
+	OAcI: return 50;
+	OBaI: return 20;
+	OBAI: return 40;
+	OBBI: return 60;
+	OBbI: return 60;
+	OBCI: return 80;
+	OBcI: return 100;
+	OCaI: return 30;
+	OCAI: return 60;
+	OCBI: return 90;
+	OCbI: return 90;
+	//OCCI: return 120;
+	//OCcI: return 150;
+	ODaI: return 40;
+	ODAI: return 80;
+	//ODBI: return 120;
+	//ODbI: return 120;
+	//ODCI: return 160;
+	//ODcI: return 200;
+	OEaI: return 50;
+	OEAI: return 100;
+	//OEBI: return 150;
+	//OEbI: return 150;
+	//OECI: return 200;
+	//OEcI: return 250;
+	// OABS
+	OAaS: return 10;
+	OAAS: return 20;
+	OABS: return 30;
+	OAbS: return 30;
+	OACS: return 40;
+	OAcS: return 50;
+	OBaS: return 20;
+	OBAS: return 40;
+	OBBS: return 60;
+	OBbS: return 60;
+	OBCS: return 80;
+	//OBcS: return 100;
+	OCaS: return 30;
+	OCAS: return 60;
+	OCBS: return 90;
+	OCbS: return 90;
+	//OCCS: return 120;
+	//OCcS: return 150;
+	ODaS: return 40;
+	ODAS: return 80;
+	//ODBS: return 120;
+	//ODbS: return 120;
+	//ODCS: return 160;
+	//ODcS: return 200;
+	OEaS: return 50;
+	//OEAS: return 100;
+	//OEBS: return 150;
+	//OEbS: return 150;
+	//OECS: return 200;
+	//OEcS: return 250;
+	// Error(?)
+	CB_FAILED;
+}
+
+switch (FEAT_ROADVEHS, SELF, switch_smartram_0_maintenance, current_tramtype) {
+	// --OABI--
+	OAaI: return 64;
+	OAAI: return 64;
+	OABI: return 64;
+	OAbI: return 64;
+	OACI: return 64;
+	OAcI: return 64;
+	OBaI: return 64;
+	OBAI: return 64;
+	OBBI: return 64;
+	OBbI: return 64;
+	OBCI: return 64;
+	OBcI: return 64;
+	OCaI: return 64;
+	OCAI: return 64;
+	OCBI: return 64;
+	OCbI: return 64;
+	//OCCI: return 64;
+	//OCcI: return 64;
+	ODaI: return 64;
+	ODAI: return 64;
+	//ODBI: return 64;
+	//ODbI: return 64;
+	//ODCI: return 64;
+	//ODcI: return 64;
+	OEaI: return 64;
+	OEAI: return 64;
+	//OEBI: return 64;
+	//OEbI: return 64;
+	//OECI: return 64;
+	//OEcI: return 64;
+	// --OABI--
+	OAaI: return 32;
+	OAAI: return 32;
+	OABI: return 32;
+	OAbI: return 32;
+	OACI: return 32;
+	OAcI: return 32;
+	OBaI: return 32;
+	OBAI: return 32;
+	OBBI: return 32;
+	OBbI: return 32;
+	OBCI: return 32;
+	OBcI: return 32;
+	OCaI: return 32;
+	OCAI: return 32;
+	OCBI: return 32;
+	OCbI: return 32;
+	//OCCI: return 32;
+	//OCcI: return 32;
+	ODaI: return 32;
+	ODAI: return 32;
+	//ODBI: return 32;
+	//ODbI: return 32;
+	//ODCI: return 32;
+	//ODcI: return 32;
+	OEaI: return 32;
+	OEAI: return 32;
+	//OEBI: return 32;
+	//OEbI: return 32;
+	//OECI: return 32;
+	//OEcI: return 32;
+	// --OABS--
+	OAaS: return 18;
+	OAAS: return 18;
+	OABS: return 18;
+	OAbS: return 18;
+	OACS: return 18;
+	OAcS: return 18;
+	OBaS: return 18;
+	OBAS: return 18;
+	OBBS: return 18;
+	OBbS: return 18;
+	OBCS: return 18;
+	//OBcS: return 18;
+	OCaS: return 18;
+	OCAS: return 18;
+	OCBS: return 18;
+	OCbS: return 18;
+	//OCCS: return 18;
+	//OCcS: return 18;
+	ODaS: return 18;
+	ODAS: return 18;
+	//ODBS: return 18;
+	//ODbS: return 18;
+	//ODCS: return 18;
+	//ODcS: return 18;
+	OEaS: return 18;
+	//OEAS: return 18;
+	//OEBS: return 18;
+	//OEbS: return 18;
+	//OECS: return 18;
+	//OEcS: return 18;
+	// --Error(?)--
+	CB_FAILED;
+}
+
+//------------------------------------------------TEST TRAM CODE SECTION------------------------------------------------
+
+/* This is the item that the road vehicle comes from. Change "item_smartram_0_front" to "item_<insertnamehere>_0_front". You can edit most of the properties listed under the "property" block to reflect the stats of the vehicle. */
+
+item(FEAT_ROADVEHS, item_smartram_0_front) {
+    property {
+        name: string(STR_NAME_TRAM_ARTICULATED);
+        climates_available: bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND); // available in toyland?
+        introduction_date: date(2015, 7, 1);
+        model_life: VEHICLE_NEVER_EXPIRES;
+        vehicle_life: 20;
+        reliability_decay: 32;
+        refittable_cargo_classes: bitmask();
+        non_refittable_cargo_classes: bitmask();
+        cargo_allow_refit: [];
+        cargo_disallow_refit: [];
+        cost_factor: 208;
+        running_cost_factor: 6;
+        sprite_id: SPRITE_ID_NEW_ROADVEH;
+        speed: 100 km/h;
+        refit_cost: 0;
+        tram_type: Auto;
+        power: 200 hp;
+        running_cost_base: RUNNING_COST_ROADVEH;
+		default_cargo_type: PASS;
+        cargo_capacity: 40;
+        weight: 6 tons;
+        //air_drag_coefficient: default;
+        length: 7;
+		loading_speed: 6;
+		visual_effect: EFFECT_SPAWN_MODEL_NONE;
+		misc_flags: bitmask(ROADVEH_FLAG_TRAM, ROADVEH_FLAG_2CC, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+    }
+	
+/* This is the graphics block that the road vehicle's graphics comes from. Refer to Step 2 of the spriteset instructions earlier in this code to replace "set_smartram_..." and change "switch_articulated_test" to "switch_articulated_<insertnamehere>". */
+	
+    graphics {
+        default: set_smartram_front_lighted;
+        purchase: set_smartram_purchase;
+        articulated_part: switch_articulated_smartram;
+//		speed: switch_smartram_0_speed;
+		running_cost_factor: switch_smartram_0_energy;
+		reliability_decay: switch_smartram_0_maintenance;
+    }
+}
+
+/* This is the item that the road vehicle's trailer comes from. Change "item_smartram_0_rear" to "item_<insertnamehere>_0_rear". You can edit most of the properties listed under "property" to reflect the stats of the vehicle, but remember that it's supposed to be a trailer, not a vehicle unto itself. Despite this, the trailer must have at least 1 hp, due to a quirk of OpenTTD. */
+
+item(FEAT_ROADVEHS, item_smartram_0_rear) {
+    property {
+        name: string(STR_NAME_TRAM_ARTICULATED);
+        climates_available: NO_CLIMATE; // available in toyland?
+        introduction_date: date(2015, 7, 1);
+        model_life: VEHICLE_NEVER_EXPIRES;
+        vehicle_life: 0;
+        reliability_decay: 20;
+        refittable_cargo_classes: bitmask();
+        non_refittable_cargo_classes: bitmask();
+        cargo_allow_refit: [];
+        cargo_disallow_refit: [];
+        cost_factor: 0;
+        running_cost_factor: 0;
+        sprite_id: SPRITE_ID_NEW_ROADVEH;
+        refit_cost: 0;
+        tram_type: Auto;
+        power: 1 hp;
+        running_cost_base: RUNNING_COST_NONE;
+		default_cargo_type: PASS;
+        cargo_capacity: 20;
+        weight: 3 tons;
+        //air_drag_coefficient: default;
+        length: 5;
+		misc_flags: bitmask(ROADVEH_FLAG_TRAM, ROADVEH_FLAG_2CC, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+    }
+    graphics {
+        default: set_smartram_rear_lighted;
+        //purchase: set_smartram_rear_lighted;
+			
+    }
+}
+
+// ---------------------------------- //
+/* -- SELF-DRIVING ARTICULATED BUS -- */
+// ---------------------------------- //
+
+switch (FEAT_ROADVEHS, SELF, switch_articulated_autobus, extra_callback_info1)
+{ 1: return item_autobus_0_rear; return CB_RESULT_NO_MORE_ARTICULATED_PARTS;
+}
+
+switch (FEAT_ROADVEHS, SELF, switch_autobus_0_speed, current_roadtype) {
+//
+//--- Slowest and least-stable roads
+//
+	RAaN: return 5;
+	RAaE: return 5;
+	RAaI: return 10;
+//---
+	RAAN: return 15;
+	RAAE: return 15;
+	RAaI: return 20;
+//---
+	RABN: return 25;
+	RABE: return 25;
+	RABI: return 30;
+//---
+	RAbN: return 25;
+	RAbE: return 25;
+	RAbI: return 30;
+//---
+	RACN: return 35;
+	RACE: return 35;
+	RACI: return 40;
+//---
+	RAcN: return 45;
+	RAcE: return 45;
+	RACI: return 50;
+//--- x2
+	RBaN: return 10;
+	RBaE: return 10;
+	RBaI: return 20;
+//---
+	RBAN: return 30;
+	RBAE: return 30;
+	RBAI: return 40;
+//---
+	RBBN: return 50;
+	RBBE: return 50;
+	RBBI: return 60;
+//---
+	RBbN: return 50;
+	RBbE: return 50;
+	RBbI: return 60;
+//---
+	RBCN: return 70;
+	RBCE: return 70;
+	RBCI: return 80;
+//---
+	RBcN: return 90;
+	RBcE: return 90;
+	RBcI: return 100;
+//--- x3
+	RCaN: return 15;
+	RCaE: return 15;
+	RCaI: return 30;
+//---
+	RCAN: return 45;
+	RCAE: return 45;
+	RCAI: return 60;
+//---
+	RCBN: return 75;
+	RCBE: return 75;
+	RCBI: return 90;
+//---
+	RCbN: return 75;
+	RCbE: return 75;
+	RCbI: return 90;
+//---
+	RCCN: return 105;
+	RCCE: return 105;
+	RCCI: return 120;
+//---
+	RCcN: return 135;
+	RCcE: return 135;
+	RCcI: return 150;
+//--- x4
+	RDaN: return 20;
+	RDaE: return 20;
+	RDaI: return 40;
+//---
+	RDAN: return 60;
+	RDAE: return 60;
+	RDAI: return 80;
+//---
+	RDBN: return 100;
+	RDBE: return 100;
+	RDBI: return 120;
+//---
+	RDbN: return 100;
+	RDbE: return 100;
+	RDbI: return 120;
+//---
+	RDCN: return 140;
+	RDCE: return 140;
+	RDCI: return 160;
+//---
+	RDcN: return 180;
+	RDcE: return 180;
+	RDcI: return 200;
+//--- x5
+	REaN: return 25;
+	REaE: return 25;
+	REaI: return 50;
+//---
+	REAN: return 75;
+	REAE: return 75;
+	REAI: return 100;
+//---
+	REBN: return 125;
+	REBE: return 125;
+	REBI: return 150;
+//---
+	REbN: return 125;
+	REbE: return 125;
+	REbI: return 150;
+//---
+	RECN: return 175;
+	RECE: return 175;
+	RECI: return 200;
+//---
+	REcN: return 225;
+	REcE: return 225;
+	REcI: return 250;
+
+//--- Slowest and least stable guided busways
+//
+	GAaN: return 5;
+	GAaE: return 5;
+	GAaI: return 10;
+//---
+	GAAN: return 15;
+	GAAE: return 15;
+	GAAI: return 20;
+//---
+	GABN: return 25;
+	GABE: return 25;
+	GABI: return 30;
+//---
+	GAbN: return 25;
+	GAbE: return 25;
+	GAbI: return 30;
+//---
+	GACN: return 35;
+	GACE: return 35;
+	GACI: return 40;
+//---
+	GAcN: return 45;
+	GAcE: return 45;
+	GAcI: return 50;
+//--- x2
+	GBaN: return 10;
+	GBaE: return 10;
+	GBaI: return 20;
+//---
+	GBAN: return 30;
+	GBAE: return 30;
+	GBAI: return 40;
+//---
+	GBBN: return 50;
+	GBBE: return 50;
+	GBBI: return 60;
+//---
+	GBbN: return 50;
+	GBbE: return 50;
+	GBbI: return 60;
+//---
+	GBCN: return 70;
+	GBCE: return 70;
+	GBCI: return 80;
+//---
+	GBcN: return 90;
+	GBcE: return 90;
+	//GBcI: return 100;
+//--- x3
+	GCaN: return 15;
+	GCaE: return 15;
+	GCaI: return 30;
+//---
+	GCAN: return 45;
+	GCAE: return 45;
+	GCAI: return 60;
+//---
+	GCBN: return 75;
+	GCBE: return 75;
+	GCBI: return 90;
+//---
+	GCbN: return 75;
+	GCbE: return 75;
+	GCbI: return 90;
+//---
+	//GCCN: return 105;
+	//GCCE: return 105;
+	//GCCI: return 120;
+//---
+	//GCcN: return 135;
+	//GCcE: return 135;
+	//GCcI: return 150;
+//--- x4
+	GDaN: return 20;
+	GDaE: return 20;
+	GDaI: return 40;
+//---
+	GDAN: return 60;
+	GDAE: return 60;
+	GDAI: return 80;
+//---
+	//GDBN: return 100;
+	//GDBE: return 100;
+	//GDBI: return 120;
+//---
+	//GDbN: return 100;
+	//GDbE: return 100;
+	//GDbI: return 120;
+//---
+	//GDCN: return 140;
+	//GDCE: return 140;
+	//GDCI: return 160;
+//---
+	//GDcN: return 180;
+	//GDcE: return 180;
+	//GDcI: return 200;
+//--- x5
+	GEaN: return 25;
+	GEaE: return 25;
+	GEaI: return 50;
+//---
+	GEAN: return 75;
+	GEAE: return 75;
+	//GEAI: return 100;
+//---
+	//GEBN: return 125;
+	//GEBE: return 125;
+	//GEBI: return 150;
+//---
+	//GEbN: return 125;
+	//GEbE: return 125;
+	//GEbI: return 150;
+//---
+	//GECN: return 175;
+	//GECE: return 175;
+	//GECI: return 200;
+//---
+	//GEcN: return 225;
+	//GEcE: return 225;
+	//GEcI: return 250;
+//---
+	CB_FAILED;
+}
+
+switch (FEAT_ROADVEHS, SELF, switch_autobus_0_maintenance, current_roadtype) {
+//
+//--- Slowest and least-stable roads
+//
+	RAaN: return 64;
+	RAaE: return 64;
+	RAaI: return 32;
+//---
+	RAAN: return 64;
+	RAAE: return 64;
+	RAaI: return 32;
+//---
+	RABN: return 64;
+	RABE: return 25;
+	RABI: return 32;
+//---
+	RAbN: return 64;
+	RAbE: return 64;
+	RAbI: return 32;
+//---
+	RACN: return 64;
+	RACE: return 64;
+	RACI: return 32;
+//---
+	RAcN: return 64;
+	RAcE: return 64;
+	RACI: return 32;
+//--- x2
+	RBaN: return 64;
+	RBaE: return 64;
+	RBaI: return 32;
+//---
+	RBAN: return 64;
+	RBAE: return 64;
+	RBAI: return 32;
+//---
+	RBBN: return 64;
+	RBBE: return 64;
+	RBBI: return 32;
+//---
+	RBbN: return 64;
+	RBbE: return 64;
+	RBbI: return 32;
+//---
+	RBCN: return 64;
+	RBCE: return 64;
+	RBCI: return 32;
+//---
+	RBcN: return 64;
+	RBcE: return 64;
+	//RBcI: return 32;
+//--- x3
+	RCaN: return 64;
+	RCaE: return 64;
+	RCaI: return 32;
+//---
+	RCAN: return 64;
+	RCAE: return 64;
+	RCAI: return 32;
+//---
+	RCBN: return 64;
+	RCBE: return 64;
+	RCBI: return 32;
+//---
+	RCbN: return 64;
+	RCbE: return 64;
+	RCbI: return 32;
+//---
+	//RCCN: return 64;
+	//RCCE: return 64;
+	//RCCI: return 32;
+//---
+	//RCcN: return 64;
+	//RCcE: return 64;
+	//RCcI: return 32;
+//--- x4
+	RDaN: return 64;
+	RDaE: return 64;
+	RDaI: return 32;
+//---
+	RDAN: return 64;
+	RDAE: return 64;
+	RDAI: return 32;
+//---
+	//RDBN: return 64;
+	//RDBE: return 64;
+	//RDBI: return 32;
+//---
+	//RDbN: return 64;
+	//RDbE: return 64;
+	//RDbI: return 32;
+//---
+	//RDCN: return 64;
+	//RDCE: return 64;
+	//RDCI: return 32;
+//---
+	//RDcN: return 64;
+	//RDcE: return 64;
+	//RDcI: return 32;
+//--- x5
+	REaN: return 64;
+	REaE: return 64;
+	REaI: return 32;
+//---
+	REAN: return 64;
+	REAE: return 64;
+	//REAI: return 32;
+//---
+	//REBN: return 64;
+	//REBE: return 64;
+	//REBI: return 32;
+//---
+	//REbN: return 64;
+	//REbE: return 64;
+	//REbI: return 32;
+//---
+	//RECN: return 64;
+	//RECE: return 64;
+	//RECI: return 32;
+//---
+	//REcN: return 64;
+	//REcE: return 64;
+	//REcI: return 32;
+
+//--- Slowest and least stable guided busways
+//
+	GAaN: return 64;
+	GAaE: return 64;
+	GAaI: return 32;
+	GAaS: return 24;
+//---
+	GAAN: return 64;
+	GAAE: return 64;
+	GAAI: return 32;
+	GAAS: return 24;
+//---
+	GABN: return 64;
+	GABE: return 64;
+	GABI: return 32;
+	GABS: return 24;
+//---
+	GAbN: return 64;
+	GAbE: return 64;
+	GAbI: return 32;
+	GAbS: return 24;
+//---
+	GACN: return 64;
+	GACE: return 64;
+	GACI: return 32;
+	GACS: return 24;
+//---
+	GAcN: return 64;
+	GAcE: return 64;
+	GAcI: return 32;
+	GAcS: return 24;
+//--- x2
+	GBaN: return 64;
+	GBaE: return 64;
+	GBaI: return 32;
+	GBaS: return 24;
+//---
+	GBAN: return 64;
+	GBAE: return 64;
+	GBAI: return 32;
+	GBAS: return 24;
+//---
+	GBBN: return 64;
+	GBBE: return 64;
+	GBBI: return 32;
+	GBBS: return 24;
+//---
+	GBbN: return 64;
+	GBbE: return 64;
+	GBbI: return 32;
+	GBbS: return 24;
+//---
+	GBCN: return 64;
+	GBCE: return 64;
+	GBCI: return 32;
+	GBCS: return 24;
+//---
+	GBcN: return 64;
+	GBcE: return 64;
+	//GBcI: return 32;
+	GBcS: return 24;
+//--- x3
+	GCaN: return 64;
+	GCaE: return 64;
+	GCaI: return 32;
+	GCaS: return 24;
+//---
+	GCAN: return 64;
+	GCAE: return 64;
+	GCAI: return 32;
+	GCAS: return 24;
+//---
+	GCBN: return 64;
+	GCBE: return 64;
+	GCBI: return 32;
+	GCBS: return 24;
+//---
+	GCbN: return 64;
+	GCbE: return 64;
+	GCbI: return 32;
+	GCbS: return 24;
+//---
+	//GCCN: return 64;
+	//GCCE: return 64;
+	//GCCI: return 32;
+	GCCS: return 24;
+//---
+	//GCcN: return 64;
+	//GCcE: return 64;
+	//GCcI: return 32;
+	GCcS: return 24;
+//--- x4
+	GDaN: return 64;
+	GDaE: return 64;
+	GDaI: return 32;
+	GDaS: return 24;
+//---
+	GDAN: return 64;
+	GDAE: return 64;
+	GDAI: return 32;
+	GDAS: return 24;
+//---
+	//GDBN: return 64;
+	//GDBE: return 64;
+	//GDBI: return 32;
+	GDBS: return 24;
+//---
+	//GDbN: return 64;
+	//GDbE: return 64;
+	//GDbI: return 32;
+	GDbS: return 24;
+//---
+	//GDCN: return 64;
+	//GDCE: return 64;
+	//GDCI: return 32;
+	GDCS: return 24;
+//---
+	//GDcN: return 64;
+	//GDcE: return 64;
+	//GDcI: return 32;
+	GDcS: return 24;
+//--- x5
+	GEaN: return 64;
+	GEaE: return 64;
+	GEaI: return 32;
+	GEaS: return 24;
+//---
+	GEAN: return 64;
+	GEAE: return 64;
+	//GEAI: return 32;
+	GEAS: return 24;
+//---
+	//GEBN: return 64;
+	//GEBE: return 64;
+	//GEBI: return 32;
+	GEBS: return 24;
+//---
+	//GEbN: return 64;
+	//GEbE: return 64;
+	//GEbI: return 32;
+	GEbS: return 24;
+//---
+	//GECN: return 64;
+	//GECE: return 64;
+	//GECI: return 32;
+	GECS: return 24;
+//---
+	//GEcN: return 64;
+	//GEcE: return 64;
+	//GEcI: return 32;
+	GEcS: return 24;
+//---
+	CB_FAILED;
+}
+
+//------------------------------------------------TEST BUS CODE SECTION------------------------------------------------
+
+/* This is the item that the road vehicle comes from. Change "item_autobus_0_front" to "item_<insertnamehere>_0_front". You can edit most of the properties listed under the "property" block to reflect the stats of the vehicle. */
+
+item(FEAT_ROADVEHS, item_autobus_0_front) {
+    property {
+        name: string(STR_NAME_BUS_ARTICULATED);
+        climates_available: bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND); // available in toyland?
+        introduction_date: date(2025, 1, 1);
+        model_life: VEHICLE_NEVER_EXPIRES;
+        vehicle_life: 20;
+        reliability_decay: 32;
+        refittable_cargo_classes: bitmask();
+        non_refittable_cargo_classes: bitmask();
+        cargo_allow_refit: [];
+        cargo_disallow_refit: [];
+        cost_factor: 208;
+        running_cost_factor: 6;
+        sprite_id: SPRITE_ID_NEW_ROADVEH;
+        speed: 100 km/h;
+        refit_cost: 0;
+        road_type: Auto;
+        power: 200 hp;
+        running_cost_base: RUNNING_COST_ROADVEH;
+		default_cargo_type: PASS;
+        cargo_capacity: 40;
+        weight: 6 tons;
+        //air_drag_coefficient: default;
+        length: 7;
+		loading_speed: 6;
+		visual_effect: EFFECT_SPAWN_MODEL_NONE;
+		misc_flags: bitmask(ROADVEH_FLAG_2CC, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+    }
+	
+/* This is the graphics block that the road vehicle's graphics comes from. Refer to Step 2 of the spriteset instructions earlier in this code to replace "set_autobus_..." and change "switch_articulated_test" to "switch_articulated_<insertnamehere>". */
+	
+    graphics {
+        default: set_autobus_front_lighted;
+        purchase: set_autobus_purchase;
+        articulated_part: switch_articulated_autobus;
+		speed: switch_autobus_0_speed;
+		speed: switch_autobus_0_maintenance;
+    }
+}
+
+/* This is the item that the road vehicle's trailer comes from. Change "item_autobus_0_rear" to "item_<insertnamehere>_0_rear". You can edit most of the properties listed under "property" to reflect the stats of the vehicle, but remember that it's supposed to be a trailer, not a vehicle unto itself. Despite this, the trailer must have at least 1 hp, due to a quirk of OpenTTD. */
+
+item(FEAT_ROADVEHS, item_autobus_0_rear) {
+    property {
+        name: string(STR_NAME_BUS_ARTICULATED);
+        climates_available: NO_CLIMATE; // available in toyland?
+        introduction_date: date(2025, 1, 1);
+        model_life: VEHICLE_NEVER_EXPIRES;
+        vehicle_life: 0;
+        reliability_decay: 20;
+        refittable_cargo_classes: bitmask();
+        non_refittable_cargo_classes: bitmask();
+        cargo_allow_refit: [];
+        cargo_disallow_refit: [];
+        cost_factor: 0;
+        running_cost_factor: 0;
+        sprite_id: SPRITE_ID_NEW_ROADVEH;
+        refit_cost: 0;
+        road_type: Auto;
+        power: 1 hp;
+        running_cost_base: RUNNING_COST_NONE;
+		default_cargo_type: PASS;
+        cargo_capacity: 20;
+        weight: 3 tons;
+        //air_drag_coefficient: default;
+        length: 5;
+		misc_flags: bitmask(ROADVEH_FLAG_2CC, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+    }
+    graphics {
+        default: set_autobus_rear_lighted;
+        //purchase: set_autobus_rear_lighted;
+			
+    }
+}
+# 1 "futuRVs.pnml" 1
+# 1 "src/04_vactube.pnml" 1
+// ======= BEGIN METROVAC V1 FUTURISTIC =======
+
+// Shinku_eki Sprites
+spriteset(MetroVac_purchase_set, "gfx/vehicles/VACT/MetroVac V1/V1Purchase_0.png") {
+	[-18, -6]
+}
+
+spriteset(MetroVac_head_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Head_0.png") {
+	[-16, -5]
+}
+
+spriteset(MetroVac_middle_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Middle_0.png") {
+	[-16, -5]
+}
+
+spriteset(MetroVac_tail_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Tail_0.png") {
+	[-16, -5]
+}
+
+
+// Switches
+
+// Articulated consist generation
+
+switch (FEAT_ROADVEHS, SELF, MetroVac_switch_articulated, extra_callback_info1) {
+    1..7: return Shinku_eki;
+    return CB_RESULT_NO_MORE_ARTICULATED_PARTS;
+}
+
+
+// Capacity switches
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_2_carriage_capacity_switch, position_in_consist) {
+	0..1: return 80+(param_capacities*120);
+    2..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_3_carriage_capacity_switch, position_in_consist) {
+	0..2: return 80+(param_capacities*120);
+	3..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_4_carriage_capacity_switch, position_in_consist) {
+	0..3: return 80+(param_capacities*120);
+	4..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_5_carriage_capacity_switch, position_in_consist) {
+	0..4: return 80+(param_capacities*120);
+	5..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_6_carriage_capacity_switch, position_in_consist) {
+	0..5: return 80+(param_capacities*120);
+	6..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_7_carriage_capacity_switch, position_in_consist) {
+	0..6: return 80+(param_capacities*120);
+	7: return 0;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_cargo_capacities_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: MetroVac_2_carriage_capacity_switch;
+    1: MetroVac_3_carriage_capacity_switch;
+    2: MetroVac_4_carriage_capacity_switch;
+	3: MetroVac_5_carriage_capacity_switch;
+	4: MetroVac_6_carriage_capacity_switch;
+	5: MetroVac_7_carriage_capacity_switch;
+	// 8-carriage vehicles need no reduction in capacity
+	return 80+(param_capacities*120);
+}
+
+// Shinku_eki visible, positional graphics switches
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_2_carriage_graphics_switch, position_in_consist) {
+	0: 		MetroVac_head_visible_set;
+	1: 	    MetroVac_tail_visible_set;
+    2..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_3_carriage_graphics_switch, position_in_consist) {
+	0: 		MetroVac_head_visible_set;
+	1: 		MetroVac_middle_visible_set;
+	2: 		MetroVac_tail_visible_set;
+	3..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_4_carriage_graphics_switch, position_in_consist) {
+	0: 		MetroVac_head_visible_set;
+	1..2: 	MetroVac_middle_visible_set;
+	3: 		MetroVac_tail_visible_set;
+	4..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_5_carriage_graphics_switch, position_in_consist) {
+	0: 		MetroVac_head_visible_set;
+	1..3: 	MetroVac_middle_visible_set;
+	4: 		MetroVac_tail_visible_set;
+	5..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_6_carriage_graphics_switch, position_in_consist) {
+	0: 		MetroVac_head_visible_set;
+	1..4: 	MetroVac_middle_visible_set;
+	5: 		MetroVac_tail_visible_set;
+	6..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_7_carriage_graphics_switch, position_in_consist) {
+	0: 		MetroVac_head_visible_set;
+	1..5: 	MetroVac_middle_visible_set;
+	6: 		MetroVac_tail_visible_set;
+	7: 		invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_8_carriage_graphics_switch, position_in_consist) {
+	0: 		MetroVac_head_visible_set;
+	1..6: 	MetroVac_middle_visible_set;
+	7: 		MetroVac_tail_visible_set;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_consist_GFX_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: MetroVac_2_carriage_graphics_switch;
+    1: MetroVac_3_carriage_graphics_switch;
+    2: MetroVac_4_carriage_graphics_switch;
+	3: MetroVac_5_carriage_graphics_switch;
+	4: MetroVac_6_carriage_graphics_switch;
+	5: MetroVac_7_carriage_graphics_switch;
+	6: MetroVac_8_carriage_graphics_switch;
+	return CB_FAILED;
+}
+
+
+// Underground vs. window switch
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_GFX_switch, extra_callback_info1) {
+    /* Decide whether vehicle is drawn on map or in a special window  */
+	0x00:			underground_tube_GFX_switch;
+	0x10..0x12:		MetroVac_consist_GFX_switch;
+	return MetroVac_purchase_set;
+}
+
+
+// Refit cost switch
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_refit_cost_switch, var[0x10,8,0xFF] - cargo_subtype) {
+    /* Refit cost based on difference between target cargo sybtype and current cargo subtype.
+	   Refitting to fewer carriages refunds money, while adding carriages costs money.        */
+	-6:				-(6*20);
+	-5:				-(5*20);
+	-4:				-(4*20);
+	-3:				-(3*20);
+	-2:				-(2*20);
+	-1:				-(1*20);
+	0:				0;
+	1:				(1*20);
+	2:				(2*20);
+	3:				(3*20);
+	4:				(4*20);
+	5:				(5*20);
+	6:				(6*20);
+	return CB_FAILED;
+}
+
+
+// Running cost switch
+
+switch(FEAT_ROADVEHS, SELF, MetroVac_running_cost_switch, current_speed) {
+    /* Running cost reduced to 1/4 if vehicle is not moving. */
+	0: 				((cargo_subtype+2)*105)/4;
+	return 			(cargo_subtype+2)*105;
+}
+
+
+// Vehicle definition
+
+item(FEAT_ROADVEHS, MetroVac) {
+	property {
+		name:               			string(STR_NAME_VACT_SHINKU_EKI_V1);
+		climates_available: 			bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
+		introduction_date: 				date(2042,1,1);
+		model_life:						VEHICLE_NEVER_EXPIRES;
+		misc_flags:						bitmask(ROADVEH_FLAG_NO_BREAKDOWN_SMOKE, ROADVEH_FLAG_2CC);
+		vehicle_life:					30;
+		sprite_id:						SPRITE_ID_NEW_ROADVEH;
+		speed:            	 			511 km/h;
+		power:							1200 hp;
+		tractive_effort_coefficient:	0.18;
+		weight:							60 ton;
+		cargo_capacity:					80;
+		loading_speed:					200;
+		refittable_cargo_classes:		bitmask(CC_PASSENGERS, CC_MAIL);
+		refit_cost:						0;
+		cost_factor:					238;
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		running_cost_factor:			255;
+		length:							7;
+		cargo_age_period:				128;
+		tram_type:                    	Vact;
+	}
+	graphics {
+		articulated_part:				MetroVac_switch_articulated;
+		default:						MetroVac_GFX_switch;
+		purchase:						MetroVac_purchase_set;
+		cargo_capacity:					MetroVac_cargo_capacities_switch;
+		running_cost_factor:			MetroVac_running_cost_switch;
+		purchase_running_cost_factor:	return 2*105;
+		power:							return (cargo_subtype+2)*60;
+		weight:							return (cargo_subtype+2)*121;
+		length:							tube_shorten_vehicles;
+		sound_effect:					return sound("src/none.wav");
+		cargo_subtype_text:				tube_cargo_subtype_text;
+		additional_text:				return string(STR_TUBE_PURCHASE_TEXT);
+		refit_cost:						MetroVac_refit_cost_switch;
+	}
+}
+
+// If the tram param is set, make this a tram
+
+if (param_RV0_or_tram1 == 1) {
+	item (FEAT_ROADVEHS, Shinku_eki) {
+		property {
+			misc_flags:						bitmask(ROADVEH_FLAG_TRAM, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE, ROADVEH_FLAG_2CC);
+		}
+	}
+}
+
+// ======= END METROVAC V1 FUTURISTIC =======
+
+// ======= BEGIN SHINKU-EKI E4 FUTURISTIC =======
+
+// Shinku_eki Sprites
+spriteset(CosmoVac_purchase_set, "gfx/vehicles/VACT/Cosmopolitan V4/V4Purchase_0.png") {
+	[-18, -6]
+}
+
+spriteset(CosmoVac_head_visible_set, "gfx/vehicles/VACT/CosmoVac V4/V4Head_0.png") {
+	[-16, -5]
+}
+
+spriteset(CosmoVac_middle_visible_set, "gfx/vehicles/VACT/CosmoVac V4/V4Middle_0.png") {
+	[-16, -5]
+}
+
+spriteset(CosmoVac_tail_visible_set, "gfx/vehicles/VACT/CosmoVac V4/V4Tail_0.png") {
+	[-16, -5]
+}
+
+
+// Switches
+
+// Articulated consist generation
+
+switch (FEAT_ROADVEHS, SELF, CosmoVac_switch_articulated, extra_callback_info1) {
+    1..7: return Shinku_eki;
+    return CB_RESULT_NO_MORE_ARTICULATED_PARTS;
+}
+
+
+// Capacity switches
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_2_carriage_capacity_switch, position_in_consist) {
+	0..1: return 80+(param_capacities*120);
+    2..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_3_carriage_capacity_switch, position_in_consist) {
+	0..2: return 80+(param_capacities*120);
+	3..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_4_carriage_capacity_switch, position_in_consist) {
+	0..3: return 80+(param_capacities*120);
+	4..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_5_carriage_capacity_switch, position_in_consist) {
+	0..4: return 80+(param_capacities*120);
+	5..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_6_carriage_capacity_switch, position_in_consist) {
+	0..5: return 80+(param_capacities*120);
+	6..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_7_carriage_capacity_switch, position_in_consist) {
+	0..6: return 80+(param_capacities*120);
+	7: return 0;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_cargo_capacities_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: CosmoVac_2_carriage_capacity_switch;
+    1: CosmoVac_3_carriage_capacity_switch;
+    2: CosmoVac_4_carriage_capacity_switch;
+	3: CosmoVac_5_carriage_capacity_switch;
+	4: CosmoVac_6_carriage_capacity_switch;
+	5: CosmoVac_7_carriage_capacity_switch;
+	// 8-carriage vehicles need no reduction in capacity
+	return 80+(param_capacities*120);
+}
+
+// Shinku_eki visible, positional graphics switches
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_2_carriage_graphics_switch, position_in_consist) {
+	0: 		CosmoVac_head_visible_set;
+	1: 	    CosmoVac_tail_visible_set;
+    2..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_3_carriage_graphics_switch, position_in_consist) {
+	0: 		CosmoVac_head_visible_set;
+	1: 		CosmoVac_middle_visible_set;
+	2: 		CosmoVac_tail_visible_set;
+	3..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_4_carriage_graphics_switch, position_in_consist) {
+	0: 		CosmoVac_head_visible_set;
+	1..2: 	CosmoVac_middle_visible_set;
+	3: 		CosmoVac_tail_visible_set;
+	4..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_5_carriage_graphics_switch, position_in_consist) {
+	0: 		CosmoVac_head_visible_set;
+	1..3: 	CosmoVac_middle_visible_set;
+	4: 		CosmoVac_tail_visible_set;
+	5..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_6_carriage_graphics_switch, position_in_consist) {
+	0: 		CosmoVac_head_visible_set;
+	1..4: 	CosmoVac_middle_visible_set;
+	5: 		CosmoVac_tail_visible_set;
+	6..7: 	invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_7_carriage_graphics_switch, position_in_consist) {
+	0: 		CosmoVac_head_visible_set;
+	1..5: 	CosmoVac_middle_visible_set;
+	6: 		CosmoVac_tail_visible_set;
+	7: 		invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_8_carriage_graphics_switch, position_in_consist) {
+	0: 		CosmoVac_head_visible_set;
+	1..6: 	CosmoVac_middle_visible_set;
+	7: 		CosmoVac_tail_visible_set;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_consist_GFX_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: CosmoVac_2_carriage_graphics_switch;
+    1: CosmoVac_3_carriage_graphics_switch;
+    2: CosmoVac_4_carriage_graphics_switch;
+	3: CosmoVac_5_carriage_graphics_switch;
+	4: CosmoVac_6_carriage_graphics_switch;
+	5: CosmoVac_7_carriage_graphics_switch;
+	6: CosmoVac_8_carriage_graphics_switch;
+	return CB_FAILED;
+}
+
+
+// Underground vs. window switch
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_GFX_switch, extra_callback_info1) {
+    /* Decide whether vehicle is drawn on map or in a special window  */
+	0x00:			underground_tube_GFX_switch;
+	0x10..0x12:		CosmoVac_consist_GFX_switch;
+	return CosmoVac_purchase_set;
+}
+
+
+// Refit cost switch
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_refit_cost_switch, var[0x10,8,0xFF] - cargo_subtype) {
+    /* Refit cost based on difference between target cargo sybtype and current cargo subtype.
+	   Refitting to fewer carriages refunds money, while adding carriages costs money.        */
+	-6:				-(6*20);
+	-5:				-(5*20);
+	-4:				-(4*20);
+	-3:				-(3*20);
+	-2:				-(2*20);
+	-1:				-(1*20);
+	0:				0;
+	1:				(1*20);
+	2:				(2*20);
+	3:				(3*20);
+	4:				(4*20);
+	5:				(5*20);
+	6:				(6*20);
+	return CB_FAILED;
+}
+
+
+// Running cost switch
+
+switch(FEAT_ROADVEHS, SELF, CosmoVac_running_cost_switch, current_speed) {
+    /* Running cost reduced to 1/4 if vehicle is not moving. */
+	0: 				((cargo_subtype+2)*105)/4;
+	return 			(cargo_subtype+2)*105;
+}
+
+
+// Vehicle definition
+
+item(FEAT_ROADVEHS, Cosmopolitan) {
+	property {
+		name:               			string(STR_NAME_VACT_INDIAN_RAILWAYS_V4);
+		climates_available: 			bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
+		introduction_date: 				date(2042,1,1);
+		model_life:						VEHICLE_NEVER_EXPIRES;
+		misc_flags:						bitmask(ROADVEH_FLAG_NO_BREAKDOWN_SMOKE, ROADVEH_FLAG_2CC);
+		vehicle_life:					30;
+		sprite_id:						SPRITE_ID_NEW_ROADVEH;
+		speed:            	 			511 km/h;
+		power:							1200 hp;
+		tractive_effort_coefficient:	0.18;
+		weight:							60 ton;
+		cargo_capacity:					80;
+		loading_speed:					200;
+		refittable_cargo_classes:		bitmask(CC_PASSENGERS, CC_MAIL);
+		refit_cost:						0;
+		cost_factor:					238;
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		running_cost_factor:			255;
+		length:							7;
+		cargo_age_period:				128;
+		tram_type:                    	VACT;
+	}
+	graphics {
+		articulated_part:				CosmoVac_switch_articulated;
+		default:						CosmoVac_GFX_switch;
+		purchase:						CosmoVac_purchase_set;
+		cargo_capacity:					CosmoVac_cargo_capacities_switch;
+		running_cost_factor:			CosmoVac_running_cost_switch;
+		purchase_running_cost_factor:	return 2*105;
+		power:							return (cargo_subtype+2)*60;
+		weight:							return (cargo_subtype+2)*121;
+		length:							tube_shorten_vehicles;
+		sound_effect:					return sound("src/none.wav");
+		cargo_subtype_text:				tube_cargo_subtype_text;
+		additional_text:				return string(STR_TUBE_PURCHASE_TEXT);
+		refit_cost:						CosmoVac_refit_cost_switch;
+	}
+}
+
+// If the tram param is set, make this a tram
+
+if (param_RV0_or_tram1 == 1) {
+	item (FEAT_ROADVEHS, Shinku_eki) {
+		property {
+			misc_flags:						bitmask(ROADVEH_FLAG_TRAM, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE, ROADVEH_FLAG_2CC);
+		}
+	}
+}
+
+// ======= END SHINKU-EKI E4 FUTURISTIC =======
+# 1 "futuRVs.pnml" 1
+# 1 "src/05_hoverv.pnml" 1
+/*
+NOTE
+Hover Vehicles
+Copyright (c) 2012 Hazzard (Mingwei Samuel)
+See license.txt
+*/
+
+/*
++ OpenTTD targeted NewGRFs
+
+    Keep the GRFID you have;
+    Don't forget to update grf { version };
+    Set grf { min_compatible_version } to the value of grf { version }. 
+
++ TTDPatch targeted NewGRFs
+
+TTDPatch doesn't have a concept for grf { min_compatible_version } (or grf { version } for that matter). 
+The only way to indicate broken compatibility in TTDPatch is to bump the GRFID. 
+This means that you increase the last byte of the GRFID by one. 
+So if your initial GRFID is "SF\01\01", change it to "SF\01\02" for the next release.
+
+As a consequence, both NewGRFs can be used separate from each other and in OpenTTD both will show up in the NewGRF window.
+
+In order to avoid loading both the old version and the new version in the same game, 
+you have to add a version check to the NewGRF in order to disable itself (or the older version). 
+*/
+
+/*
+item(FEAT_ROADTYPES, item_road) {
+	property {
+		label:							"ROAD";
+		powered_roadtype_list:			[
+										"RAaN", "RAAN", "RABN", "RACN", "RAcN",
+										"RAaE", "RAAE", "RABE", "RACE", "RAcE",
+										"RAaI", "RAAI", "RABI", "RACI", "RAcI",
+										"RAaS", "RAAS", "RABS", "RACS", "RAcS"
+										];
+		//roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
+	}
+}
+*/
+
+//template
+template template_hoverv_01(x,y) {
+//  [left_x,		upper_y,	width,			height,			offset_x,	offset_y]
+    [240*x,		30*y,		10,			28,			-4,		-11]
+    [240*x+20,		30*y,		26,			28,			-17,		-16]
+    [240*x+50,		30*y,		36,			28,			-20,		-20]
+    [240*x+90,		30*y,		26,			28,			-11,		-17]
+    [240*x+120,		30*y,		10,			28,			-4,		-17]
+    [240*x+140,		30*y,		26,			28,			-15,		-17]
+    [240*x+170,		30*y,		36,			28,			-16,		-20]
+    [240*x+210,		30*y,		26,			28,			-9,		-16]
+}
+
+/////////////
+//Hover Bus//
+/////////////
+spriteset(spriteset_hoverbus_travel_01, "gfx/road/RAaS/hoverbus_0.png") {
+    template_hoverv_01(0,0)
+}
+
+spriteset(spriteset_hoverbus_loading_01, "gfx/road/RAaS/hoverbus_0.png") {
+    template_hoverv_01(1,0)
+}
+
+//Graphics Set
+spritegroup spritegroup_hoverbus_default_01 {
+	loaded: [spriteset_hoverbus_travel_01];
+	loading: [spriteset_hoverbus_loading_01];
+}
+
+/* Define the road vehicles */
+item(FEAT_ROADVEHS, item_hoverbus_01) {
+	property {
+		/* Properties common to all vehicle types */
+		name:						string(STR_NAME_HOVERBUS_01);
+		climates_available:				param_disable_bus ? NO_CLIMATE : ALL_CLIMATES;
+		introduction_date:				date(2075,01,01);
+		model_life:					65;
+		/* retire_early not set, use default retirement behaviour */
+		vehicle_life:					17;
+		reliability_decay:				15;
+		refittable_cargo_classes:		bitmask(CC_PASSENGERS);
+		non_refittable_cargo_classes:			bitmask();
+		cargo_allow_refit:				[];
+		cargo_disallow_refit:				[];
+		loading_speed:					3;
+		cost_factor:					250;
+		running_cost_factor:				250;
+		road_type:							RAbS;
+		/* cargo_age_period is left at default */
+
+		/* RV-specific properties */
+		sprite_id:					SPRITE_ID_NEW_ROADVEH; //enable new graphics
+		speed:						263 km/h;
+		misc_flags:					bitmask(ROADVEH_FLAG_2CC);
+		/* callback_flags are not set, no need to manually enable callbacks */
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		power:						465 hp;
+		weight:						4 ton;
+		tractive_effort_coefficient:			0.5;
+		air_drag_coefficient:				0;
+		cargo_capacity:					37;
+		sound_effect:					SOUND_MAGLEV;
+		/* Visual effect is left at default (no effect) */
+    }
+    /* Define graphics */
+	graphics {
+		default: 		spritegroup_hoverbus_default_01;
+		additional_text:	string(STR_DESC_HOVERBUS_01);
+    }
+}
+
+///////////////////////
+//Hover Truck-Flatbed//
+///////////////////////
+
+/* Empty */
+spriteset(spriteset_hoverflat_empty_01, "gfx/road/RABS/hoverflatbed_0.png") {
+    template_hoverv_01(0,0)
+}
+
+/* Goods-Default */
+spriteset(spriteset_hoverflat_good_01, "gfx/road/RABS/hoverflatbed_0") {
+    template_hoverv_01(0,1)
+}
+
+spritegroup spritegroup_hoverflat_good_01 {
+	loaded: [spriteset_hoverflat_empty_01,spriteset_hoverflat_good_01];
+	loading: [spriteset_hoverflat_empty_01,spriteset_hoverflat_good_01];
+}
+
+/* Wood */
+spriteset(spriteset_hoverflat_wood_01, "gfx/road/RABS/hoverflatbed_0") {
+    template_hoverv_01(0,2)
+}
+
+spritegroup spritegroup_hoverflat_wood_01 {
+	loaded: [spriteset_hoverflat_empty_01,spriteset_hoverflat_wood_01];
+	loading: [spriteset_hoverflat_empty_01,spriteset_hoverflat_wood_01];
+}
+
+/* Steel */
+spriteset(spriteset_hoverflat_stel_01, "gfx/road/RABS/hoverflatbed_0") {
+    template_hoverv_01(0,3)
+}
+
+spriteset(spriteset_hoverflat_stel_02, "gfx/road/RABS/hoverflatbed_0") {
+    template_hoverv_01(1,3)
+}
+
+spritegroup spritegroup_hoverflat_stel_01 {
+	loaded: [spriteset_hoverflat_empty_01,spriteset_hoverflat_stel_02,spriteset_hoverflat_stel_01];
+	loading: [spriteset_hoverflat_empty_01,spriteset_hoverflat_stel_02,spriteset_hoverflat_stel_01];
+}
+
+/* Paper */
+spriteset(spriteset_hoverflat_papr_01, "gfx/road/RABS/hoverflatbed_0") {
+    template_hoverv_01(0,4)
+}
+
+spriteset(spriteset_hoverflat_papr_02, "gfx/road/RABS/hoverflatbed_0") {
+    template_hoverv_01(1,4)
+}
+
+spritegroup spritegroup_hoverflat_papr_01 {
+	loaded: [spriteset_hoverflat_empty_01,spriteset_hoverflat_papr_02,spriteset_hoverflat_papr_01];
+	loading: [spriteset_hoverflat_empty_01,spriteset_hoverflat_papr_02,spriteset_hoverflat_papr_01];
+}
+
+/* Batteries */
+spriteset(spriteset_hoverflat_batt_01, "gfx/road/RABS/hoverflatbed_0") {
+    template_hoverv_01(0,5)
+}
+
+spriteset(spriteset_hoverflat_batt_02, "gfx/road/RABS/hoverflatbed_0") {
+    template_hoverv_01(1,5)
+}
+
+spriteset(spriteset_hoverflat_batt_03, "gfx/road/RABS/hoverflatbed_0") {
+    template_hoverv_01(2,5)
+}
+
+spritegroup spritegroup_hoverflat_batt_01 {
+	loaded: [spriteset_hoverflat_empty_01,spriteset_hoverflat_batt_03,spriteset_hoverflat_batt_02,spriteset_hoverflat_batt_01];
+	loading: [spriteset_hoverflat_empty_01,spriteset_hoverflat_batt_03,spriteset_hoverflat_batt_02,spriteset_hoverflat_batt_01];
+}
+
+/* Bubbles */
+spriteset(spriteset_hoverflat_bubl_01, "gfx/road/RABS/hoverflatbed_0") {
+    template_hoverv_01(0,6)
+}
+
+spriteset(spriteset_hoverflat_bubl_02, "gfx/road/RABS/hoverflatbed_0") {
+    template_hoverv_01(1,6)
+}
+
+spritegroup spritegroup_hoverflat_bubl_01 {
+	loaded: [spriteset_hoverflat_empty_01,spriteset_hoverflat_bubl_02,spriteset_hoverflat_bubl_01];
+	loading: [spriteset_hoverflat_empty_01,spriteset_hoverflat_bubl_02,spriteset_hoverflat_bubl_01];
+}
+
+/* Fizzy Drinks */
+spriteset(spriteset_hoverflat_fzdr_01, "gfx/road/RABS/hoverflatbed_0") {
+    template_hoverv_01(0,7)
+}
+
+spriteset(spriteset_hoverflat_fzdr_02, "gfx/road/RABS/hoverflatbed_0") {
+    template_hoverv_01(1,7)
+}
+
+spriteset(spriteset_hoverflat_fzdr_03, "gfx/road/RABS/hoverflatbed_0") {
+    template_hoverv_01(2,7)
+}
+
+spritegroup spritegroup_hoverflat_fzdr_01 {
+	loaded: [spriteset_hoverflat_empty_01,spriteset_hoverflat_fzdr_03,spriteset_hoverflat_fzdr_02,spriteset_hoverflat_fzdr_01];
+	loading: [spriteset_hoverflat_empty_01,spriteset_hoverflat_fzdr_03,spriteset_hoverflat_fzdr_02,spriteset_hoverflat_fzdr_01];
+}
+
+/* Livestock */
+spriteset(spriteset_hoverflat_lvst_01, "gfx/road/RABS/hoverflatbed_0") {
+    template_hoverv_01(0,8)
+}
+
+spritegroup spritegroup_hoverflat_lvst_01 {
+	loaded: [spriteset_hoverflat_empty_01,spriteset_hoverflat_lvst_01];
+	loading: [spriteset_hoverflat_empty_01,spriteset_hoverflat_lvst_01];
+}
+
+/* Capacity Switch */
+switch (FEAT_ROADVEHS, SELF, switch_hoverflat_cargo_01, cargo_type_in_veh){
+	GOOD: return 34;
+	MAIL: return 34;
+	BATT: return 30;
+	FZDR: return 30;
+	LVST: return 30;
+	return 29;
+}
+
+/* Define the road vehicles */
+item(FEAT_ROADVEHS, item_hoverflat_01) {
+  property {
+		/* Properties common to all vehicle types */
+		name:						string(STR_NAME_HOVERFLAT_01);
+		climates_available:				ALL_CLIMATES;
+		introduction_date:				date(2079,01,01);
+		model_life:					65;
+		/* retire_early not set, use default retirement behaviour */
+		vehicle_life:					17;
+		reliability_decay:				16;
+		refittable_cargo_classes:			bitmask(CC_PIECE_GOODS);
+		non_refittable_cargo_classes:			bitmask(CC_EXPRESS);
+		cargo_allow_refit:				[GOOD,MAIL,BEER,ENSP,FMSP,MNSP];
+		cargo_disallow_refit:				[FRVG,PLAS];
+		loading_speed:					5;
+		cost_factor:					255;
+		running_cost_factor:				255;
+		road_type:							RAAS;
+		/* cargo_age_period is left at default */
+
+		/* RV-specific properties */
+		sprite_id:					SPRITE_ID_NEW_ROADVEH; //enable new graphics
+		speed:						240 km/h;
+		misc_flags:					bitmask(ROADVEH_FLAG_2CC);
+		refit_cost:					0.01; // Refitting cost
+		/* callback_flags are not set, no need to manually enable callbacks */
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		power:						768 hp;
+		weight:						7 ton;
+		tractive_effort_coefficient:			0.5;
+		air_drag_coefficient:				0;
+		cargo_capacity:					29;
+		sound_effect:					SOUND_MAGLEV;
+		/* Visual effect is left at default (no effect) */
+    }
+    /* Define graphics */
+    graphics {
+		BATT:		spritegroup_hoverflat_batt_01;
+		BUBL:		spritegroup_hoverflat_bubl_01;
+		/* FZDR */
+		FZDR:		spritegroup_hoverflat_fzdr_01;
+		BEER:		spritegroup_hoverflat_fzdr_01;
+		/* */
+		WOOD:		spritegroup_hoverflat_wood_01;
+		STEL:		spritegroup_hoverflat_stel_01;
+		PAPR:		spritegroup_hoverflat_papr_01;
+		LVST:		spritegroup_hoverflat_lvst_01;
+		default: 	spritegroup_hoverflat_good_01;//default to goods
+		cargo_capacity: switch_hoverflat_cargo_01;
+    }
+}
+
+//////////////////////
+//Hover Truck-Hopper//
+//////////////////////
+
+/* Empty */
+spriteset(spriteset_hoverhopper_empty_01, "gfx/road/RACS/hoverhopper_0.png") {
+    template_hoverv_01(0,0)
+}
+
+/* Goods-Default */
+spriteset(spriteset_hoverhopper_default_01, "gfx/road/RACS/hoverhopper_0.png") {
+    template_hoverv_01(1,0)
+}
+
+spritegroup spritegroup_hoverhopper_default_01 {
+	loaded: [spriteset_hoverhopper_empty_01,spriteset_hoverhopper_default_01];
+	loading: [spriteset_hoverhopper_empty_01,spriteset_hoverhopper_default_01];
+}
+
+/* Coal */
+spriteset(spriteset_hoverhopper_coal_01, "gfx/road/RACS/hoverhopper_0.png") {
+    template_hoverv_01(0,1)
+}
+
+spriteset(spriteset_hoverhopper_coal_02, "gfx/road/RACS/hoverhopper_0.png") {
+    template_hoverv_01(1,1)
+}
+
+spritegroup spritegroup_hoverhopper_coal_01 {
+	loaded: [spriteset_hoverhopper_empty_01,spriteset_hoverhopper_coal_02,spriteset_hoverhopper_coal_01];
+	loading: [spriteset_hoverhopper_empty_01,spriteset_hoverhopper_coal_02,spriteset_hoverhopper_coal_01];
+}
+
+/* Grain,Wheat,Maize */
+/* (Cerial, Oil Seed) */
+spriteset(spriteset_hoverhopper_grai_01, "gfx/road/RACS/hoverhopper_0.png") {
+    template_hoverv_01(0,2)
+}
+
+spriteset(spriteset_hoverhopper_grai_02, "gfx/road/RACS/hoverhopper_0.png") {
+    template_hoverv_01(1,2)
+}
+
+spritegroup spritegroup_hoverhopper_grai_01 {
+	loaded: [spriteset_hoverhopper_empty_01,spriteset_hoverhopper_grai_02,spriteset_hoverhopper_grai_01];
+	loading: [spriteset_hoverhopper_empty_01,spriteset_hoverhopper_grai_02,spriteset_hoverhopper_grai_01];
+}
+
+/* Iron Ore, Copper Ore, Toffee */
+spriteset(spriteset_hoverhopper_iore_01, "gfx/road/RACS/hoverhopper_0.png") {
+    template_hoverv_01(0,3)
+}
+
+spriteset(spriteset_hoverhopper_iore_02, "gfx/road/RACS/hoverhopper_0.png") {
+    template_hoverv_01(1,3)
+}
+
+spritegroup spritegroup_hoverhopper_iore_01 {
+	loaded: [spriteset_hoverhopper_empty_01,spriteset_hoverhopper_iore_02,spriteset_hoverhopper_iore_01];
+	loading: [spriteset_hoverhopper_empty_01,spriteset_hoverhopper_iore_02,spriteset_hoverhopper_iore_01];
+}
+
+
+/* Sugar */
+/* (Fertilizer, Limestone) */
+spriteset(spriteset_hoverhopper_sugr_01, "gfx/road/RACS/hoverhopper_0.png") {
+    template_hoverv_01(0,4)
+}
+
+spriteset(spriteset_hoverhopper_sugr_02, "gfx/road/RACS/hoverhopper_0.png") {
+    template_hoverv_01(1,4)
+}
+
+spritegroup spritegroup_hoverhopper_sugr_01 {
+	loaded: [spriteset_hoverhopper_empty_01,spriteset_hoverhopper_sugr_02,spriteset_hoverhopper_sugr_01];
+	loading: [spriteset_hoverhopper_empty_01,spriteset_hoverhopper_sugr_02,spriteset_hoverhopper_sugr_01];
+}
+
+/* candyfloss */
+spriteset(spriteset_hoverhopper_ctcd_01, "gfx/road/RACS/hoverhopper_0.png") {
+    template_hoverv_01(0,5)
+}
+
+spriteset(spriteset_hoverhopper_ctcd_02, "gfx/road/RACS/hoverhopper_0.png") {
+    template_hoverv_01(1,5)
+}
+
+spritegroup spritegroup_hoverhopper_ctcd_01 {
+	loaded: [spriteset_hoverhopper_empty_01,spriteset_hoverhopper_ctcd_02,spriteset_hoverhopper_ctcd_01];
+	loading: [spriteset_hoverhopper_empty_01,spriteset_hoverhopper_ctcd_02,spriteset_hoverhopper_ctcd_01];
+}
+
+/* Define the road vehicles */
+item(FEAT_ROADVEHS, item_hoverhopper_01) {
+  property {
+		/* Properties common to all vehicle types */
+		name:						string(STR_NAME_HOVERHOPPER_01);
+		climates_available:				ALL_CLIMATES;
+		introduction_date:				date(2081,01,01);
+		model_life:					65;
+		/* retire_early not set, use default retirement behaviour */
+		vehicle_life:					17;
+		reliability_decay:				14;
+		refittable_cargo_classes:			bitmask(CC_BULK,CC_COVERED,CC_NON_POURABLE);
+		non_refittable_cargo_classes:			bitmask(CC_PIECE_GOODS,CC_REFRIGERATED);
+		cargo_allow_refit:				[];
+		cargo_disallow_refit:				[];
+		loading_speed:					5;
+		cost_factor:					255;
+		running_cost_factor:				255;
+		road_type:							RACS;
+		/* cargo_age_period is left at default */
+
+		/* RV-specific properties */
+		sprite_id:					SPRITE_ID_NEW_ROADVEH; //enable new graphics
+		speed:						232 km/h;
+		misc_flags:					bitmask(ROADVEH_FLAG_2CC);
+		refit_cost:					0.01; // Refitting cost
+		/* callback_flags are not set, no need to manually enable callbacks */
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		power:						781 hp;
+		weight:						9 ton;
+		tractive_effort_coefficient:			0.5;
+		air_drag_coefficient:				0;
+		cargo_capacity:					32;
+		sound_effect:					SOUND_MAGLEV;
+		/* Visual effect is left at default (no effect) */
+    }
+    /* Define graphics */
+    graphics {
+		/* coal */
+		COAL:		spritegroup_hoverhopper_coal_01;
+		/* grain */
+		GRAI:		spritegroup_hoverhopper_grai_01;
+		WHEA:		spritegroup_hoverhopper_grai_01;
+		MAIZ:		spritegroup_hoverhopper_grai_01;
+		CERE:		spritegroup_hoverhopper_grai_01;
+		OLSD:		spritegroup_hoverhopper_grai_01;
+		/* iron ore */
+		IORE:		spritegroup_hoverhopper_iore_01;
+		CORE:		spritegroup_hoverhopper_iore_01;
+		TOFF:		spritegroup_hoverhopper_iore_01;
+		/* sugar */
+		SUGR:		spritegroup_hoverhopper_sugr_01;
+		FERT:		spritegroup_hoverhopper_sugr_01;
+		LIME:		spritegroup_hoverhopper_sugr_01;
+		/* Candyfloss */
+		CTCD:		spritegroup_hoverhopper_ctcd_01;
+		/* default */
+		default: 	spritegroup_hoverhopper_default_01;//default
+    }
+}
+
+//////////////////////
+//Hover Truck-Tanker//
+//////////////////////
+
+spriteset(spriteset_hovertank_travel_01, "gfx/road/RACS/hovertanker_0.png") {
+    template_hoverv_01(0,0)
+}
+
+spriteset(spriteset_hovertank_loading_01, "gfx/road/RACS/hovertanker_0.png") {
+    template_hoverv_01(1,0)
+}
+
+//Graphics Set
+spritegroup spritegroup_hovertank_default_01 {
+	loaded: [spriteset_hovertank_travel_01];
+	loading: [spriteset_hovertank_loading_01];
+}
+
+item(FEAT_ROADVEHS, item_hovertank_01) {
+  property {
+		/* Properties common to all vehicle types */
+		name:						string(STR_NAME_HOVERTANK_01);
+		climates_available:				ALL_CLIMATES;
+		introduction_date:				date(2083,01,01);
+		model_life:					65;
+		/* retire_early not set, use default retirement behaviour */
+		vehicle_life:					18;
+		reliability_decay:				13;
+		refittable_cargo_classes:			bitmask(CC_LIQUID);
+		non_refittable_cargo_classes:			bitmask(CC_REFRIGERATED,CC_PIECE_GOODS);
+		cargo_allow_refit:				[MILK];
+		cargo_disallow_refit:				[];
+		loading_speed:					6;
+		cost_factor:					255;
+		running_cost_factor:				255;
+		road_type:							RACS;
+		/* cargo_age_period is left at default */
+
+		/* RV-specific properties */
+		sprite_id:					SPRITE_ID_NEW_ROADVEH; //enable new graphics
+		speed:						235 km/h;
+		misc_flags:					bitmask(ROADVEH_FLAG_2CC);
+		refit_cost:					0.01; // Refitting cost
+		/* callback_flags are not set, no need to manually enable callbacks */
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		power:						783 hp;
+		weight:						8 ton;
+		tractive_effort_coefficient:			0.5;
+		air_drag_coefficient:				0;
+		cargo_capacity:					29;
+		sound_effect:					SOUND_MAGLEV;
+		/* Visual effect is left at default (no effect) */
+    }
+    /* Define graphics */
+    graphics {
+		default: 	spritegroup_hovertank_default_01;
+    }
+}
+
+///////////////////
+//Hover Truck-Sec//
+///////////////////
+
+spriteset(spriteset_hoversec_travel_01, "gfx/road/RACS/hoversec_0.png") {
+    template_hoverv_01(0,0)
+}
+
+spriteset(spriteset_hoversec_loading_01, "gfx/road/RACS/hoversec_0.png") {
+    template_hoverv_01(1,0)
+}
+
+//Graphics Set
+spritegroup spritegroup_hoversec_default_01 {
+	loaded: [spriteset_hoversec_travel_01];
+	loading: [spriteset_hoversec_loading_01];
+}
+
+item(FEAT_ROADVEHS, item_hoversec_01) {
+  property {
+		/* Properties common to all vehicle types */
+		name:						string(STR_NAME_HOVERSEC_01);
+		climates_available:				ALL_CLIMATES;//Toyland doesn't have a valuables equivalant
+		introduction_date:				date(2085,01,01);
+		model_life:					65;
+		/* retire_early not set, use default retirement behaviour */
+		vehicle_life:					18;
+		reliability_decay:				12;
+		refittable_cargo_classes:			bitmask(CC_ARMOURED,CC_HAZARDOUS);
+		non_refittable_cargo_classes:			bitmask();
+		cargo_allow_refit:				[];
+		cargo_disallow_refit:				[];
+		loading_speed:					5;
+		cost_factor:					255;
+		running_cost_factor:				255;
+		road_type:							RACS;
+		/* cargo_age_period is left at default */
+//
+		/* RV-specific properties */
+		sprite_id:					SPRITE_ID_NEW_ROADVEH; //enable new graphics
+		speed:						242 km/h;
+		misc_flags:					bitmask(ROADVEH_FLAG_2CC);
+		refit_cost:					0.01; // Refitting cost
+		/* callback_flags are not set, no need to manually enable callbacks */
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		power:						795 hp;
+		weight:						10 ton;
+		tractive_effort_coefficient:			0.5;
+		air_drag_coefficient:				0;
+		cargo_capacity:					27;
+		sound_effect:					SOUND_MAGLEV;
+		/* Visual effect is left at default (no effect) */
+    }
+    /* Define graphics */
+    graphics {
+		default: 	spritegroup_hoversec_default_01;
+    }
+}
+
+//////////////////////
+//Hover Truck-Fridge//
+//////////////////////
+
+spriteset(spriteset_hoverfridge_travel_01, "gfx/road/RACS/hoverfridge_0.png") {
+    template_hoverv_01(0,0)
+}
+
+spriteset(spriteset_hoverfridge_loading_01, "gfx/road/RACS/hoverfridge_0.png") {
+    template_hoverv_01(1,0)
+}
+
+//Graphics Set
+spritegroup spritegroup_hoverfridge_default_01 {
+	loaded: [spriteset_hoverfridge_travel_01];
+	loading: [spriteset_hoverfridge_loading_01];
+}
+
+item(FEAT_ROADVEHS, item_hoverfridge_01) {
+  property {
+		/* Properties common to all vehicle types */
+		name:						string(STR_NAME_HOVERFRIDGE_01);
+		climates_available:				ALL_CLIMATES;//Temperate does not have food equivalents. Candy has been assigned in toyland.
+		introduction_date:				date(2087,01,01);
+		model_life:					65;
+		/* retire_early not set, use default retirement behaviour */
+		vehicle_life:					18;
+		reliability_decay:				12;
+		refittable_cargo_classes:			bitmask(CC_REFRIGERATED);
+		non_refittable_cargo_classes:			bitmask();
+		cargo_allow_refit:				[SWET,FISH];
+		cargo_disallow_refit:				[MILK];
+		loading_speed:					6;
+		cost_factor:					255;
+		running_cost_factor:				255;
+		road_type:							RACS;
+		/* cargo_age_period is left at default */
+
+		/* RV-specific properties */
+		sprite_id:					SPRITE_ID_NEW_ROADVEH; //enable new graphics
+		speed:						253 km/h;
+		misc_flags:					bitmask(ROADVEH_FLAG_2CC);
+		refit_cost:					0.01; // Refitting cost
+		/* callback_flags are not set, no need to manually enable callbacks */
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		power:						782 hp;
+		weight:						8 ton;
+		tractive_effort_coefficient:			0.5;
+		air_drag_coefficient:				0;
+		cargo_capacity:					29;
+		sound_effect:					SOUND_MAGLEV;
+		/* Visual effect is left at default (no effect) */
+    }
+    /* Define graphics */
+    graphics {
+		default: 	spritegroup_hoverfridge_default_01;
+    }
+}
+
+///////////////////
+//Universal Truck//
+///////////////////
+
+/* Purchase Img */
+spriteset(spriteset_hoveruniv_buy_01, "gfx/road/RACS/univ.png") {
+    template_hoverv_01(0,0)
+}
+
+spritegroup spritegroup_hoveruniv_buy_01 {
+	loaded: [spriteset_hoveruniv_buy_01];
+	loading: [spriteset_hoveruniv_buy_01];
+}
+
+/* Capacity Switch */
+switch (FEAT_ROADVEHS, SELF, switch_hoveruniv_cargo_01, cargo_type_in_veh){
+	GOOD: return 26;
+	MAIL: return 26;
+	return 24;
+}
+
+/* Define the road vehicles */
+item(FEAT_ROADVEHS, item_hoveruniv_01) {
+  property {
+		/* Properties common to all vehicle types */
+		name:						string(STR_NAME_HOVERUNIV_01);
+		climates_available:				param_enable_univ ? ALL_CLIMATES : NO_CLIMATE;
+		introduction_date:				date(2090,01,01);
+		model_life:					65;
+		/* retire_early not set, use default retirement behaviour */
+		vehicle_life:					17;
+		reliability_decay:				16;
+		refittable_cargo_classes:			ALL_NORMAL_CARGO_CLASSES;
+		non_refittable_cargo_classes:			bitmask(CC_PASSENGERS);
+		cargo_allow_refit:				[];
+		cargo_disallow_refit:				[];
+		loading_speed:					3;
+		cost_factor:					255;
+		running_cost_factor:				255;
+		road_type:							RACS;
+		/* cargo_age_period is left at default */
+
+		/* RV-specific properties */
+		sprite_id:					SPRITE_ID_NEW_ROADVEH; //enable new graphics
+		speed:						243 km/h;
+		misc_flags:					bitmask(ROADVEH_FLAG_2CC);
+		refit_cost:					0.01; // Refitting cost
+		/* callback_flags are not set, no need to manually enable callbacks */
+		running_cost_base:				RUNNING_COST_ROADVEH;
+		power:						768 hp;
+		weight:						7 ton;
+		tractive_effort_coefficient:			0.5;
+		air_drag_coefficient:				0;
+		cargo_capacity:					24;
+		sound_effect:					SOUND_MAGLEV;
+		/* Visual effect is left at default (no effect) */
+    }
+    /* Define graphics */
+    graphics {
+		default: 		spritegroup_hoverflat_good_01;//default to goods
+		cargo_capacity: 	switch_hoveruniv_cargo_01;
+		additional_text: 	string(STR_DESC_HOVERUNIV_01);
+		purchase:		spritegroup_hoveruniv_buy_01;
+    }
+}
+# 1 "futuRVs.pnml" 1
+
+// Individual vehicle #includes, entails spritesets, vehicle-specific switches, and their item blocks.
+
+//#include "src/roadtypes.pnml"
+//#include "src/tram_1903_tube_gate.pnml"
+//#include "src/tram_1938_tube_new_works.pnml"
+//#include "src/tram_1967_tube_victoria.pnml"
+//#include "src/tram_1992_tube_adtranz.pnml"
+//#include "src/tram_2027_subway_?.pnml"
+//#include "src/tram_2042_subway_shinku-eki.pnml"

@@ -3,8 +3,8 @@ grf {
     grfid: "G8R\05";
     name: string(STR_GRF_NAME);
     desc: string(STR_GRF_DESCRIPTION);
-    version: 11;
-    min_compatible_version: 11;
+    version: 12;
+    min_compatible_version: 12;
 	param {
 		param_disable_bus {
 			type: bool;
@@ -47,7 +47,7 @@ grf {
 	}
 }
 
-itemplate itemplate_tram_28(x, y) {
+template template_tram_28(x, y) {
     //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
     [x,         y,          10,        28,           -4,         -11+2]
     [x+ 20,     y,          26,        28,          -17,         -14+2]
@@ -69,11 +69,11 @@ basecost {
 
 // Underground sprites
 spriteset(underground_vehicle, "gfx/Shadows.png") {
-	itemplate_tram_28(0, 60)
+	template_tram_28(0, 60)
 }
 
 alternative_sprites (underground_vehicle, ZOOM_LEVEL_NORMAL, BIT_DEPTH_32BPP, "gfx/Shadows32.png") {
-	itemplate_tram_28(0, 60)
+	template_tram_28(0, 60)
 }
 
 spriteset(invisible, "gfx/empty.png") {
@@ -323,6 +323,7 @@ roadtypetable {
 	//RAAE, RABE, RAbE, RACE,
 	// -- Self-Driving Vehicles --
 	AUTO, Auto,
+	AUTT, AutT,
 	//PAAS, PABS, PAbS, PACS,
 	//PAAS, PABS, PAbS, PACS,
 	//PBAS, PBBS, PBbS, PBCS,
@@ -335,7 +336,9 @@ roadtypetable {
 	//RCAS, RCBS, RCbS, RCCS,
 	//RDAS, RDBS, RDbS, RDCS,
 	//REAS, REBS, REbS, RECS,
-	PABE, PAbE//,
+	PABE, PAbE,
+	//PABP,
+	PAbP,
 	// -- Curb-Guided Busways --
 	//BUSN,
 	//GAAN, GABN, GAbN, GACN,
@@ -374,7 +377,7 @@ item(FEAT_ROADTYPES, item_road) {
 										"RAAx", "RABx", "RACx",
 										"RAAi", "RABi", "RACi",
 										"RAAL", "RABL", "RACL",
-										"RAAV", "RABV", "RACV"
+										"RAAV", "RABV", "RACV",
 										];
 		roadtype_flags:					bitmask(ROADTYPE_FLAG_TOWN_BUILD, ROADTYPE_FLAG_HIDDEN);
 		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
@@ -407,7 +410,7 @@ item(FEAT_ROADTYPES, item_lowclear) {
 										"RAAL", "RABL", "RACL",
 												"RAbL",
 										"RAAV", "RABV", "RACV",
-												"RAbV"
+												"RAbV",
 										];
 		roadtype_flags:					bitmask(ROADTYPE_FLAG_NO_LEVEL_CROSSING);
 		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, ROADTYPE_EXTRA_FLAG_NO_TOWN_MODIFY);
@@ -472,7 +475,7 @@ item(FEAT_ROADTYPES, item_pipeline) {
 										"PAaS", "PAAS", "PABS", "PACS", "PAcS",
 														"PAbS",
 										"PAaV", "PAAV", "PABV", "PACV", "PAcV",
-														"PAbV"
+														"PAbV",
 										];
 		roadtype_flags:					bitmask(ROADTYPE_FLAG_NO_LEVEL_CROSSING);
 		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, ROADTYPE_EXTRA_FLAG_NO_TOWN_MODIFY);
@@ -506,7 +509,7 @@ item(FEAT_ROADTYPES, item_selfdriving_bus_doubledeck) {
 										"PAAi", "PABi", "PACi",
 										"PAAL", "PABL", "PACL",
 										"PAAS", "PABS", "PACS",
-										"PAAV", "PABV", "PACV"
+										"PAAV", "PABV", "PACV",
 										];
 		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
 	}
@@ -538,7 +541,7 @@ item(FEAT_ROADTYPES, item_selfdriving_bus_lowclear) {
 										"PAAi", "PABi", "PAbi", "PACi",
 										"PAAL", "PABL", "PAbL", "PACL",
 										"PAAS", "PABS", "PAbS", "PACS",
-										"PAAV", "PABV", "PAbV", "PACV"
+										"PAAV", "PABV", "PAbV", "PACV",
 										];
 		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
 	}
@@ -558,7 +561,7 @@ item(FEAT_ROADTYPES, item_selfdriving_truck) {
 										"RAA0", "RAB0", "RACi",
 										"RAA1", "RAB1", "RACL",
 										"RAA2", "RAB2", "RACS",
-										"RAA5", "RAB5", "RACV"
+										"RAA5", "RAB5", "RACV",
 										];
 		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
 	}
@@ -578,7 +581,7 @@ item(FEAT_ROADTYPES, item_selfdriving_truck_lowclear) {
 										"RAAi", "RABi", "RAbi", "RACi",
 										"RAAL", "RABL", "RAbL", "RACL",
 										"RAAS", "RABS", "RAbS", "RACS",
-										"RAAV", "RABV", "RAbV", "RACV"
+										"RAAV", "RABV", "RAbV", "RACV",
 										];
 		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
 	}
@@ -599,7 +602,7 @@ item(FEAT_ROADTYPES, item_trolleybus_doubledeck) {
 										"RAAi", "RABi", "RACi",
 										"RAAL", "RABL", "RACL",
 										"RAAS", "RABS", "RACS",
-										"RAAV", "RABV", "RACV"
+										"RAAV", "RABV", "RACV",
 										"PAAN", "PABN", "PACN",
 										"PAAE", "PABE", "PACE",
 										"PAAI", "PABI", "PACI",
@@ -609,7 +612,7 @@ item(FEAT_ROADTYPES, item_trolleybus_doubledeck) {
 										"PAAi", "PABi", "PACi",
 										"PAAL", "PABL", "PACL",
 										"PAAS", "PABS", "PACS",
-										"PAAV", "PABV", "PACV"
+										"PAAV", "PABV", "PACV",
 										];
 //		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
 	}
@@ -649,7 +652,7 @@ item(FEAT_ROADTYPES, item_car) {
 										"RAAX", "RABX", "RACX",
 												"RAbX",
 										"RAAx", "RABx", "RACx",
-												"RAbx"
+												"RAbx",
 										"RAAi", "RABi", "RACi",
 												"RAbi",
 										"RAAL", "RABL", "RACL",
@@ -672,7 +675,7 @@ item(FEAT_ROADTYPES, item_car) {
 										"PAAX", "PABX", "PACX",
 												"PAbX",
 										"PAAx", "PABx", "PACx",
-												"PAbx"
+												"PAbx",
 										"PAAi", "PABi", "PACi",
 												"PAbi",
 										"PAAL", "PABL", "PACL",
@@ -680,7 +683,7 @@ item(FEAT_ROADTYPES, item_car) {
 										"PAAV", "PABV", "PACV",
 												"PAbV",
 										"PAAP", "PABP", "PACP",
-												"PAbP"
+												"PAbP",
 										];
 //		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
 	}
@@ -706,7 +709,7 @@ item(FEAT_ROADTYPES, item_selfdriving_car) {
 										"RAAX", "RABX", "RACX",
 												"RAbX",
 										"RAAx", "RABx", "RACx",
-												"RAbx"
+												"RAbx",
 										"RAAi", "RABi", "RACi",
 												"RAbi",
 										"RAAL", "RABL", "RACL",
@@ -731,7 +734,7 @@ item(FEAT_ROADTYPES, item_selfdriving_car) {
 										"PAAX", "PABX", "PACX",
 												"PAbX",
 										"PAAx", "PABx", "PACx",
-												"PAbx"
+												"PAbx",
 										"PAAi", "PABi", "PACi",
 												"PAbi",
 										"PAAL", "PABL", "PACL",
@@ -739,7 +742,7 @@ item(FEAT_ROADTYPES, item_selfdriving_car) {
 										"PAAV", "PABV", "PACV",
 												"PAbV",
 										"PAAP", "PABP", "PACP",
-												"PAbP"
+												"PAbP",
 										];
 //		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
 	}
@@ -757,7 +760,7 @@ item(FEAT_ROADTYPES, item_hovertruck) {
 										"RAAx", "RABx", "RACx",
 										"RAAi", "RABi", "RACi",
 										"RAAL", "RABL", "RACL",
-										"RAAV", "RABV", "RACV"
+										"RAAV", "RABV", "RACV",
 										];
 		roadtype_flags:					bitmask(ROADTYPE_FLAG_TOWN_BUILD, ROADTYPE_FLAG_HIDDEN);
 		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
@@ -775,7 +778,7 @@ item(FEAT_ROADTYPES, item_hovertruck_short) {
 										"RAAx", "RABx", "RACx",
 										"RAAi", "RABi", "RACi",
 										"RAAL", "RABL", "RACL",
-										"RAAV", "RABV", "RACV"
+										"RAAV", "RABV", "RACV",
 										];
 		roadtype_flags:					bitmask(ROADTYPE_FLAG_TOWN_BUILD, ROADTYPE_FLAG_HIDDEN);
 		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
@@ -799,7 +802,7 @@ item(FEAT_ROADTYPES, item_hoverbus_tall) {
 										"PAAx", "PABx", "PACx",
 										"PAAi", "PABi", "PACi",
 										"PAAL", "PABL", "PACL",
-										"PAAV", "PABV", "PACV"
+										"PAAV", "PABV", "PACV",
 										];
 		roadtype_flags:					bitmask(ROADTYPE_FLAG_NO_LEVEL_CROSSING);
 		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, ROADTYPE_EXTRA_FLAG_NO_TOWN_MODIFY);
@@ -838,7 +841,7 @@ item(FEAT_ROADTYPES, item_hoverbus_lowclear) {
 										"PAAL", "PABL", "PACL",
 												"PAbL",
 										"PAAV", "PABV", "PACV",
-												"PAbV"
+												"PAbV",
 										];
 		roadtype_flags:					bitmask(ROADTYPE_FLAG_NO_LEVEL_CROSSING);
 		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, ROADTYPE_EXTRA_FLAG_NO_TOWN_MODIFY);
@@ -878,7 +881,7 @@ item(FEAT_ROADTYPES, item_hovercar) {
 										"PAAL", "PABL", "PACL",
 												"PAbL",
 										"PAAV", "PABV", "PACV",
-												"PAbV"
+												"PAbV",
 										"PAAP", "PABP", "PACP",
 												"PAbP"
 										];
@@ -905,8 +908,8 @@ tramtypetable {
 	//RAaE, RAAE, RABE, RAbE, RACE, RAcE,
 	//RBaE, RBAE, RBBE, RBbE, RBCE, RBcE,
 	//RCaE, RCAE, RCBE, RCbE, RCCE, RCcE,
-	
-	/* Optic-Guided "Trackless Tram" Bus */
+	//
+// -- Optic-Guided "Trackless Tram" Bus --
 	//AUTO,
 	OAaI, OAAI, OABI, OAbI, OACI, OACI, OAcI,
 	OBaI, OBAI, OBBI, OBbI, OBCI, OBCI,
@@ -921,12 +924,12 @@ tramtypetable {
 	OEaS, OEAS,// OEBS, OEbS, OECS, OEcS,
 	
 	OEcS,
-	/* Pneumatic "PneuMetro" Metro/Subway */
+// -- Pneumatic "PneuMetro" Metro/Subway --
 	//MTRO,
 	MAB3, MAb3,
 	//PNEU,
 	MABP, MAbP,
-	/* VacTrain "VacTube" Metro/Subway */
+// -- VacTrain "VacTube" Metro/Subway --
 	//VACT,
 	MABV, MAbV//,
 	//
@@ -948,7 +951,7 @@ tramtypetable {
 	PNEU, Pneu,
 	//MABP, MAbP,
 	/* VacTrain "VacTube" Metro/Subway */
-	VACT, Vact,
+	VACT, Vact
 	//MABV, MAbV//,
 	//
 	}
@@ -1048,7 +1051,7 @@ item(FEAT_ROADTYPES, item_rail_lowclear) {
 												"rAbi",
 										"rAAX", "rABX", "rACX",
 												"rAbX",
-										rRAAx", "rABx", "rACx",
+										"rAAx", "rABx", "rACx",
 												"rAbx",
 										"XAAN", "XABN", "XACN",
 												"XAbN",
@@ -1097,7 +1100,7 @@ item(FEAT_ROADTYPES, item_rail_lowclear) {
 										"xAAX", "xABX", "xACX",
 												"xAbX",
 										"xAAx", "xABx", "xACx",
-												"xAbx"
+												"xAbx",
 										];
 		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
 		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
@@ -1125,7 +1128,7 @@ item(FEAT_TRAMTYPES, item_elrl) {
 										"xAAE", "xABE", "xACE",
 										"xAAZ", "xABZ", "xACZ",
 										"xAAX", "xABX", "xACX",
-										"xAAx", "xABx", "xACx"
+										"xAAx", "xABx", "xACx",
 										];
 		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING);
 		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
@@ -1138,7 +1141,7 @@ item(FEAT_TRAMTYPES, item_elrl_lowcatenary) {
 		powered_tramtype_list:			[
 												"ELRL",
 										"RAAE", "RABE", "RACE",
-										"ElRl", "RAbE"
+										"ElRl", "RAbE",
 										"RAAZ", "RABZ", "RACZ",
 												"RAbZ",
 										"RAAX", "RABX", "RACX",
@@ -1226,13 +1229,13 @@ item(FEAT_TRAMTYPES, item_auto_lowclear) {
 										"XAAZ", "XABZ", "XACZ",
 												"XAbZ",
 										"XAAI", "XABI", "XACI",
-												"XAbI"
+												"XAbI",
 										"XAAS", "XABS", "XACS",
 												"XAbS",
 										"XAAX", "XABX", "XACX",
-												"XAbX"
+												"XAbX",
 										"XAAx", "XABx", "XACx",
-												"XAbx"
+												"XAbx",
 										"xAAN", "xABN", "xACN",
 												"xAbN",
 										"xAAE", "xABE", "xACE",
@@ -1246,8 +1249,8 @@ item(FEAT_TRAMTYPES, item_auto_lowclear) {
 										"xAAS", "xABS", "xACS",
 												"xAbS",
 										"xAAX", "xABX", "xACX",
-												"xAbX"
-										"xAAx", "xABx", "xACx"
+												"xAbX",
+										"xAAx", "xABx", "xACx",
 												"xAbx"
 										];
 		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
@@ -1341,7 +1344,7 @@ item(FEAT_TRAMTYPES, item_metro_cargo) {
 		powered_tramtype_list:			[
 										"CRGO",
 										"MAA3", "MAB3", "MAC3",
-										"RAA3", "RAB3", "RAC3",=
+										"RAA3", "RAB3", "RAC3",
 										"rAA3", "rAB3", "rAC3",
 										"XAA3", "XAB3", "XAC3",
 										"xAA3", "xAB3", "xAC3",
@@ -1457,11 +1460,11 @@ item(FEAT_TRAMTYPES, item_pneumetro_cargo) {
 										"xAAP", "xABP", "xACP",
 										"ZAAX", "ZABX", "ZACX",
 										"XAAX", "XABX", "XACX",
-										"xAAX", "xABX", "xACX"//,
+										"xAAX", "xABX", "xACX",//,
 //										"ZAAx", "ZABx", "ZACx",
 //										"XAAx", "XABx", "XACx",
 //										"xAAx", "xABx", "xACx"
-//										];
+										];
 		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
 		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
 		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
@@ -1488,7 +1491,7 @@ item(FEAT_TRAMTYPES, item_pneumetro_cargo_lowclear) {
 										"xAAP", "xABP", "xACP",
 												"xAbP",
 										"xAAX", "xABX", "xACX",
-												"xAbX"//,
+												"xAbX",//,
 //										"xAAx", "xABx", "xACx",
 //												"xAbx"
 										];
@@ -1510,7 +1513,7 @@ item(FEAT_TRAMTYPES, item_vactransit) {
 										"xAAV", "xABV", "xACV",
 										"ZAAX", "ZABX", "ZACX",
 										"XAAX", "XABX", "XACX",
-										"xAAX", "xABX", "xACX"//,
+										"xAAX", "xABX", "xACX",//,
 //										"ZAAx", "ZABx", "ZACx",
 //										"XAAx", "XABx", "XACx",
 //										"xAAx", "xABx", "xACx"
@@ -1537,7 +1540,7 @@ item(FEAT_TRAMTYPES, item_vactransit_smalltube) {
 										"XAAX", "XABX", "XACX",
 												"XAbX",
 										"xAAX", "xABX", "xACX",
-												"xAbX"//,
+												"xAbX",//,
 //										"ZAAx", "ZABx", "ZACx",
 //												"ZAbx",
 //										"XAAx", "XABx", "XACx",
@@ -1561,7 +1564,7 @@ item(FEAT_TRAMTYPES, item_vactransit) {
 										"xAAV", "xABV", "xACV",
 										"ZAAX", "ZABX", "ZACX",
 										"XAAX", "XABX", "XACX",
-										"xAAX", "xABX", "xACX"//,
+										"xAAX", "xABX", "xACX",//,
 //										"ZAAx", "ZABx", "ZACx",
 //										"XAAx", "XABx", "XACx",
 //										"xAAx", "xABx", "xACx"
@@ -1588,7 +1591,7 @@ item(FEAT_TRAMTYPES, item_vactransit_smalltube) {
 										"XAAX", "XABX", "XACX",
 												"XAbX",
 										"xAAX", "xABX", "xACX",
-												"xAbX"//,
+												"xAbX",//,
 //										"ZAAx", "ZABx", "ZACx",
 //												"ZAbx",
 //										"XAAx", "XABx", "XACx",

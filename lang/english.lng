@@ -1,7 +1,7 @@
 ##grflangid 0x01
 ##plural 0
 
-STR_GRF_NAME:Future Vehicles Set 0.2a
+STR_GRF_NAME:Future Vehicles Set 0.3a
 STR_GRF_DESCRIPTION:Articulated bus graphic credits to {SILVER}acs121{BLACK}, graphics licensed in {SILVER}GPL v2{BLACK}.{}Hover Vehicles graphics credits to {SILVER}Hazzard{BLACK}, graphics licensed in {SILVER}GPL v2{BLACK}.{}This GRF is a combination of Gadg8eer's "Articul8eer" set and Hazzard's hover vhecles; it adds one new optical tram, one new self-driving bus, and six new high-speed levitating road vehicles to the game:a bus and a truck.{}{COPYRIGHT}{COPYDATE} Hazzard (Mingwei Samuel){}License:{}GPLv2{}Uses parts of HoverBus and eGRVTS
 STR_GRF_URL:https://lemmy.dbzero.com/
 
@@ -16,14 +16,14 @@ STR_PARAM_DESC_UNIV	:Enables the universal truck (can cary any cargo) for refit 
 # =============================================================================
 
 #Vehicle Names
-STR_NAME_BUS_ARTICULATED:AutöWerks A10 AutöBus (Induction)-
-STR_NAME_HOVERBUS_01:Chryslus Metroliner '75 HoverBus (Fusion-Electric)-
-STR_NAME_HOVERFLAT_01:BnL HAUL-E Flatbed Hover Van (Induction)-
-STR_NAME_HOVERHOPPER_01:Argyle Coop Hopper Hover Truck (Gravlev)-
-STR_NAME_HOVERTANK_01:Mahir PetroX Hover Tanker (Biofuel)-
-STR_NAME_HOVERSEC_01:KaibaCorp HiSec Hover Van (Momentum-Electric)-
-STR_NAME_HOVERFRIDGE_01:Versatran MTR-X Refrigerations (Hoverpad)-
-STR_NAME_HOVERUNIV_01:CusCo. Omnimodal Hovercraft (Hoverpad)-
+STR_NAME_BUS_ARTICULATED					:AutöWerks A10 AutöBus (Induction)-
+STR_NAME_HOVERBUS_01						:Chryslus Metroliner '75 HoverBus (Fusion-Electric)-
+STR_NAME_HOVERFLAT_01						:BnL HAUL-E Flatbed Hover Van (Induction)-
+STR_NAME_HOVERHOPPER_01						:Argyle Coop Hopper Hover Truck (Gravlev)-
+STR_NAME_HOVERTANK_01						:Mahir PetroX Hover Tanker (Biofuel)-
+STR_NAME_HOVERSEC_01						:KaibaCorp HiSec Hover Van (Momentum-Electric)-
+STR_NAME_HOVERFRIDGE_01						:Versatran MTR-X Refrigerations (Hoverpad)-
+STR_NAME_HOVERUNIV_01						:CusCo. Omnimodal Hovercraft (Hoverpad)-
 
 #Vehicle Descriptions
 STR_DESC_HOVERBUS_01:This vehicle can be disabled in the GRF parameters for use with the original Hover Bus GRF.
@@ -63,7 +63,7 @@ STR_NAME_MABP_JANUS							:MTC Mk.I Stock "Janus" (Atmospheric)
 STR_NAME_MABP_GRAND_WORKS					:MTC Mk.II Stock "Grand Works" (Atmospheric)
 STR_NAME_MABP_BRITANNIA						:LT Mk.3 Stock "Rail Britannia" (Pneumatic)
 STR_NAME_MABP_XP2K							:qbCorp v4.0 Stock "XP-2000" (Pneumatic)
-STR_NAME_MABP_J-HD							:Mitsubishi J-HD "HydroPod" (Hydraulic)-
+STR_NAME_MABP_JHD							:Mitsubishi J-HD "HydroPod" (Hydraulic)-
 STR_NAME_MABP_CHIKATETSU_100				:TRTA E100 (Evacuatic)-
 STR_NAME_MABP_CHIKATETSU_200				:TRTA E200 (Evacuatic)-
 STR_NAME_MABP_CHIKATETSU_E1					:TRTA Chikatetsu DS1 (Pneumagnetic)
