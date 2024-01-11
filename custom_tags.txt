@@ -1,8 +1,8 @@
 VERSION			:noRev
 VERSION_STRING	:noRev
-TITLE			:FutuRVs: Future Vehicles Set
+TITLE			:FutuRVs: Futuristic Road Vehicles
 FILENAME		:FutuRVs.grf
 REPO_HASH		:
-NEWGRF_VERSION	:3
+NEWGRF_VERSION	:0
 COPYDATE		:2012
 UPDATE			:May 31, 2012
