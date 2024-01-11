@@ -59,6 +59,10 @@ template template_tram_28(x, y) {
     [x+210,     y,          26,        28,           -12,        -16+2]
 }
 
+
+disable_item(FEAT_ROADVEHS, 00, 87);
+/* the above disables default road vehicles */
+
 basecost {
    	PR_RUNNING_ROADVEH :     2;
 	PR_BUILD_VEHICLE_ROAD :  2;
