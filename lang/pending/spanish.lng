@@ -1,0 +1,36 @@
+##grflangid 0x04
+##plural 0
+##gender m f
+
+STR_GRF_NAME                                            :Falsos Metros
+STR_GRF_DESCRIPTION                                     :Añade el "Metro" como un nuevo medio de transporte a tu juego; En realidad este "Metro" son los vehículos de carretera que aparecen como sombras y simulan, de tal modo, el Metro corriendo debajo de las carreteras. Para obtener información detallada, consulta el archivo Léeme o visita la URL de este NewGRF.
+STR_GRF_WEBSITE                                         :http://www.tt-forums.net/viewtopic.php?f=26&t=62672#p1046538
+
+STR_CAPACITY_PARAM_NAME                         :Capacidad de los vehículos
+STR_CAPACITY_PARAM_DESC                         :Determina si la capacidad total del metro está compuesta únicamente por sus asientos disponibles o sus asientos y la gente que puede ir en pie en sus compartimentos (mucha más capacidad de este modo).
+STR_CAPACITY_PARAM_SEATED                       :Única, y exclusivamente, todo el mundo sentado
+STR_CAPACITY_PARAM_STANDING                     :Sentados + En pie por todo/s el/los compartiimento/s
+
+STR_TRAM_PARAM_NAME                                     :Tipo de Carretera del Metro
+STR_TRAM_PARAM_DESC                                     :Determina si el Metro son los Vehículos de carretera normales o los Tranvías.
+
+STR_ROADVEHICLES                                        :Vehículos de carretera normales
+STR_TRAMS                                                       :Tranvías
+
+STR_NAME_TUBE_GATE                                      :Metro Gate
+STR_NAME_TUBE_NEW_WORKS                         :Metro New Works
+STR_NAME_TUBE_VICTORIA                          :Metro Victoria
+STR_NAME_TUBE_ADTRANZ                           :Metro Adtranz
+
+STR_NAME_SUBWAY_SHINKU_EKI                                     :Metro de dos pisos Shinkū-eki
+
+STR_TUBE_PURCHASE_TEXT                          :{}Disponible en conjunto de 2 a 8 vagones.{}La capacidad mostrada es la correspondiente al vehículo con 8 vagones.
+
+
+STR_SUBTYPE_LENGTH_2                            :(2 Vagones)
+STR_SUBTYPE_LENGTH_3                            :(3 Vagones)
+STR_SUBTYPE_LENGTH_4                            :(4 Vagones)
+STR_SUBTYPE_LENGTH_5                            :(5 Vagones)
+STR_SUBTYPE_LENGTH_6                            :(6 Vagones)
+STR_SUBTYPE_LENGTH_7                            :(7 Vagones)
+STR_SUBTYPE_LENGTH_8                            :(8 Vagones)

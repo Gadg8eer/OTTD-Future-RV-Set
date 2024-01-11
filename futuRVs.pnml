@@ -1,4 +1,39 @@
-/* IH_Qicksilver 6.1 will dummy out several locomotives. Dummied out locos will return when Iron Horse 2.0 is released. Cargo Sprinter will return because the Iron Horse Sprinter wasn't a dual-headed locomotive. */
 #include "src/00_header.pnml"
-#include "src/01_autobus.pnml"
-#include "src/02_hoverv.pnml"
+<<<<<<< Updated upstream
+#include "src/01_subway-metro.pnml"
+#include "src/02_pneumetro.pnml"
+#include "src/03_autobus.pnml"
+#include "src/04_vactube.pnml"
+#include "src/05_hoverv.pnml"
+=======
+#include "src/01_cargorefits.pnml"
+#include "src/metro/00_subway-metro.pnml"
+#include "src/invismetro/01_pneumetro.pnml"
+#include "src/ogfx-mars-ext/00_templates_ogfxmars.pnml"
+#include "src/ogfx-mars-ext/1a_halftrack_item.pnml"
+#include "src/ogfx-mars-ext/1b_halftrack_gfx.pnml"
+#include "src/ogfx-mars-ext/2a_marstanker_item.pnml"
+#include "src/ogfx-mars-ext/2b_marstanker_gfx.pnml"
+#include "src/smartransit/00_smartemplate.pnml"
+#include "src/smartransit/00_autobus.pnml"
+#include "src/invismetro/02_vactube.pnml"
+#include "src/hover/00_hoverv.pnml"
+
+//GTR-10
+//#include "src/0Steampunk/steampunk_Mark1_item.pnml"
+//#include "src/0Steampunk/steampunk_Mark1_graphics.pnml"
+
+//LiOX
+//#include "jetretro_LiOX_item.pnml"
+//#include "jetretro_LiOX_graphics.pnml"
+>>>>>>> Stashed changes
+
+// Individual vehicle #includes, entails spritesets, vehicle-specific switches, and their item blocks.
+
+//#include "src/roadtypes.pnml"
+//#include "src/tram_1903_tube_gate.pnml"
+//#include "src/tram_1938_tube_new_works.pnml"
+//#include "src/tram_1967_tube_victoria.pnml"
+//#include "src/tram_1992_tube_adtranz.pnml"
+//#include "src/tram_2027_subway_?.pnml"
+//#include "src/tram_2042_subway_shinku-eki.pnml"

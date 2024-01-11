@@ -1,0 +1,35 @@
+##grflangid 0x35
+##plural 0
+
+STR_GRF_NAME                                            :Fake Subways
+STR_GRF_DESCRIPTION                                     :Lisää "metroja", jotka ovat oikeastaan ajoneuvoja, jotka esiintyvät varjoina simuloiden teiden alla kulkevia metroja. Saadaksesi lisää tietoa, lue readme tai käy alla olevassa sivustossa.
+STR_GRF_WEBSITE                                         :http://www.tt-forums.net/viewtopic.php?f=26&amp;t=56780
+
+STR_CAPACITY_PARAM_NAME                         :Ajoneuvojen kapasiteetit
+STR_CAPACITY_PARAM_DESC                         :Määritä käyttävätkö metroyksiköt istumapaikkojen, vai sekä istumapaikkojen että seisomapaikkojen mukaista kapasiteettia.
+STR_CAPACITY_PARAM_SEATED                       :Vain istumapaikat
+STR_CAPACITY_PARAM_STANDING                     :Istuma- ja seisomapaikat
+
+STR_TRAM_PARAM_NAME                                     :Metron tietyyppi
+STR_TRAM_PARAM_DESC                                     :Määrittää, ovatko metrot tavallisia ajoneuvoja vai raitiovaunuja.
+
+STR_ROADVEHICLES                                        :Tavallisia ajoneuvoja
+STR_TRAMS                                                       :Raitiovaunuja
+
+STR_NAME_TUBE_GATE                                      :Gate metro
+STR_NAME_TUBE_NEW_WORKS                         :New Works metro
+STR_NAME_TUBE_VICTORIA                          :Victoria metro
+STR_NAME_TUBE_ADTRANZ                           :Adtranz metro
+
+STR_NAME_SUBWAY_SHINKU_EKI                                     :Shinkū-eki kaksikerroksinen metro
+
+STR_TUBE_PURCHASE_TEXT                          :{}Saatavilla 2-8 vaunun ykskikköinä.{}Tilavuus on 8 vaunulle.
+
+
+STR_SUBTYPE_LENGTH_2                            :(2 vaunua)
+STR_SUBTYPE_LENGTH_3                            :(3 vaunua)
+STR_SUBTYPE_LENGTH_4                            :(4 vaunua)
+STR_SUBTYPE_LENGTH_5                            :(5 vaunua)
+STR_SUBTYPE_LENGTH_6                            :(6 vaunua)
+STR_SUBTYPE_LENGTH_7                            :(7 vaunua)
+STR_SUBTYPE_LENGTH_8                            :(8 vaunua)

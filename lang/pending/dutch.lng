@@ -1,0 +1,35 @@
+##grflangid 0x1f
+##plural 0
+
+STR_GRF_NAME                                            :Nepmetro's
+STR_GRF_DESCRIPTION                                     :Voegt "metro's" toe, welke eigenlijk wegvoertuigen zijn die getoond worden als schaduwen, om te simuleren dat er metro's onder de wegen rijden. Voor gedetailleerde informatie, bekijk de readme of bezoek de URL hieronder.
+STR_GRF_WEBSITE                                         :http://www.tt-forums.net/viewtopic.php?f=26&t=56780
+
+STR_CAPACITY_PARAM_NAME                         :Voertuigcapaciteiten
+STR_CAPACITY_PARAM_DESC                         :Bepaal of de capaciteit van metrovoertuigen overeen komt met alleen zitplaatsen of ook staanplaatsen (waardoor de capaciteit een stuk hoger is).
+STR_CAPACITY_PARAM_SEATED                       :Zitplaatsen
+STR_CAPACITY_PARAM_STANDING                     :Zit- en staanplaatsen
+
+STR_TRAM_PARAM_NAME                                     :Metro's moeten zijn
+STR_TRAM_PARAM_DESC                                     :Bepaal of metrovoertuigen normale wegvoertuigen of trams zijn.
+
+STR_ROADVEHICLES                                        :Normale wegvoertuigen
+STR_TRAMS                                                       :Trams
+
+STR_NAME_TUBE_GATE                                      :Gate Tube
+STR_NAME_TUBE_NEW_WORKS                         :New Works Tube
+STR_NAME_TUBE_VICTORIA                          :Victoria Tube
+STR_NAME_TUBE_ADTRANZ                           :Adtranz Tube
+
+STR_NAME_SUBWAY_SHINKU_EKI                                     :Shinkū-eki Double-decker Subway
+
+STR_TUBE_PURCHASE_TEXT                          :{}Beschikbaar in 2-8 wagen samenstellingen.{}Getoonde capaciteit is voor 8-wagen samenstelling.
+
+
+STR_SUBTYPE_LENGTH_2                            :(2 Wagens)
+STR_SUBTYPE_LENGTH_3                            :(3 Wagens)
+STR_SUBTYPE_LENGTH_4                            :(4 Wagens)
+STR_SUBTYPE_LENGTH_5                            :(5 Wagens)
+STR_SUBTYPE_LENGTH_6                            :(6 Wagens)
+STR_SUBTYPE_LENGTH_7                            :(7 Wagens)
+STR_SUBTYPE_LENGTH_8                            :(8 Wagens)

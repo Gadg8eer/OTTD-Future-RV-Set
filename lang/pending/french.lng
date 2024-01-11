@@ -1,0 +1,36 @@
+##grflangid 0x03
+##plural 2
+##gender m m2 f
+
+STR_GRF_NAME                                            :Métros Factices
+STR_GRF_DESCRIPTION                                     :Ajoute au jeu des "métros", qui sont en fait des véhicules routiers ou des trams qui apparaissent en transparence, pour simuler un réseau de métro sous les rues. Pour plus d'informations, voir le 'readme' ou visiter l'URL ci-dessous.
+STR_GRF_WEBSITE                                         :http://www.tt-forums.net/viewtopic.php?f=26&amp;t=56780
+
+STR_CAPACITY_PARAM_NAME                         :Capacités des véhicules
+STR_CAPACITY_PARAM_DESC                         :Détermine si la capacité des véhicules ne tient compte que des places assises, ou si les places debout sont incluses (capacité plus élevée).
+STR_CAPACITY_PARAM_SEATED                       :Places assises uniquement
+STR_CAPACITY_PARAM_STANDING                     :Places assises et debout
+
+STR_TRAM_PARAM_NAME                                     :Métros simulés par{NBSP}:
+STR_TRAM_PARAM_DESC                                     :Détermine si les métros sont simulés par des véhicules routiers ou par des trams.
+
+STR_ROADVEHICLES                                        :des Véhicules routiers standard
+STR_TRAMS                                                       :des Trams
+
+STR_NAME_TUBE_GATE                                      :Gate Tube
+STR_NAME_TUBE_NEW_WORKS                         :New Works Tube
+STR_NAME_TUBE_VICTORIA                          :Victoria Tube
+STR_NAME_TUBE_ADTRANZ                           :Adtranz Tube
+
+STR_NAME_SUBWAY_SHINKU_EKI                                     :Métro Shinkū-eki 2 niveaux
+
+STR_TUBE_PURCHASE_TEXT                          :{}Disponible en rames de 2 à 8 voitures.{}La capacité indiquée est celle d'une rame de 8 voitures.
+
+
+STR_SUBTYPE_LENGTH_2                            :(2 Voitures)
+STR_SUBTYPE_LENGTH_3                            :(3 Voitures)
+STR_SUBTYPE_LENGTH_4                            :(4 Voitures)
+STR_SUBTYPE_LENGTH_5                            :(5 Voitures)
+STR_SUBTYPE_LENGTH_6                            :(6 Voitures)
+STR_SUBTYPE_LENGTH_7                            :(7 Voitures)
+STR_SUBTYPE_LENGTH_8                            :(8 Voitures)

@@ -1,0 +1,102 @@
+/* This is the template. When you're more experienced, you can try editing this, but if it's all gibberish then just modify "FooBarTramVehicleTemplates.png" in GIMP to create a vehicle. Each template below refers to a specific vehicle length, so make sure to put the vehicle sprites in the right part of "FooBarTramVehicleTemplates.png" when drawing a vehicle. */
+
+template template_bus_32(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         20,         10,        28,           -4,         -11]
+    [0+ 20,     20,         26,        28,          -17,         -14]
+    [0+ 50,     20,         36,        28,          -18,         -20]
+    [0+ 90,     20,         26,        28,           -9,         -15]
+    [0+120,     20,         10,        28,           -4,         -11]
+    [0+140,     20,         26,        28,          -16,         -16]
+    [0+170,     20,         36,        28,          -18,         -20]
+    [0+210,     20,         26,        28,           -8,         -16]
+}
+
+template template_bus_28(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         60,         10,        28,           -4,         -11]
+    [0+ 20,     60,         26,        28,          -17,         -14]
+    [0+ 50,     60,         36,        28,          -20,         -20]
+    [0+ 90,     60,         26,        28,           -9,         -15]
+    [0+120,     60,         10,        28,           -4,         -13]
+    [0+140,     60,         26,        28,          -16,         -16]
+    [0+170,     60,         36,        28,          -16,         -20]
+    [0+210,     60,         26,        28,           -8,         -16]
+}
+
+template template_bus_24(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         100,        10,        28,           -4,         -11]
+    [0+ 20,     100,        26,        28,          -17,         -14]
+    [0+ 50,     100,        36,        28,          -22,         -20]
+    [0+ 90,     100,        26,        28,           -9,         -15]
+    [0+120,     100,        10,        28,           -4,         -15]
+    [0+140,     100,        26,        28,          -16,         -16]
+    [0+170,     100,        36,        28,          -14,         -20]
+    [0+210,     100,        26,        28,           -8,         -16]
+}
+
+template template_bus_20(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         140,        10,        28,           -4,         -10]
+    [0+ 20,     140,        26,        28,          -17,         -14]
+    [0+ 50,     140,        36,        28,          -24,         -20]
+    [0+ 90,     140,        26,        28,           -9,         -15]
+    [0+120,     140,        10,        28,           -4,         -16]
+    [0+140,     140,        26,        28,          -16,         -16]
+    [0+170,     140,        36,        28,          -12,         -20]
+    [0+210,     140,        26,        28,           -8,         -16]
+}
+
+template template_bus_16(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         180,        10,        28,           -4,          -9]
+    [0+ 20,     180,        26,        28,          -17,         -14]
+    [0+ 50,     180,        36,        28,          -26,         -20]
+    [0+ 90,     180,        26,        28,           -9,         -15]
+    [0+120,     180,        10,        28,           -4,         -17]
+    [0+140,     180,        26,        28,          -16,         -16]
+    [0+170,     180,        36,        28,          -10,         -20]
+    [0+210,     180,        26,        28,           -8,         -16]
+}
+
+template template_bus_12(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         220,        10,        28,           -4,          -8]
+    [0+ 20,     220,        26,        28,          -17,         -14]
+    [0+ 50,     220,        36,        28,          -28,         -20]
+    [0+ 90,     220,        26,        28,           -9,         -15]
+    [0+120,     220,        10,        28,           -4,         -18]
+    [0+140,     220,        26,        28,          -16,         -16]
+    [0+170,     220,        36,        28,           -8,         -20]
+    [0+210,     220,        26,        28,           -8,         -16]
+}
+
+template template_bus_8(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         260,        10,        28,           -4,          -7]
+    [0+ 20,     260,        26,        28,          -17,         -14]
+    [0+ 50,     260,        36,        28,          -30,         -20]
+    [0+ 90,     260,        26,        28,           -9,         -15]
+    [0+120,     260,        10,        28,           -4,         -19]
+    [0+140,     260,        26,        28,          -16,         -16]
+    [0+170,     260,        36,        28,           -6,         -20]
+    [0+210,     260,        26,        28,           -8,         -16]
+}
+
+template template_bus_4(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         300,        10,        28,           -4,          -6]
+    [0+ 20,     300,        26,        28,          -17,         -14]
+    [0+ 50,     300,        36,        28,          -32,         -20]
+    [0+ 90,     300,        26,        28,           -9,         -15]
+    [0+120,     300,        10,        28,           -4,         -20]
+    [0+140,     300,        26,        28,          -16,         -16]
+    [0+170,     300,        36,        28,           -4,         -20]
+    [0+210,     300,        26,        28,           -8,         -16]
+}
+
+template template_purchase(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [0,         340,        50,        12,          -25,          -6]
+}

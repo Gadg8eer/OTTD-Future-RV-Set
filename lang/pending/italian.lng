@@ -1,0 +1,37 @@
+##grflangid 0x27
+##plural 0
+##gender m ma f
+##case fp fs mp ms
+
+STR_GRF_NAME                                            :Metropolitane fasulle
+STR_GRF_DESCRIPTION                                     :Aggiunge la "metropolitana", in realtà composta da veicoli stradali che appaiono come ombre per simulare una linea di metropolitana sotto le strade. Per ulteriori informazioni, leggere il "readme" o visitate il sito web qui sotto.
+STR_GRF_WEBSITE                                         :http://www.tt-forums.net/viewtopic.php?f=26&amp;t=56780
+
+STR_CAPACITY_PARAM_NAME                         :Capacità dei veicoli
+STR_CAPACITY_PARAM_DESC                         :Determina la capacità dei treni della metropolitana: solo posti a sedere, o posti a sedere + posti in piedi (quest'ultima molto superiore).
+STR_CAPACITY_PARAM_SEATED                       :Solo posti a sedere
+STR_CAPACITY_PARAM_STANDING                     :Posti a sedere + posti in piedi
+
+STR_TRAM_PARAM_NAME                                     :Tipo di veicoli
+STR_TRAM_PARAM_DESC                                     :Sceglie se far comparire la metropolitana come veicoli stradali normali, o come tram.
+
+STR_ROADVEHICLES                                        :Veicoli stradali normali
+STR_TRAMS                                                       :Tram
+
+STR_NAME_TUBE_GATE                                      :Metropolitana Gate
+STR_NAME_TUBE_NEW_WORKS                         :Metropolitana New Works
+STR_NAME_TUBE_VICTORIA                          :Metropolitana Victoria
+STR_NAME_TUBE_ADTRANZ                           :Metropolitana Adtranz
+
+STR_NAME_SUBWAY_SHINKU_EKI                                     :Metropolitana a due piani Shinkū-eki
+
+STR_TUBE_PURCHASE_TEXT                          :{}Disponibile in composizioni da 2-8 carrozze.{}La capacità indicata è per 8 carrozze.
+
+
+STR_SUBTYPE_LENGTH_2                            :(2 carrozze)
+STR_SUBTYPE_LENGTH_3                            :(3 carrozze)
+STR_SUBTYPE_LENGTH_4                            :(4 carrozze)
+STR_SUBTYPE_LENGTH_5                            :(5 carrozze)
+STR_SUBTYPE_LENGTH_6                            :(6 carrozze)
+STR_SUBTYPE_LENGTH_7                            :(7 carrozze)
+STR_SUBTYPE_LENGTH_8                            :(8 carrozze)

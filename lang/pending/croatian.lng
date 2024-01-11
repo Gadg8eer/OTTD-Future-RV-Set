@@ -1,0 +1,37 @@
+##grflangid 0x38
+##plural 6
+##gender male female middle
+##case aku dat gen ins lok nom vok
+
+STR_GRF_NAME                                            :Lažni metroi
+STR_GRF_DESCRIPTION                                     :Dodaje "metroe" koji su zapravo cestovna vozila koja se pojavljuju kao sjene da bi se simulirali metroi koji voze ispod cesta. Za detaljnije informacije pogledajte readme ili posjetite web stranicu navedenu ispod.
+STR_GRF_WEBSITE                                         :http://www.tt-forums.net/viewtopic.php?f=26&amp;t=56780
+
+STR_CAPACITY_PARAM_NAME                         :Kapacitet vozila
+STR_CAPACITY_PARAM_DESC                         :Određuje da li kapacitet vlakova metroa odražavaju kapacitet sjedećih mjesta ili kapacitet sjedećih i stajaćih mjesta (koji je mnogo viši).
+STR_CAPACITY_PARAM_SEATED                       :Samo sjedeća mjesta
+STR_CAPACITY_PARAM_STANDING                     :Sjedeća + stajaća mjesta
+
+STR_TRAM_PARAM_NAME                                     :Vrsta podzemne ceste
+STR_TRAM_PARAM_DESC                                     :Određuje da li su metroi obična cestovna vozila ili tramvaji.
+
+STR_ROADVEHICLES                                        :Obična cestovna vozila
+STR_TRAMS                                                       :Tramvaji
+
+STR_NAME_TUBE_GATE                                      :Gate metro
+STR_NAME_TUBE_NEW_WORKS                         :New Works metro
+STR_NAME_TUBE_VICTORIA                          :Victoria metro
+STR_NAME_TUBE_ADTRANZ                           :Adtranz metro
+
+STR_NAME_SUBWAY_SHINKU_EKI                                     :Shinkū-eki metro na kat
+
+STR_TUBE_PURCHASE_TEXT                          :{}Dostupno u kompozicijama od 2-8 vagona.{}Prikazani kapacitet je za kompoziciju od 8 vagona.
+
+
+STR_SUBTYPE_LENGTH_2                            :(2 vagona)
+STR_SUBTYPE_LENGTH_3                            :(3 vagona)
+STR_SUBTYPE_LENGTH_4                            :(4 vagona)
+STR_SUBTYPE_LENGTH_5                            :(5 vagona)
+STR_SUBTYPE_LENGTH_6                            :(6 vagona)
+STR_SUBTYPE_LENGTH_7                            :(7 vagona)
+STR_SUBTYPE_LENGTH_8                            :(8 vagona)

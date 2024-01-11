@@ -3,8 +3,8 @@ grf {
     grfid: "G8R\05";
     name: string(STR_GRF_NAME);
     desc: string(STR_GRF_DESCRIPTION);
-    version: 11;
-    min_compatible_version: 11;
+    version: 12;
+    min_compatible_version: 12;
 	param {
 		param_disable_bus {
 			type: bool;
@@ -19,7 +19,251 @@ grf {
 			desc: string(STR_PARAM_DESC_UNIV);
 		}
 	}
+	param {
+		param_capacities {
+			name: string(STR_CAPACITY_PARAM_NAME);
+			desc: string(STR_CAPACITY_PARAM_DESC);
+			min_value: 0;
+			max_value: 1;
+			def_value: 1;
+			names: {
+				0: string(STR_CAPACITY_PARAM_SEATED);
+				1: string(STR_CAPACITY_PARAM_STANDING);
+			};
+		}
+	}
+	param {
+		param_RV0_or_tram1 {
+			name: string(STR_TRAM_PARAM_NAME);
+			desc: string(STR_TRAM_PARAM_DESC);
+			min_value: 0;
+			max_value: 1;
+			def_value: 0;
+			names: {
+				0: string(STR_ROADVEHICLES);
+				1: string(STR_TRAMS);
+			};
+		}
+	}
 }
+
+template template_tram_28(x, y) {
+    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
+    [x,         y,          10,        28,           -4,         -11+2]
+    [x+ 20,     y,          26,        28,          -17,         -14+2]
+    [x+ 50,     y,          36,        28,          -20,         -20+2]
+    [x+ 90,     y,          26,        28,           -9,         -15+2]
+    [x+120,     y,          10,        28,           -4,         -13+2]
+    [x+140,     y,          26,        28,          -16,         -16+2]
+    [x+170,     y,          36,        28,          -16,         -20+2]
+    [x+210,     y,          26,        28,           -12,        -16+2]
+}
+
+basecost {
+   	PR_RUNNING_ROADVEH :     2;
+	PR_BUILD_VEHICLE_ROAD :  2;
+}
+
+
+// --- Sprite sets
+
+// Underground sprites
+spriteset(underground_vehicle, "gfx/Shadows.png") {
+	template_tram_28(0, 60)
+}
+
+alternative_sprites (underground_vehicle, ZOOM_LEVEL_NORMAL, BIT_DEPTH_32BPP, "gfx/Shadows32.png") {
+	template_tram_28(0, 60)
+}
+
+spriteset(invisible, "gfx/empty.png") {
+	[0, 0]
+}
+
+
+// --- BEGIN VEHICLE-AGNOSTIC SWITCHES ---
+
+// Cargo subtypes -- no. of carriages
+
+switch(FEAT_ROADVEHS, SELF, tube_cargo_subtype_text, cargo_subtype) {
+    0: return string(STR_SUBTYPE_LENGTH_2);
+    1: return string(STR_SUBTYPE_LENGTH_3);
+	2: return string(STR_SUBTYPE_LENGTH_4);
+	3: return string(STR_SUBTYPE_LENGTH_5);
+	4: return string(STR_SUBTYPE_LENGTH_6);
+	5: return string(STR_SUBTYPE_LENGTH_7);
+	6: return string(STR_SUBTYPE_LENGTH_8);
+    return CB_RESULT_NO_TEXT;
+}
+
+
+// Length switches
+
+switch(FEAT_ROADVEHS, SELF, shorten_2_carriage_vehicle, position_in_consist) {
+    /* Make carriages 3-8 invisible, extend carriage 2  */
+	0: return 7;
+	1..7: return 1;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, shorten_3_carriage_vehicle, position_in_consist) {
+    /* Make carriages 4-8 invisible, extend carriage 3  */
+	0..1: return 7;
+    2..7: return 1;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, shorten_4_carriage_vehicle, position_in_consist) {
+    /* Make carriages 5-8 invisible, extend carriage 4  */
+	0..2: return 7;
+	3..7: return 1;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, shorten_5_carriage_vehicle, position_in_consist) {
+    /* Make carriages 6-8 invisible, extend carriage 5  */
+	0..3: return 7;
+	4..7: return 1;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, shorten_6_carriage_vehicle, position_in_consist) {
+    /* Make carriages 7-8 invisible, extend carriage 6  */
+	0..4: return 7;
+	5..7: return 1;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, shorten_7_carriage_vehicle, position_in_consist) {
+    /* Make carriage 8 invisible, extend carriage 7  */
+	0..5: return 7;
+	6..7: return 1;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, tube_shorten_vehicles, cargo_subtype) {
+    0: shorten_2_carriage_vehicle;
+	1: shorten_3_carriage_vehicle;
+	2: shorten_4_carriage_vehicle;
+	3: shorten_5_carriage_vehicle;
+	4: shorten_6_carriage_vehicle;
+	5: shorten_7_carriage_vehicle;
+	// 8-carriage vehicle needs no shortening
+    return 7;
+}
+
+
+// Capacity switches
+
+switch(FEAT_ROADVEHS, SELF, tube_2_carriage_capacity_switch, position_in_consist) {
+	0..1: return 40+(param_capacities*60);
+    2..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_3_carriage_capacity_switch, position_in_consist) {
+	0..2: return 40+(param_capacities*60);
+	3..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_4_carriage_capacity_switch, position_in_consist) {
+	0..3: return 40+(param_capacities*60);
+	4..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_5_carriage_capacity_switch, position_in_consist) {
+	0..4: return 40+(param_capacities*60);
+	5..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_6_carriage_capacity_switch, position_in_consist) {
+	0..5: return 40+(param_capacities*60);
+	6..7: return 0;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_7_carriage_capacity_switch, position_in_consist) {
+	0..6: return 40+(param_capacities*60);
+	7: return 0;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, tube_cargo_capacities_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: tube_2_carriage_capacity_switch;
+    1: tube_3_carriage_capacity_switch;
+    2: tube_4_carriage_capacity_switch;
+	3: tube_5_carriage_capacity_switch;
+	4: tube_6_carriage_capacity_switch;
+	5: tube_7_carriage_capacity_switch;
+	// 8-carriage vehicles need no reduction in capacity
+	return 40+(param_capacities*60);
+}
+
+
+// Underground Invisibility switches
+
+switch(FEAT_ROADVEHS, SELF, tube_2_carriage_graphics_switch, position_in_consist) {
+	0..1: underground_vehicle;
+	2..7: invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_3_carriage_graphics_switch, position_in_consist) {
+	0..2: underground_vehicle;
+	3..7: invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_4_carriage_graphics_switch, position_in_consist) {
+	0..3: underground_vehicle;
+	4..7: invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_5_carriage_graphics_switch, position_in_consist) {
+	0..4: underground_vehicle;
+	5..7: invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_6_carriage_graphics_switch, position_in_consist) {
+	0..5: underground_vehicle;
+	6..7: invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_7_carriage_graphics_switch, position_in_consist) {
+	0..6: underground_vehicle;
+	7: invisible;
+	return CB_FAILED;
+}
+
+switch(FEAT_ROADVEHS, SELF, tube_8_carriage_graphics_switch, position_in_consist) {
+	0..7: underground_vehicle;
+	return CB_FAILED;
+}
+
+
+switch(FEAT_ROADVEHS, SELF, underground_tube_GFX_switch, cargo_subtype) {
+    /* Pass cargo subtype to next switch  */
+	0: tube_2_carriage_graphics_switch;
+    1: tube_3_carriage_graphics_switch;
+    2: tube_4_carriage_graphics_switch;
+	3: tube_5_carriage_graphics_switch;
+	4: tube_6_carriage_graphics_switch;
+	5: tube_7_carriage_graphics_switch;
+	6: tube_8_carriage_graphics_switch;
+	return CB_FAILED;
+}
+
+
+// --- END VEHICLE AGNOSTIC SWITCHES ---
 
 /*
  * *********************
@@ -29,43 +273,622 @@ grf {
  
 /* This is the Road Type Table. You can add roadtype labels (such as ROAD) to extend compatibility. */
 
+// == SAMPLE ==
+/*
 roadtypetable {
  	//ROAD,
-	RAaN, RAAN, RABN, RACN, RAcN,
-	RBaN, RBBN, RBBN, RBCN, RBcN,
-	RCaN, RCAN, RCBN,// RCCN, RCcN,
-	RDaN, RDAN, RDBN,// RDCN, RDcN,
-	REaN, REAN,// REBN, RECN, REcN,
+	RAaN, RAAN, RABN, RAbN, RACN, RAcN,
+	RBaN, RBBN, RBBN, RBbN, RBCN, RBcN,
+	RCaN, RCAN, RCBN,// RCbN, RCCN, RCcN,
+	RDaN, RDAN, RDBN,// RDbN, RDCN, RDcN,
+	REaN, REAN,// REBN, REbN, RECN, REcN,
 	//ELRD,
-	RAaE, RAAE, RABE, RACE, RAcE,
-	RBaE, RBAE, RBBE, RBCE, RBcE,
-	RCaE, RCAE, RCBE,// RCCE, RCcE,
-	RDaE, RDAE, RDBE,// RDCE, RDcE,
-	REaE, REAE,// REBE, RECE, REcE,
+	RAaE, RAAE, RABE, RAbE, RACE, RAcE,
+	RBaE, RBAE, RBBE, RBbE, RBCE, RBcE,
+	RCaE, RCAE, RCBE,// RCbE, RCCE, RCcE,
+	RDaE, RDAE, RDBE,// RDbE, RDCE, RDcE,
+	REaE, REAE,// REBE, REbE, RECE, REcE,
 	//SMTS, SMRT,
-	RAaI, RAAI, RABI, RACI, RAcI,
-	RBaI, RBAI, RBBI, RBCI, RBcI,
-	RCaI, RCAI, RCBI,// RCCI, RCcI,
-	RDaI, RDAI,// RDBI, RDCI, RDcI,
-	REaI, REAI,// REBI, RECI, REcI,
+	RAaI, RAAI, RABI, RAbI, RACI, RAcI,
+	RBaI, RBAI, RBBI, RBbI, RBCI, RBcI,
+	RCaI, RCAI, RCBI,// RCbI, RCCI, RCcI,
+	RDaI, RDAI,// RDBI, RDbI, RDCI, RDcI,
+	REaI, REAI,// REBI, REbI, RECI, REcI,
 	//BUSN,
-	GAaN, GAAN, GABN, GACN, GAcN,
-	GBaN, GBAN, GBBN, GBCN, GBcN,
-	GCaN, GCAN, GCBN,// GCCN, GCcN,
-	GDaN, GDAN, GDBN,// GDCN, GDcN,
-	GEaN, GEAN,// GEBN, GECN, GEcN,
+	GAaN, GAAN, GABN, GAbN, GACN, GAcN,
+	GBaN, GBAN, GBBN, GBbN, GBCN, GBcN,
+	GCaN, GCAN, GCBN,// GCbN, GCCN, GCcN,
+	GDaN, GDAN, GDBN,// GDbN, GDCN, GDcN,
+	GEaN, GEAN,// GEBN, GEbN, GECN, GEcN,
 	//BUSE,
-	GAaE, GAAE, GABE, GACE, GAcE,
-	GBaE, GBAE, GBBE, GBCE, GBcE,
-	GCaE, GCAE, GCBE,// GCCE, GCcE,
-	GDaE, GDAE, GDBE,// GDCE, GDcE,
-	GEaE, GEAE,// GEBE, GECE, GEcE,
+	GAaE, GAAE, GABE, GAbE, GACE, GAcE,
+	GBaE, GBAE, GBBE, GBbE, GBCE, GBcE,
+	GCaE, GCAE, GCBE,// GCbE, GCCE, GCcE,
+	GDaE, GDAE, GDBE,// GDbE, GDCE, GDcE,
+	GEaE, GEAE,// GEbE, GEBE, GECE, GEcE,
 	//BUSI,
-	GAaI, GAAI, GABI, GACI, GAcI,
-	GBaI, GBAI, GBBI, GBCI, GBcI,
-	GCaI, GCAI, GCBI,// GCCI, GCcI,
-	GDaI, GDAI,// GDBI, GDCI, GDcI,
-	GEaI, GEAI//, GEBI, GECI, GEcI,
+	GAaI, GAAI, GABI, GAbI, GACI, GAcI,
+	GBaI, GBAI, GBBI, GBbI, GBCI, GBcI,
+	GCaI, GCAI, GCBI,// GCbI, GCCI, GCcI,
+	GDaI, GDAI,// GDBI, GDbI, GDCI, GDcI,
+	GEaI, GEAI//, GEBI, GEbI, GECI, GEcI,
+}
+*/
+
+roadtypetable {
+	// -- Roads --
+	ROAD,
+	//RAAN, RABN, RAbN, RACN,
+	ELRD,
+	//RAAE, RABE, RAbE, RACE,
+	// -- Self-Driving Vehicles --
+	AUTO, Auto,
+	AUTT, AutT,
+	//PAAS, PABS, PAbS, PACS,
+	//PAAS, PABS, PAbS, PACS,
+	//PBAS, PBBS, PBbS, PBCS,
+	//PCAS, PCBS, PCbS, PCCS,
+	//PDAS, PDBS, PDbS, PDCS,
+	//PEAS, PEBS, PEbS, PECS,
+	//RAAS, RABS, RAbS, RACS,
+	//RAAS, RABS, RAbS, RACS,
+	//RBAS, RBBS, RBbS, RBCS,
+	//RCAS, RCBS, RCbS, RCCS,
+	//RDAS, RDBS, RDbS, RDCS,
+	//REAS, REBS, REbS, RECS,
+	PABE, PAbE,
+	//PABP,
+	PAbP,
+	// -- Curb-Guided Busways --
+	//BUSN,
+	//GAAN, GABN, GAbN, GACN,
+	//GBAN, GBBN, GBbN, GBCN,
+	//GCAN, GCBN, GCbN, GCCN,
+	//GDAN, GDBN, GDbN, GDCN,
+	//GEAN, GEBN, GEbN, GECN,
+	//BUSE,
+	//GAAE, GABE, GAbE, GACE,
+	//GBAE, GBBE, GBbE, GBCE,
+	//GCAE, GCBE, GCbE, GCCE,
+	//GDAE, GDBE, GDbE, GDCE,
+	//GEAE, GEbE, GEBE, GECE,
+	//BUSI,
+	//GAAI, GABI, GAbI, GACI,
+	//GBAI, GBBI, GBbI, GBCI,
+	//GCAI, GCBI, GCbI, GCCI,
+	//GDAI, GDBI, GDbI, GDCI,
+	//GEAI, GEBI, GEbI, GECI,
+	// -- Pipeline Pumps --
+	Pipe//,
+}
+
+//ROAD with Low Clearance
+item(FEAT_ROADTYPES, item_road) {
+	property {
+		label:							"ROAD";
+		powered_roadtype_list:			[
+										"RAAN", "RABN", "RACN",
+										"RAAE", "RABE", "RACE",
+										"RAAG", "RABG", "RACG",
+										"RAAZ", "RABZ", "RACZ",
+										"RAAI", "RABI", "RACI",
+										"RAAS", "RABS", "RACS",
+										"RAAX", "RABX", "RACX",
+										"RAAx", "RABx", "RACx",
+										"RAAi", "RABi", "RACi",
+										"RAAL", "RABL", "RACL",
+										"RAAV", "RABV", "RACV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_TOWN_BUILD, ROADTYPE_FLAG_HIDDEN);
+		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		roadtype_collision_mode:		bitmask(ROADTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_ROADTYPES, item_lowclear) {
+	property {
+		label:							"Road";
+		powered_roadtype_list:			[
+												"ROAD",
+										"RAAN", "RABN", "RACN",
+												"RAbN",
+										"RAAE", "RABE", "RACE",
+												"RAbE",
+										"RAAG", "RABG", "RACG",
+												"RAbG",
+										"RAAZ", "RABZ", "RACZ",
+												"RAbZ",
+										"RAAI", "RABI", "RACI",
+												"RAbI",
+										"RAAS", "RABS", "RACS",
+												"RAbS",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"RAAx", "RABx", "RACx",
+												"RAbX",
+										"RAAi", "RABi", "RACi",
+												"RAbi",
+										"RAAL", "RABL", "RACL",
+												"RAbL",
+										"RAAV", "RABV", "RACV",
+												"RAbV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_NO_LEVEL_CROSSING);
+		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, ROADTYPE_EXTRA_FLAG_NO_TOWN_MODIFY);
+		roadtype_collision_mode:		bitmask(ROADTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+
+//Pipeline Pumps
+item(FEAT_ROADTYPES, item_pipeline) {
+	property {
+		label:							"Pipe";
+		powered_roadtype_list:			[
+										"Road",
+										"RAaN", "RAAN", "RABN", "RACN", "RAcN",
+														"RAbN",
+										"RAaE", "RAAE", "RABE", "RACE", "RAcE",
+														"RAbE",
+										"RAaG", "RAAG", "RABG", "RACG", "RAcG",
+														"RAbG",
+										"RAaZ", "RAAZ", "RABZ", "RACZ", "RAcZ",
+														"RAbZ",
+										"RAaI", "RAAI", "RABI", "RACI", "RAcI",
+														"RAbI",
+										"RAaS", "RAAS", "RABS", "RACS", "RAcS",
+														"RAbS",
+										"RAaX", "RAAX", "RABX", "RACX", "RAcX",
+														"RAbX",
+										"RAax", "RAAx", "RABx", "RACx", "RAcx",
+														"RAbx",
+										"RAai", "RAAi", "RABi", "RACi", "RAci",
+														"RAbi",
+										"RAaL", "RAAL", "RABL", "RACL", "RAcL",
+														"RAbL",
+										"RAaP", "RAAP", "RABP", "RACP", "RAcP",
+														"RAbP",
+										"RAaS", "RAAS", "RABS", "RACS", "RAcS",
+														"RAbS",
+										"RAaV", "RAAV", "RABV", "RACV", "RAcV",
+														"RAbV",
+										"PAaN", "PAAN", "PABN", "PACN", "PAcN",
+														"PAbN",
+										"PAaE", "PAAE", "PABE", "PACE", "PAcE",
+														"PAbE",
+										"PAaG", "PAAG", "PABG", "PACG", "PAcG",
+														"PAbG",
+										"PAaZ", "PAAZ", "PABZ", "PACZ", "PAcZ",
+														"PAbZ",
+										"PAaI", "PAAI", "PABI", "PACI", "PAcI",
+														"PAbI",
+										"PAaS", "PAAS", "PABS", "PACS", "PAcS",
+														"PAbS",
+										"PAaX", "PAAX", "PABX", "PACX", "PAcX",
+														"PAbX",
+										"PAax", "PAAx", "PABx", "PACx", "PAcx",
+														"PAbx",
+										"PAai", "PAAi", "PABi", "PACi", "PAci",
+														"PAbi",
+										"PAaL", "PAAL", "PABL", "PACL", "PAcL",
+														"PAbL",
+										"PAaP", "PAAP", "PABP", "PACP", "PAcP",
+														"PAbP",
+										"PAaS", "PAAS", "PABS", "PACS", "PAcS",
+														"PAbS",
+										"PAaV", "PAAV", "PABV", "PACV", "PAcV",
+														"PAbV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_NO_LEVEL_CROSSING);
+		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, ROADTYPE_EXTRA_FLAG_NO_TOWN_MODIFY);
+		roadtype_collision_mode:		bitmask(ROADTYPE_COLLISION_MODE_NONE);
+	}
+}
+
+// Self-Driving Road Vehicles
+item(FEAT_ROADTYPES, item_selfdriving_bus_doubledeck) {
+	property {
+		label:							"AUTO";
+		powered_roadtype_list:			[
+										"RAAN", "RABN", "RACN",
+										"RAAE", "RABE", "RACE",
+										"RAAG", "RABG", "RACG",
+										"RAAZ", "RABZ", "RACZ",
+										"RAAI", "RABI", "RACI",
+										"RAAS", "RABS", "RACS",
+										"RAAX", "RABX", "RACX",
+										"RAAx", "RABx", "RACx",
+										"RAAi", "RABi", "RACi",
+										"RAAL", "RABL", "RACL",
+										"RAAS", "RABS", "RACS",
+										"RAAV", "RABV", "RACV",
+										"PAAN", "PABN", "PACN",
+										"PAAE", "PABE", "PACE",
+										"PAAI", "PABI", "PACI",
+										"PAAS", "PABS", "PACS",
+										"PAAX", "PABX", "PACX",
+										"PAAx", "PABx", "PACx",
+										"PAAi", "PABi", "PACi",
+										"PAAL", "PABL", "PACL",
+										"PAAS", "PABS", "PACS",
+										"PAAV", "PABV", "PACV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
+	}
+}
+item(FEAT_ROADTYPES, item_selfdriving_bus_lowclear) {
+	property {
+		label:							"Auto";
+		powered_roadtype_list:			[
+										"RAAN", "RABN", "RAbN", "RACN",
+										"RAAE", "RABE", "RAbE", "RACE",
+										"RAAG", "RABG", "RAbG", "RACG",
+										"RAAZ", "RABZ", "RAbZ", "RACZ",
+										"RAAI", "RABI", "RAbI", "RACI",
+										"RAAS", "RABS", "RAbS", "RACS",
+										"RAAX", "RABX", "RAbX", "RACX",
+										"RAAx", "RABx", "RAbx", "RACx",
+										"RAAi", "RABi", "RAbi", "RACi",
+										"RAAL", "RABL", "RAbL", "RACL",
+										"RAAS", "RABS", "RAbS", "RACS",
+										"RAAV", "RABV", "RAbV", "RACV",
+										"PAAN", "PABN", "PAbN", "PACN",
+										"PAAE", "PABE", "PAbE", "PACE",
+										"PAAG", "PABG", "PAbG", "PACG",
+										"PAAZ", "PABZ", "PAbZ", "PACZ",
+										"PAAI", "PABI", "PAbI", "PACI",
+										"PAAS", "PABS", "PAbS", "PACS",
+										"PAAX", "PABX", "PAbX", "PACX",
+										"PAAx", "PABx", "PAbx", "PACx",
+										"PAAi", "PABi", "PAbi", "PACi",
+										"PAAL", "PABL", "PAbL", "PACL",
+										"PAAS", "PABS", "PAbS", "PACS",
+										"PAAV", "PABV", "PAbV", "PACV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
+	}
+}
+item(FEAT_ROADTYPES, item_selfdriving_truck) {
+	property {
+		label:							"AUTT";
+		powered_roadtype_list:			[
+										"RAAN", "RABN", "RACN",
+										"RAAE", "RABE", "RACE",
+										"RAAG", "RABG", "RACG",
+										"RAAZ", "RABZ", "RACZ",
+										"RAAI", "RABI", "RACI",
+										"RAAS", "RABS", "RACS",
+										"RAAX", "RABX", "RACX",
+										"RAAx", "RABx", "RACx",
+										"RAA0", "RAB0", "RACi",
+										"RAA1", "RAB1", "RACL",
+										"RAA2", "RAB2", "RACS",
+										"RAA5", "RAB5", "RACV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
+	}
+}
+item(FEAT_ROADTYPES, item_selfdriving_truck_lowclear) {
+	property {
+		label:							"AutT";
+		powered_roadtype_list:			[
+										"RAAN", "RABN", "RAbN", "RACN",
+										"RAAE", "RABE", "RAbE", "RACE",
+										"RAAG", "RABG", "RAbG", "RACG",
+										"RAAZ", "RABZ", "RAbZ", "RACZ",
+										"RAAI", "RABI", "RAbI", "RACI",
+										"RAAS", "RABS", "RAbS", "RACS",
+										"RAAX", "RABX", "RAbX", "RACX",
+										"RAAx", "RABx", "RAbx", "RACx",
+										"RAAi", "RABi", "RAbi", "RACi",
+										"RAAL", "RABL", "RAbL", "RACL",
+										"RAAS", "RABS", "RAbS", "RACS",
+										"RAAV", "RABV", "RAbV", "RACV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
+	}
+}
+// Trolleybus
+item(FEAT_ROADTYPES, item_trolleybus_doubledeck) {
+	property {
+		label:							"PABE";
+		powered_roadtype_list:			[
+										"RAAN", "RABN", "RACN",
+										"RAAE", "RABE", "RACE",
+										"RAAG", "RABG", "RACG",
+										"RAAZ", "RABZ", "RACZ",
+										"RAAI", "RABI", "RACI",
+										"RAAS", "RABS", "RACS",
+										"RAAX", "RABX", "RACX",
+										"RAAx", "RABx", "RACx",
+										"RAAi", "RABi", "RACi",
+										"RAAL", "RABL", "RACL",
+										"RAAS", "RABS", "RACS",
+										"RAAV", "RABV", "RACV",
+										"PAAN", "PABN", "PACN",
+										"PAAE", "PABE", "PACE",
+										"PAAI", "PABI", "PACI",
+										"PAAS", "PABS", "PACS",
+										"PAAX", "PABX", "PACX",
+										"PAAx", "PABx", "PACx",
+										"PAAi", "PABi", "PACi",
+										"PAAL", "PABL", "PACL",
+										"PAAS", "PABS", "PACS",
+										"PAAV", "PABV", "PACV",
+										];
+//		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
+	}
+}
+item(FEAT_ROADTYPES, item_trolleybus_lowclear) {
+	property {
+		label:							"PAbE";
+		powered_roadtype_list:			[
+										//ROAD
+										"RAAE", "RABE", "RACE",
+												"RAbE",
+										"RAAZ", "RABZ", "RACZ",
+												"RAbZ",
+										//Passenger-Only
+										"PAAE", "PABE", "PAbE", "PACE",
+										"PAAZ", "PABZ", "PAbZ", "PACZ"
+										];
+//		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
+	}
+}
+
+item(FEAT_ROADTYPES, item_car) {
+	property {
+		label:							"PAbP";
+		powered_roadtype_list:			[
+										//ROAD
+										"RAAN", "RABN", "RACN",
+												"RAbN",
+										"RAAE", "RABE", "RACE",
+												"RAbE",
+										"RAAG", "RABG", "RACG",
+												"RAbG",
+										"RAAZ", "RABZ", "RACZ",
+												"RAbZ",
+										"RAAI", "RABI", "RACI",
+												"RAbI",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"RAAx", "RABx", "RACx",
+												"RAbx",
+										"RAAi", "RABi", "RACi",
+												"RAbi",
+										"RAAL", "RABL", "RACL",
+												"RAbL",
+										"RAAV", "RABV", "RACV",
+												"RAbV",
+										"RAAP", "RABP", "RACP",
+												"RAbP",
+										//Passenger-Only
+										"PAAN", "PABN", "PACN",
+												"PAbN",
+										"PAAE", "PABE", "PACE",
+												"PAbE",
+										"PAAG", "PABG", "PACG",
+												"PAbG",
+										"PAAZ", "PABZ", "PACZ",
+												"PAbZ",
+										"PAAI", "PABI", "PACI",
+												"PAbI",
+										"PAAX", "PABX", "PACX",
+												"PAbX",
+										"PAAx", "PABx", "PACx",
+												"PAbx",
+										"PAAi", "PABi", "PACi",
+												"PAbi",
+										"PAAL", "PABL", "PACL",
+												"PAbL",
+										"PAAV", "PABV", "PACV",
+												"PAbV",
+										"PAAP", "PABP", "PACP",
+												"PAbP",
+										];
+//		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
+	}
+}
+
+item(FEAT_ROADTYPES, item_selfdriving_car) {
+	property {
+		label:							"AutC";
+		powered_roadtype_list:			[
+										//ROAD
+										"RAAN", "RABN", "RACN",
+												"RAbN",
+										"RAAE", "RABE", "RACE",
+												"RAbE",
+										"RAAG", "RABG", "RACG",
+												"RAbG",
+										"RAAZ", "RABZ", "RACZ",
+												"RAbZ",
+										"RAAI", "RABI", "RACI",
+												"RAbI",
+										"RAAS", "RABS", "RACS",
+												"RAbS",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"RAAx", "RABx", "RACx",
+												"RAbx",
+										"RAAi", "RABi", "RACi",
+												"RAbi",
+										"RAAL", "RABL", "RACL",
+												"RAbL",
+										"RAAV", "RABV", "RACV",
+												"RAbV",
+										"RAAP", "RABP", "RACP",
+												"RAbP",
+										//Passenger-Only
+										"PAAN", "PABN", "PACN",
+												"PAbN",
+										"PAAE", "PABE", "PACE",
+												"PAbE",
+										"PAAG", "PABG", "PACG",
+												"PAbG",
+										"PAAZ", "PABZ", "PACZ",
+												"PAbZ",
+										"PAAI", "PABI", "PACI",
+												"PAbI",
+										"PAAS", "PABS", "PACS",
+												"PAbS",
+										"PAAX", "PABX", "PACX",
+												"PAbX",
+										"PAAx", "PABx", "PACx",
+												"PAbx",
+										"PAAi", "PABi", "PACi",
+												"PAbi",
+										"PAAL", "PABL", "PACL",
+												"PAbL",
+										"PAAV", "PABV", "PACV",
+												"PAbV",
+										"PAAP", "PABP", "PACP",
+												"PAbP",
+										];
+//		roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
+	}
+}
+
+//HOVR with Low Clearance
+item(FEAT_ROADTYPES, item_hovertruck) {
+	property {
+		label:							"HOVR";
+		powered_roadtype_list:			[
+										"HOVR",
+										"RAAI", "RABI", "RACI",
+										"RAAS", "RABS", "RACS",
+										"RAAX", "RABX", "RACX",
+										"RAAx", "RABx", "RACx",
+										"RAAi", "RABi", "RACi",
+										"RAAL", "RABL", "RACL",
+										"RAAV", "RABV", "RACV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_TOWN_BUILD, ROADTYPE_FLAG_HIDDEN);
+		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		roadtype_collision_mode:		bitmask(ROADTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_ROADTYPES, item_hovertruck_short) {
+	property {
+		label:							"Hovr";
+		powered_roadtype_list:			[
+										"HOVR",
+										"RAAI", "RABI", "RACI",
+										"RAAS", "RABS", "RACS",
+										"RAAX", "RABX", "RACX",
+										"RAAx", "RABx", "RACx",
+										"RAAi", "RABi", "RACi",
+										"RAAL", "RABL", "RACL",
+										"RAAV", "RABV", "RACV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_TOWN_BUILD, ROADTYPE_FLAG_HIDDEN);
+		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		roadtype_collision_mode:		bitmask(ROADTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_ROADTYPES, item_hoverbus_tall) {
+	property {
+		label:							"HBUS";
+		powered_roadtype_list:			[
+										"RAAI", "RABI", "RACI",
+										"RAAS", "RABS", "RACS",
+										"RAAX", "RABX", "RACX",
+										"RAAx", "RABx", "RACx",
+										"RAAi", "RABi", "RACi",
+										"RAAL", "RABL", "RACL",
+										"RAAV", "RABV", "RACV",
+										"PAAI", "PABI", "PACI",
+										"PAAS", "PABS", "PACS",
+										"PAAX", "PABX", "PACX",
+										"PAAx", "PABx", "PACx",
+										"PAAi", "PABi", "PACi",
+										"PAAL", "PABL", "PACL",
+										"PAAV", "PABV", "PACV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_NO_LEVEL_CROSSING);
+		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, ROADTYPE_EXTRA_FLAG_NO_TOWN_MODIFY);
+		roadtype_collision_mode:		bitmask(ROADTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_ROADTYPES, item_hoverbus_lowclear) {
+	property {
+		label:							"HBus";
+		powered_roadtype_list:			[
+										"HOVR", "Hovr",
+										"RAAI", "RABI", "RACI",
+												"RAbI",
+										"RAAS", "RABS", "RACS",
+												"RAbS",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"RAAx", "RABx", "RACx",
+												"RAbX",
+										"RAAi", "RABi", "RACi",
+												"RAbi",
+										"RAAL", "RABL", "RACL",
+												"RAbL",
+										"RAAV", "RABV", "RACV",
+												"RAbV",
+										"PAAI", "PABI", "PACI",
+												"PAbI",
+										"PAAS", "PABS", "PACS",
+												"PAbS",
+										"PAAX", "PABX", "PACX",
+												"PAbX",
+										"PAAx", "PABx", "PACx",
+												"RAbX",
+										"PAAi", "PABi", "PACi",
+												"PAbi",
+										"PAAL", "PABL", "PACL",
+												"PAbL",
+										"PAAV", "PABV", "PACV",
+												"PAbV",
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_NO_LEVEL_CROSSING);
+		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, ROADTYPE_EXTRA_FLAG_NO_TOWN_MODIFY);
+		roadtype_collision_mode:		bitmask(ROADTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_ROADTYPES, item_hovercar) {
+	property {
+		label:							"HCar";
+		powered_roadtype_list:			[
+										"RAAI", "RABI", "RACI",
+												"RAbI",
+										"RAAS", "RABS", "RACS",
+												"RAbS",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"RAAx", "RABx", "RACx",
+												"RAbX",
+										"RAAi", "RABi", "RACi",
+												"RAbi",
+										"RAAL", "RABL", "RACL",
+												"RAbL",
+										"RAAV", "RABV", "RACV",
+												"RAbV",
+										"RAAP", "RABP", "RACP",
+												"RAbP",
+										"PAAI", "PABI", "PACI",
+												"PAbI",
+										"PAAS", "PABS", "PACS",
+												"PAbS",
+										"PAAX", "PABX", "PACX",
+												"PAbX",
+										"PAAx", "PABx", "PACx",
+												"RAbX",
+										"PAAi", "PABi", "PACi",
+												"PAbi",
+										"PAAL", "PABL", "PACL",
+												"PAbL",
+										"PAAV", "PABV", "PACV",
+												"PAbV",
+										"PAAP", "PABP", "PACP",
+												"PAbP"
+										];
+		roadtype_flags:					bitmask(ROADTYPE_FLAG_NO_LEVEL_CROSSING);
+		roadtype_extra_flags:			bitmask(ROADTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, ROADTYPE_EXTRA_FLAG_NO_TOWN_MODIFY);
+		roadtype_collision_mode:		bitmask(ROADTYPE_COLLISION_MODE_NORMAL);
+	}
 }
 
 /*
@@ -74,23 +897,713 @@ roadtypetable {
  * *********************
  */
 
+// == SAMPLE ==
+/*
 tramtypetable {
 	//RAIL,
-	//RAaN, RAAN, RABN, RACN, RAcN,
-	//RBaN, RBBN, RBBN, RBCN, RBcN,
-	//RCaN, RCAN, RCBN, RCCN, RCcN,
+	//RAaN, RAAN, RABN, RAbN, RACN, RAcN,
+	//RBaN, RBBN, RBBN, RBbN, RBCN, RBcN,
+	//RCaN, RCAN, RCBN, RCbN, RCCN, RCcN,
 	//ELRL,
-	//RAaE, RAAE, RABE, RACE, RAcE,
-	//RBaE, RBAE, RBBE, RBCE, RBcE,
-	//RCaE, RCAE, RCBE, RCCE, RCcE,
-	/* Optic-Guided "Trackless Tram" Bus */
+	//RAaE, RAAE, RABE, RAbE, RACE, RAcE,
+	//RBaE, RBAE, RBBE, RBbE, RBCE, RBcE,
+	//RCaE, RCAE, RCBE, RCbE, RCCE, RCcE,
+	//
+// -- Optic-Guided "Trackless Tram" Bus --
 	//AUTO,
-	OAaI, OAaI, OABI, OACI, OACI,
-	OBaI, OBaI, OBBI, OBCI, OBCI,
-	OCaI, OCaI, OCBI,// OCCI, OCCI,
-	ODaI, ODaI,// ODBI, ODCI, ODCI,
-	OEaI, OEAS//, OEBI, OECI, OEcS
+	OAaI, OAAI, OABI, OAbI, OACI, OACI, OAcI,
+	OBaI, OBAI, OBBI, OBbI, OBCI, OBCI,
+	OCaI, OCAI, OCBI,// OCbI OCCI, OCCI,
+	ODaI, ODAI,// ODBI, ODbI, ODCI, ODCI,
+	OEaI, OEAI,// OEBI, OEbI, OECI, OEcI,
+	//Auto,
+	OAaS, OAAS, OABS, OAbS, OACS, OACS, OAcS,
+	OBaS, OBAS, OBBS, OBbS, OBCS, OBCS, OBcS,
+	OCaS, OCAS, OCBS,// OCbS, OCCS, OCcS,
+	ODaS, ODAS,// ODBS, ODbS, ODCS, ODcS,
+	OEaS, OEAS,// OEBS, OEbS, OECS, OEcS,
+	
+	OEcS,
+// -- Pneumatic "PneuMetro" Metro/Subway --
+	//MTRO,
+	MAB3, MAb3,
+	//PNEU,
+	MABP, MAbP,
+// -- VacTrain "VacTube" Metro/Subway --
+	//VACT,
+	MABV, MAbV//,
+	//
 	}
+*/
+
+tramtypetable {
+	RAIL, Rail,
+	//RAAN, RABN, RAbN, RACN,
+	//RAAE, RABE, RAbE, RACE,
+	/*OAaS,*/
+	Auto,
+	//OAAI, OABI, OAbI, OACI,
+	//OAAS, OABS, OAbS, OACS,
+	/* Metro/Subway */
+	MTRO, Mtro,
+	//MAB3, MAb3,
+	/* Pneumatic "PneuMetro" Metro/Subway */
+	PNEU, Pneu,
+	//MABP, MAbP,
+	/* VacTrain "VacTube" Metro/Subway */
+	VACT, Vact
+	//MABV, MAbV//,
+	//
+	}
+
+//RAIL with low clearance
+item(FEAT_TRAMTYPES, item_rail) {
+	property {
+		label:							"RAIL";
+		powered_tramtype_list:			[
+												"RAIL",
+										"RAAN", "RABN", "RACN",
+												"ELRL",
+										"RAAE", "RABE", "RACE",
+										"RAAG", "RABG", "RACG",
+										"RAAZ", "RABZ", "RACZ",
+										"RAA3", "RAB3", "RAC3",
+										"RAA4", "RAB4", "RAC4",
+										"RAAC", "RABC", "RACC",
+										"RAAI", "RABI", "RACI",
+										"RAAS", "RABS", "RACS",
+										"RAAi", "RABi", "RACi",
+										"XAAN", "XABN", "XACN",
+										"XAAE", "XABE", "XACE",
+										"XAAG", "XABG", "XACG",
+										"XAAZ", "XABZ", "XACZ",
+										"XAA3", "XAB3", "XAC3",
+										"XAB4", "XAB4", "XAC4",
+										"XAAC", "XABC", "XACC",
+										"XAAI", "XABI", "XACI",
+										"XAAS", "XABS", "XACS",
+										"XAAi", "XABi", "XACi",
+										"xAAN", "xABN", "xACN",
+										"xAAE", "xABE", "xACE",
+										"xAAG", "xABG", "xACG",
+										"xAAZ", "xABZ", "xACZ",
+										"xAA3", "xAB3", "xAC3",
+										"xAB4", "xAB4", "xAC4",
+										"xAAC", "xABC", "xACC",
+										"xAAI", "xABI", "xACI",
+										"xAAS", "xABS", "xACS",
+										"xAAi", "xABi", "xACi"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_ROADTYPES, item_rail_lowclear) {
+	property {
+		label:							"Rail";
+		powered_tramtype_list:			[
+												"RAIL",
+										"RAAN", "RABN", "RACN",
+										"Rail", "RAbN",
+												"ELRL",
+										"RAAE", "RABE", "RACE",
+										"ElRl", "RAbE",
+										"RAAG", "RABG", "RACG",
+												"RAbG",
+										"RAAZ", "RABZ", "RACZ",
+												"RAbZ",
+										"RAA3", "RAB3", "RAC3",
+												"RAb3",
+										"RAB4", "RAB4", "RAC4",
+												"RAb4",
+										"RAAC", "RABC", "RACC",
+												"RAbC",
+										"RAAI", "RABI", "RACI",
+												"RAbI",
+										"RAAS", "RABS", "RACS",
+												"RAbS",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"RAAx", "RABx", "RACx",
+												"RAbx",
+										"RAAi", "RABi", "RACi",
+												"RAbi",
+										"rAAN", "rABN", "rACN",
+												"rAbN",
+										"rAAE", "rABE", "rACE",
+												"rAbE",
+										"rAAG", "rABG", "rACG",
+												"rAbG",
+										"rAAZ", "rABZ", "rACZ",
+												"rAbZ",
+										"rAA3", "rAB3", "rAC3",
+												"rAb3",
+										"rAB4", "rAB4", "rAC4",
+												"rAb4",
+										"rAAC", "rABC", "rACC",
+												"rAbC",
+										"rAAI", "rABI", "rACI",
+												"rAbI",
+										"rAAS", "rABS", "rACS",
+												"rAbS",
+										"rAAi", "rABi", "rACi",
+												"rAbi",
+										"rAAX", "rABX", "rACX",
+												"rAbX",
+										"rAAx", "rABx", "rACx",
+												"rAbx",
+										"XAAN", "XABN", "XACN",
+												"XAbN",
+										"XAAE", "XABE", "XACE",
+												"XAbE",
+										"XAAG", "XABG", "XACG",
+												"XAbG",
+										"XAAZ", "XABZ", "XACZ",
+												"XAbZ",
+										"XAA3", "XAB3", "XAC3",
+												"XAb3",
+										"XAB4", "XAB4", "XAC4",
+												"XAb4",
+										"XAAC", "XABC", "XACC",
+												"XAbC",
+										"XAAI", "XABI", "XACI",
+												"XAbI",
+										"XAAS", "XABS", "XACS",
+												"XAbS",
+										"XAAi", "XABi", "XACi",
+												"XAbi",
+										"XAAX", "XABX", "XACX",
+												"XAbX",
+										"XAAx", "XABx", "XACx",
+												"XAbx",
+										"xAAN", "xABN", "xACN",
+												"xAbN",
+										"xAAE", "xABE", "xACE",
+												"xAbE",
+										"xAAG", "xABG", "xACG",
+												"xAbG",
+										"xAAZ", "xABZ", "xACZ",
+												"xAbZ",
+										"xAA3", "xAB3", "xAC3",
+												"xAb3",
+										"xAB4", "xAB4", "xAC4",
+												"xAb4",
+										"xAAC", "xABC", "xACC",
+												"xAbC",
+										"xAAI", "xABI", "xACI",
+												"xAbI",
+										"xAAS", "xABS", "xACS",
+												"xAbS",
+										"xAAi", "xABi", "xACi",
+												"xAbi",
+										"xAAX", "xABX", "xACX",
+												"xAbX",
+										"xAAx", "xABx", "xACx",
+												"xAbx",
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+//ELRL with low clearance
+item(FEAT_TRAMTYPES, item_elrl) {
+	property {
+		label:							"ELRL";
+		powered_tramtype_list:			[
+												"ELRL",
+										"RAAE", "RABE", "RACE",
+										"RAAZ", "RABZ", "RACZ",
+										"RAAX", "RABX", "RACX",
+										"RAAx", "RABx", "RACx",
+										"rAAE", "rABE", "rACE",
+										"rAAZ", "rABZ", "rACZ",
+										"rAAX", "rABX", "rACX",
+										"rAAx", "rABx", "rACx",
+										"XAAE", "XABE", "XACE",
+										"XAAZ", "XABZ", "XACZ",
+										"XAAX", "XABX", "XACX",
+										"XAAx", "XABx", "XACx",
+										"xAAE", "xABE", "xACE",
+										"xAAZ", "xABZ", "xACZ",
+										"xAAX", "xABX", "xACX",
+										"xAAx", "xABx", "xACx",
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_TRAMTYPES, item_elrl_lowcatenary) {
+	property {
+		label:							"ElRl";
+		powered_tramtype_list:			[
+												"ELRL",
+										"RAAE", "RABE", "RACE",
+										"ElRl", "RAbE",
+										"RAAZ", "RABZ", "RACZ",
+												"RAbZ",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"RAAx", "RABx", "RACx",
+												"RAbx",
+										"rAAE", "rABE", "rACE",
+												"rAbE",
+										"rAAZ", "rABZ", "rACZ",
+												"rAbZ",
+										"rAAX", "rABX", "rACX",
+												"rAbX",
+										"rAAx", "rABx", "rACx",
+												"rAbx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+
+//Trackless Trams
+item(FEAT_TRAMTYPES, item_auto) {
+	property {
+		label:							"AUTO";
+		powered_tramtype_list:			[
+										"AUTO",
+										"OAAN", "OABN", "OACN",
+										"OAAE", "OABE", "OACE",
+										"OAAG", "OABG", "OACG",
+										"OAAZ", "OABZ", "OACZ",
+										"OAAI", "OABI", "OACI",
+										"OAAS", "OABS", "OACS",
+										"OAAX", "OABX", "OACX",
+										"OAAx", "OABx", "OACx",
+										"XAAN", "XABN", "XACN",
+										"XAAE", "XABE", "XACE",
+										"XAAG", "XABG", "XACG",
+										"XAAZ", "XABZ", "XACZ",
+										"XAAI", "XABI", "XACI",
+										"XAAS", "XABS", "XACS",
+										"XAAX", "XABX", "XACX",
+										"XAAx", "XABx", "XACx",
+										"xAAN", "xABN", "xACN",
+										"xAAE", "xABE", "xACE",
+										"xAAG", "xABG", "xACG",
+										"xAAZ", "xABZ", "xACZ",
+										"xAAI", "xABI", "xACI",
+										"xAAS", "xABS", "xACS",
+										"xAAX", "xABX", "xACX",
+										"xAAx", "xABx", "xACx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_TRAMTYPES, item_auto_lowclear) {
+	property {
+		label:							"Auto";
+		powered_tramtype_list:			[
+										"AUTO",
+										"OAAN", "OABN", "OACN",
+										"Auto", "OAbN",
+										"OAAE", "OABE", "OACE",
+												"OAbE",
+										"OAAG", "OABG", "OACG",
+												"OAbG",
+										"OAAZ", "OABZ", "OACZ",
+												"OAbZ",
+										"OAAI", "OABI", "OACI",
+												"OAbI",
+										"OAAS", "OABS", "OACS",
+												"OAbS",
+										"OAAX", "OABX", "OACX",
+												"OAbX",
+										"OAAx", "OABx", "OACx",
+												"OAbx",
+										"XAAN", "XABN", "XACN",
+												"XAbN",
+										"XAAE", "XABE", "XACE",
+												"XAbE",
+										"XAAG", "XABG", "XACG",
+												"XAbG",
+										"XAAZ", "XABZ", "XACZ",
+												"XAbZ",
+										"XAAI", "XABI", "XACI",
+												"XAbI",
+										"XAAS", "XABS", "XACS",
+												"XAbS",
+										"XAAX", "XABX", "XACX",
+												"XAbX",
+										"XAAx", "XABx", "XACx",
+												"XAbx",
+										"xAAN", "xABN", "xACN",
+												"xAbN",
+										"xAAE", "xABE", "xACE",
+												"xAbE",
+										"xAAG", "xABG", "xACG",
+												"xAbG",
+										"xAAZ", "xABZ", "xACZ",
+												"xAbZ",
+										"xAAI", "xABI", "xACI",
+												"xAbI",
+										"xAAS", "xABS", "xACS",
+												"xAbS",
+										"xAAX", "xABX", "xACX",
+												"xAbX",
+										"xAAx", "xABx", "xACx",
+												"xAbx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+
+//MTRO Metros/Subways with low clearance
+item(FEAT_TRAMTYPES, item_metro) {
+	property {
+		label:							"MTRO";
+		powered_tramtype_list:			[
+										"MTRO",
+										"MAA3", "MAB3", "MAC3",
+										"RAA3", "RAB3", "RAC3",
+										"PAA3", "PAB3", "PAC3",
+										"rAA3", "rAB3", "rAC3",
+										"XAA3", "XAB3", "XAC3",
+										"xAA3", "xAB3", "xAC3",
+										"MAAX", "MABX", "MACX",
+										"RAAX", "RABX", "RACX",
+										"PAAX", "PABX", "PACX",
+										"rAAX", "rABX", "rACX",
+										"XAAX", "XABX", "XACX",
+										"xAAX", "xABX", "xACX",
+										"MAAx", "MABx", "MACx",
+										"RAAx", "RABx", "RACx",
+										"PAAx", "PABx", "PACx",
+										"rAAx", "rABx", "rACx",
+										"XAAx", "XABx", "XACx",
+										"xAAx", "xABx", "xACx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_TRAMTYPES, item_metro_lowclear) {
+	property {
+		label:							"Mtro";
+		powered_tramtype_list:			[
+										"MTRO", "Mtro",
+										"MAA3", "MAB3", "MAC3",
+												"MAb3",
+										"RAA3", "RAB3", "RAC3",
+												"RAb3",
+										"PAA3", "PAB3", "PAC3",
+												"PAb3",
+										"rAA3", "rAB3", "rAC3",
+												"rAb3",
+										"XAA3", "XAB3", "XAC3",
+												"XAb3",
+										"xAA3", "xAB3", "xAC3",
+												"xAb3",
+										"MAAX", "MABX", "MACX",
+												"MAbX",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"PAAX", "PABX", "PACX",
+												"PAbX",
+										"rAAX", "rABX", "rACX",
+												"rAbX",
+										"XAAX", "XABX", "XACX",
+												"XAbX",
+										"xAAX", "xABX", "xACX",
+												"xAbX",
+										"MAAx", "MABx", "MACx",
+												"MAbx",
+										"RAAx", "RABx", "RACx",
+												"RAbx",
+										"PAAx", "PABx", "PACx",
+												"PAbx",
+										"rAAx", "rABx", "rACx",
+												"rAbx",
+										"XAAx", "XABx", "XACx",
+												"XAbx",
+										"xAAx", "xABx", "xACx",
+												"xAbx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+
+//MTRO Cargo Metros/Subways with low clearance
+item(FEAT_TRAMTYPES, item_metro_cargo) {
+	property {
+		label:							"CRGO";
+		powered_tramtype_list:			[
+										"CRGO",
+										"MAA3", "MAB3", "MAC3",
+										"RAA3", "RAB3", "RAC3",
+										"rAA3", "rAB3", "rAC3",
+										"XAA3", "XAB3", "XAC3",
+										"xAA3", "xAB3", "xAC3",
+										"MAAX", "MABX", "MACX",
+										"RAAX", "RABX", "RACX",
+										"rAAX", "rABX", "rACX",
+										"XAAX", "XABX", "XACX",
+										"xAAX", "xABX", "xACX",
+										"MAAx", "MABx", "MACx",
+										"RAAx", "RABx", "RACx",
+										"rAAx", "rABx", "rACx",
+										"XAAx", "XABx", "XACx",
+										"xAAx", "xABx", "xACx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+item(FEAT_TRAMTYPES, item_metro_cargo_lowclear) {
+	property {
+		label:							"Crgo";
+		powered_tramtype_list:			[
+										"CRGO", "Crgo",
+										"MAA3", "MAB3", "MAC3",
+												"MAb3",
+										"RAA3", "RAB3", "RAC3",
+												"RAb3",
+										"rAA3", "rAB3", "rAC3",
+												"rAb3",
+										"XAA3", "XAB3", "XAC3",
+												"XAb3",
+										"xAA3", "xAB3", "xAC3",
+												"xAb3",
+										"MAAX", "MABX", "MACX",
+												"MAbX",
+										"RAAX", "RABX", "RACX",
+												"RAbX",
+										"rAAX", "rABX", "rACX",
+												"rAbX",
+										"XAAX", "XABX", "XACX",
+												"XAbX",
+										"xAAX", "xABX", "xACX",
+												"xAbX",
+										"MAAx", "MABx", "MACx",
+												"MAbx",
+										"RAAx", "RABx", "RACx",
+												"RAbx",
+										"rAAx", "rABx", "rACx",
+												"rAbx",
+										"XAAx", "XABx", "XACx",
+												"XAbx",
+										"xAAx", "xABx", "xACx",
+												"xAbx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_NORMAL);
+	}
+}
+
+
+//PNEU Metros/Subways with low clearance
+item(FEAT_TRAMTYPES, item_pneumetro) {
+	property {
+		label:							"PNEU";
+		powered_tramtype_list:			[
+										"PNEU",
+										"ZAAP", "ZABP", "ZACP",
+										"zAAP", "zABP", "zACP",
+										"ZAAX", "ZABX", "ZACX",
+										"zAAX", "zABX", "zACX",
+										"ZAAx", "ZABx", "ZACx",
+										"zAAx", "zABx", "zACx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
+	}
+}
+item(FEAT_TRAMTYPES, item_pneumetro_lowclear) {
+	property {
+		label:							"Pneu";
+		powered_tramtype_list:			[
+										//"PNEU",
+										"Pneu",
+										"ZAAP", "ZABP", "ZACP",
+												"ZAbP",
+										"zAAP", "zABP", "zACP",
+												"zAbP",
+										"ZAAX", "ZABX", "ZACX",
+												"ZAbX",
+										"zAAX", "zABX", "zACX",
+												"zAbX",
+										"ZAAx", "ZABx", "ZACx",
+												"ZAbx",
+										"zAAx", "zABx", "zACx",
+												"zAbx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
+	}
+}
+//PNEU Cargo Metros/Subways with low clearance
+item(FEAT_TRAMTYPES, item_pneumetro_cargo) {
+	property {
+		label:							"TUBE";
+		powered_tramtype_list:			[
+										"PNEU",
+										"ZAAP", "ZABP", "ZACP",
+										"XAAP", "XABP", "XACP",
+										"xAAP", "xABP", "xACP",
+										"ZAAX", "ZABX", "ZACX",
+										"XAAX", "XABX", "XACX",
+										"xAAX", "xABX", "xACX",//,
+//										"ZAAx", "ZABx", "ZACx",
+//										"XAAx", "XABx", "XACx",
+//										"xAAx", "xABx", "xACx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
+	}
+}
+item(FEAT_TRAMTYPES, item_pneumetro_cargo_lowclear) {
+	property {
+		label:							"Tube";
+		powered_tramtype_list:			[
+										//"PNEU",
+										"Pneu",
+										"ZAAP", "ZABP", "ZACP",
+												"ZAbP",
+										"ZAAX", "ZABX", "ZACX",
+												"ZAbX",
+//										"ZAAx", "ZABx", "ZACx",
+//												"ZAbx",
+										"XAAP", "XABP", "XACP",
+												"XAbP",
+										"XAAX", "XABX", "XACX",
+												"XAbX",
+//										"XAAx", "XABx", "XACx",
+//												"XAbx",
+										"xAAP", "xABP", "xACP",
+												"xAbP",
+										"xAAX", "xABX", "xACX",
+												"xAbX",//,
+//										"xAAx", "xABx", "xACx",
+//												"xAbx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
+	}
+}
+
+//VACT with small and large tubes
+item(FEAT_TRAMTYPES, item_vactransit) {
+	property {
+		label:							"VACT";
+		powered_tramtype_list:			[
+										"VACT",
+										"ZAAV", "ZABV", "ZACV",
+										"zAAV", "zABV", "zACV",
+										"XAAV", "XABV", "XACV",
+										"xAAV", "xABV", "xACV",
+										"ZAAX", "ZABX", "ZACX",
+										"XAAX", "XABX", "XACX",
+										"xAAX", "xABX", "xACX",//,
+//										"ZAAx", "ZABx", "ZACx",
+//										"XAAx", "XABx", "XACx",
+//										"xAAx", "xABx", "xACx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		//tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
+	}
+}
+item(FEAT_TRAMTYPES, item_vactransit_smalltube) {
+	property {
+		label:							"Vact";
+		powered_tramtype_list:			[
+										//"VACT",
+										"Vact",
+										"ZAAV", "ZABV", "ZACV",
+												"ZAbV",
+										"XAAV", "XABV", "XACV",
+												"XAbV",
+										"xAAV", "xABV", "xACV",
+												"ZAbV",
+										"ZAAX", "ZABX", "ZACX",
+												"ZAbX",
+										"XAAX", "XABX", "XACX",
+												"XAbX",
+										"xAAX", "xABX", "xACX",
+												"xAbX",//,
+//										"ZAAx", "ZABx", "ZACx",
+//												"ZAbx",
+//										"XAAx", "XABx", "XACx",
+//												"XAbx",
+//										"xAAx", "xABx", "xACx",
+//												"xAbx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
+	}
+}
+//VACT with small and large cargo tubes
+item(FEAT_TRAMTYPES, item_vactransit) {
+	property {
+		label:							"PACK";
+		powered_tramtype_list:			[
+										"VACT",
+										"ZAAV", "ZABV", "ZACV",
+										"XAAV", "XABV", "XACV",
+										"xAAV", "xABV", "xACV",
+										"ZAAX", "ZABX", "ZACX",
+										"XAAX", "XABX", "XACX",
+										"xAAX", "xABX", "xACX",//,
+//										"ZAAx", "ZABx", "ZACx",
+//										"XAAx", "XABx", "XACx",
+//										"xAAx", "xABx", "xACx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		//tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
+	}
+}
+item(FEAT_TRAMTYPES, item_vactransit_smalltube) {
+	property {
+		label:							"Pack";
+		powered_tramtype_list:			[
+										//"VACT",
+										"Vact",
+										"ZAAV", "ZABV", "ZACV",
+												"ZAbV",
+										"XAAV", "XABV", "XACV",
+												"XAbV",
+										"xAAV", "xABV", "xACV",
+												"ZAbV",
+										"ZAAX", "ZABX", "ZACX",
+												"ZAbX",
+										"XAAX", "XABX", "XACX",
+												"XAbX",
+										"xAAX", "xABX", "xACX",
+												"xAbX",//,
+//										"ZAAx", "ZABx", "ZACx",
+//												"ZAbx",
+//										"XAAx", "XABx", "XACx",
+//												"XAbx",
+//										"xAAx", "xABx", "xACx",
+//												"xAbx"
+										];
+		tramtype_flags:					bitmask(TRAMTYPE_FLAG_NO_LEVEL_CROSSING, TRAMTYPE_FLAG_HIDDEN);
+		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
+		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
+	}
+}
 
 /*
 * ********************************************
@@ -134,7 +1647,7 @@ cargotable {
 	RUBR, //Rubber
 	WATR, //Water
 	COLA, //Cola
-	PLST, //Plastic (candyland)
+	PLST, //Plastic (toyland)
 	PETR, //Petrol
 	RFPR, //Refined Products
 	//Special
@@ -152,4 +1665,6 @@ cargotable {
 	ENSP, //Enigneering Supplies
 	FMSP, //Farm Supplies
 	MNSP, //Manufacturing Supplies
+	TOUR, //Tourists (high-end passengers)
+	PCL_//, //Parcels (high-value mail)
 }
