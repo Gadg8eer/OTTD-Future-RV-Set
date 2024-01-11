@@ -1,0 +1,12 @@
+1) Open command line
+
+2) Type this...
+ubuntu
+...and press the Enter or Return key.
+
+3) You are now using the WSL, which allows Windows to run linux commands. Type the following...
+
+cd /mnt/i/OpenTTD\DevProjects\GitHub\Gadg8eer\OpenGFX-Mars-reMOD-Late-Start\ogfx-mars-ext-rv
+make NML=/home/kidpunk/.local/bin/nmlc
+
+4) If that doesn't work, you don't have WSL installed. Contact someone in the OpenTTD community to get help installing WSL and the required libraries (Python, GCC, NML). Then try step 3 again.

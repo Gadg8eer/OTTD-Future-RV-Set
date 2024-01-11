@@ -1,9 +1,21 @@
 #include "src/00_header.pnml"
 #include "src/01_subway-metro.pnml"
 #include "src/02_pneumetro.pnml"
-#include "src/03_autobus.pnml"
-#include "src/04_vactube.pnml"
-#include "src/05_hoverv.pnml"
+#include "src/03_halftrack_item.pnml"
+#include "src/04_halftrack_gfx.pnml"
+#include "src/05_marstanker_item.pnml"
+#include "src/06_marstanker_gfx.pnml"
+#include "src/07_autobus.pnml"
+#include "src/08_vactube.pnml"
+#include "src/09_hoverv.pnml"
+
+//GTR-10
+//#include "src/0Steampunk/steampunk_Mark1_item.pnml"
+//#include "src/0Steampunk/steampunk_Mark1_graphics.pnml"
+
+//LiOX
+//#include "jetretro_LiOX_item.pnml"
+//#include "jetretro_LiOX_graphics.pnml"
 
 // Individual vehicle #includes, entails spritesets, vehicle-specific switches, and their item blocks.
 

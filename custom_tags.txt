@@ -1,5 +1,6 @@
-VERSION		:1
-TITLE		:Hover Vehicles
-COPYDATE	:2012
-UPDATE		:May 31, 2012
-
+VERSION        :noRev
+VERSION_STRING :noRev
+TITLE          :Recycled OpenGFX Mars Xtended Vehicles noRev
+FILENAME       :rov.grf
+REPO_HASH      :
+NEWGRF_VERSION :0
