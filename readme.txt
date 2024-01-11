@@ -29,7 +29,7 @@ Contents
 	
 	* Denotes "Coming soon!"
 
-	3a. Metro/Subway
+	3b. Metro/Subway
 		A conversion of the "invisible subway trams" GRF by Supercheese and their graphical bases into surface trams that are compatible with the MAB3 tramtype label.
 	
 		You may recognize the London Underground stock from the UKRS2 Addon Set by PikkaBird, as they share the same sprites by oberhümer and have similar specs.
@@ -49,7 +49,7 @@ Contents
 			-TRTA Chikatetsu E4 (2033)
 			-IR "CargoSub" C4 (2038)
 	
-3b. Pneumatic Metro/Subway (PneuMetro)
+	3c. Pneumatic Metro/Subway (PneuMetro)
 		This is for all systems in which a pneumatic/hydraulic/vacuum pipe is used to push a piston that is part of the metro train on the rails.
 
 		A conversion of the "invisible subway trams" GRF by Supercheese and their graphical bases into "shadows" of (underground) trams (for visibility) that are compatible with the MABP tramtype label.
@@ -71,17 +71,17 @@ Contents
 			-TRTA Chikatetsu GS4 (2099)
 			-TRTA Chikatetsu GSc (2100)
 	
-3c. Optically-Guided and Magnetically-Guided Vehicles (SmarTram)
+	3d. Optically-Guided and Magnetically-Guided Vehicles (SmarTram)
 		You may recognize these from the work of acs121 (an old version of NARVS) or from my "Articul8eer Test Set" (GRF ID reused by this GRF), as they share the same sprites.
 
 			-AutöWerks X10 SmarTram (2015)-
 
-3d. Self-Driving Vehicles
+	3e. Self-Driving Vehicles
 		You may recognize these from the work of acs121 (an old version of NARVS) or from my "Articul8eer Test Set" (GRF ID reused by this GRF), as they share the same sprites.
 
 			-AutöWerks A10 AutöBus (2030)-
 
-3e. VacTrain Metro/Subway (VacTube)
+	3f. VacTrain Metro/Subway (VacTube)
 		A conversion of the "invisible subway trams" GRF by Supercheese and their graphical bases into surface trams that are compatible with the MABV tramtype label. These will have modified purchase sprites.
 
 		You may recognize the futuristic subways and the VacTube variants from one of the Vactrain sets by EmperorJake, as they have sprites (and names) modified from that set.
@@ -94,7 +94,7 @@ Contents
 			-Cosmopolitan Railways "CosmoVac" V4 (2049)
 			-Cosmopolitan Railways "CargoVac" V4c (2050)
 
-3f. Hovermobiles
+	3g. Hovermobiles
 		A conversion of the "Hover Vehicles" GRF by Hazzard and their graphical bases to use standardized roadtype tables, they have sprites (and modified names) from that set. The sprites are derived from Zephyris' "eGRVTS" GRF.
 
 			-Chryslus Metroliner '78 HoverBus (2078)
