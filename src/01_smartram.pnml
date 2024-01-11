@@ -1,0 +1,339 @@
+
+// -------------------- //
+/* -- TRACKLESS TRAM -- */
+// -------------------- //
+
+/* These are the spritesets. */
+
+//Step 1: Give your png file a name that makes sense to you.
+
+//Step 2: Change "set_autobus_... to set_<insertlabelhere>_... and "gfx/graphics/road/AUTO/autobus_0.png" to "gfx/<insert full path here>/<insertgrfnamehere>.png".
+
+//Step 3: Change "template_bus_28" to "template_bus_xx", replacing xx with the length of the FRONT section of the articulated vehicle. Remember that you can only use 32, 28, 24, 20, 16, 12, 8 and 4 unless you change the templates.
+
+//Step 4: Change "template_bus_22" to "template_bus_xx", replacing xx with the length of the REAR section of the articulated vehicle. Remember that you can only use 32, 28, 24, 20, 16, 12, 8 and 4 unless you change the templates.
+
+spriteset (set_smartram_front_lighted,	"gfx/graphics/tram/AUTO/smartram_0.png") { template_bus_28(2, 2) }
+spriteset (set_smartram_rear_lighted,	"gfx/graphics/tram/AUTO/smartram_0.png") { template_bus_20(386, 2) }
+spriteset (set_smartram_purchase,		"gfx/graphics/tram/AUTO/smartram_0.png") { template_purchase(290, 2) }
+
+//--- Tram
+
+switch (FEAT_ROADVEHS, SELF, switch_articulated_smartram, extra_callback_info1)
+{ 1: return item_smartram_0_rear; return CB_RESULT_NO_MORE_ARTICULATED_PARTS;
+}
+
+/*
+switch (FEAT_ROADVEHS, SELF, switch_smartram_0_speed, current_tramtype) {
+	// OABI
+	OAaI: return 10;
+	OAAI: return 20;
+	OABI: return 30;
+	OAbI: return 30;
+	OACI: return 40;
+	OAcI: return 50;
+	OBaI: return 20;
+	OBAI: return 40;
+	OBBI: return 60;
+	OBbI: return 60;
+	OBCI: return 80;
+	OBcI: return 100;
+	OCaI: return 30;
+	OCAI: return 60;
+	OCBI: return 90;
+	OCbI: return 90;
+	//OCCI: return 120;
+	//OCcI: return 150;
+	ODaI: return 40;
+	ODAI: return 80;
+	//ODBI: return 120;
+	//ODbI: return 120;
+	//ODCI: return 160;
+	//ODcI: return 200;
+	OEaI: return 50;
+	OEAI: return 100;
+	//OEBI: return 150;
+	//OEbI: return 150;
+	//OECI: return 200;
+	//OEcI: return 250;
+	// OABS
+	OAaS: return 10;
+	OAAS: return 20;
+	OABS: return 30;
+	OAbS: return 30;
+	OACS: return 40;
+	OAcS: return 50;
+	OBaS: return 20;
+	OBAS: return 40;
+	OBBS: return 60;
+	OBbS: return 60;
+	OBCS: return 80;
+	//OBcS: return 100;
+	OCaS: return 30;
+	OCAS: return 60;
+	OCBS: return 90;
+	OCbS: return 90;
+	//OCCS: return 120;
+	//OCcS: return 150;
+	ODaS: return 40;
+	ODAS: return 80;
+	//ODBS: return 120;
+	//ODbS: return 120;
+	//ODCS: return 160;
+	//ODcS: return 200;
+	OEaS: return 50;
+	//OEAS: return 100;
+	//OEBS: return 150;
+	//OEbS: return 150;
+	//OECS: return 200;
+	//OEcS: return 250;
+	// Error(?)
+	CB_FAILED;
+}
+*/
+
+switch (FEAT_ROADVEHS, SELF, switch_smartram_0_energy, current_tramtype) {
+	// OABI
+	OAaI: return 10;
+	OAAI: return 20;
+	OABI: return 30;
+	OAbI: return 30;
+	OACI: return 40;
+	OAcI: return 50;
+	OBaI: return 20;
+	OBAI: return 40;
+	OBBI: return 60;
+	OBbI: return 60;
+	OBCI: return 80;
+	OBcI: return 100;
+	OCaI: return 30;
+	OCAI: return 60;
+	OCBI: return 90;
+	OCbI: return 90;
+	//OCCI: return 120;
+	//OCcI: return 150;
+	ODaI: return 40;
+	ODAI: return 80;
+	//ODBI: return 120;
+	//ODbI: return 120;
+	//ODCI: return 160;
+	//ODcI: return 200;
+	OEaI: return 50;
+	OEAI: return 100;
+	//OEBI: return 150;
+	//OEbI: return 150;
+	//OECI: return 200;
+	//OEcI: return 250;
+	// OABS
+	OAaS: return 10;
+	OAAS: return 20;
+	OABS: return 30;
+	OAbS: return 30;
+	OACS: return 40;
+	OAcS: return 50;
+	OBaS: return 20;
+	OBAS: return 40;
+	OBBS: return 60;
+	OBbS: return 60;
+	OBCS: return 80;
+	//OBcS: return 100;
+	OCaS: return 30;
+	OCAS: return 60;
+	OCBS: return 90;
+	OCbS: return 90;
+	//OCCS: return 120;
+	//OCcS: return 150;
+	ODaS: return 40;
+	ODAS: return 80;
+	//ODBS: return 120;
+	//ODbS: return 120;
+	//ODCS: return 160;
+	//ODcS: return 200;
+	OEaS: return 50;
+	//OEAS: return 100;
+	//OEBS: return 150;
+	//OEbS: return 150;
+	//OECS: return 200;
+	//OEcS: return 250;
+	// Error(?)
+	CB_FAILED;
+}
+
+switch (FEAT_ROADVEHS, SELF, switch_smartram_0_maintenance, current_tramtype) {
+	// --OABI--
+	OAaI: return 64;
+	OAAI: return 64;
+	OABI: return 64;
+	OAbI: return 64;
+	OACI: return 64;
+	OAcI: return 64;
+	OBaI: return 64;
+	OBAI: return 64;
+	OBBI: return 64;
+	OBbI: return 64;
+	OBCI: return 64;
+	OBcI: return 64;
+	OCaI: return 64;
+	OCAI: return 64;
+	OCBI: return 64;
+	OCbI: return 64;
+	//OCCI: return 64;
+	//OCcI: return 64;
+	ODaI: return 64;
+	ODAI: return 64;
+	//ODBI: return 64;
+	//ODbI: return 64;
+	//ODCI: return 64;
+	//ODcI: return 64;
+	OEaI: return 64;
+	OEAI: return 64;
+	//OEBI: return 64;
+	//OEbI: return 64;
+	//OECI: return 64;
+	//OEcI: return 64;
+	// --OABI--
+	OAaI: return 32;
+	OAAI: return 32;
+	OABI: return 32;
+	OAbI: return 32;
+	OACI: return 32;
+	OAcI: return 32;
+	OBaI: return 32;
+	OBAI: return 32;
+	OBBI: return 32;
+	OBbI: return 32;
+	OBCI: return 32;
+	OBcI: return 32;
+	OCaI: return 32;
+	OCAI: return 32;
+	OCBI: return 32;
+	OCbI: return 32;
+	//OCCI: return 32;
+	//OCcI: return 32;
+	ODaI: return 32;
+	ODAI: return 32;
+	//ODBI: return 32;
+	//ODbI: return 32;
+	//ODCI: return 32;
+	//ODcI: return 32;
+	OEaI: return 32;
+	OEAI: return 32;
+	//OEBI: return 32;
+	//OEbI: return 32;
+	//OECI: return 32;
+	//OEcI: return 32;
+	// --OABS--
+	OAaS: return 18;
+	OAAS: return 18;
+	OABS: return 18;
+	OAbS: return 18;
+	OACS: return 18;
+	OAcS: return 18;
+	OBaS: return 18;
+	OBAS: return 18;
+	OBBS: return 18;
+	OBbS: return 18;
+	OBCS: return 18;
+	//OBcS: return 18;
+	OCaS: return 18;
+	OCAS: return 18;
+	OCBS: return 18;
+	OCbS: return 18;
+	//OCCS: return 18;
+	//OCcS: return 18;
+	ODaS: return 18;
+	ODAS: return 18;
+	//ODBS: return 18;
+	//ODbS: return 18;
+	//ODCS: return 18;
+	//ODcS: return 18;
+	OEaS: return 18;
+	//OEAS: return 18;
+	//OEBS: return 18;
+	//OEbS: return 18;
+	//OECS: return 18;
+	//OEcS: return 18;
+	// --Error(?)--
+	CB_FAILED;
+}
+
+//------------------------------------------------TRAM VEHICLE CODE SECTION------------------------------------------------
+
+/* This is the item that the road vehicle comes from. Change "item_smartram_0_front" to "item_<insertnamehere>_0_front". You can edit most of the properties listed under the "property" block to reflect the stats of the vehicle. */
+
+item(FEAT_ROADVEHS, item_smartram_0_front) {
+    property {
+        name: string(STR_NAME_TRAM_ARTICULATED);
+        climates_available: bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND); // available in toyland?
+        introduction_date: date(2015, 7, 1);
+        model_life: VEHICLE_NEVER_EXPIRES;
+        vehicle_life: 20;
+        reliability_decay: 32;
+        refittable_cargo_classes: bitmask();
+        non_refittable_cargo_classes: bitmask();
+        cargo_allow_refit: [];
+        cargo_disallow_refit: [];
+        cost_factor: 208;
+        running_cost_factor: 6;
+        sprite_id: SPRITE_ID_NEW_ROADVEH;
+        speed: 100 km/h;
+        refit_cost: 0;
+        tram_type: Auto;
+        power: 200 hp;
+        running_cost_base: RUNNING_COST_ROADVEH;
+		default_cargo_type: PASS;
+        cargo_capacity: 40;
+        weight: 6 tons;
+        //air_drag_coefficient: default;
+        length: 7;
+		loading_speed: 6;
+		visual_effect: EFFECT_SPAWN_MODEL_NONE;
+		misc_flags: bitmask(ROADVEH_FLAG_TRAM, ROADVEH_FLAG_2CC, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+    }
+	
+/* This is the graphics block that the road vehicle's graphics comes from. Refer to Step 2 of the spriteset instructions earlier in this code to replace "set_smartram_..." and change "switch_articulated_test" to "switch_articulated_<insertnamehere>". */
+	
+    graphics {
+        default: set_smartram_front_lighted;
+        purchase: set_smartram_purchase;
+        articulated_part: switch_articulated_smartram;
+//		speed: switch_smartram_0_speed;
+		running_cost_factor: switch_smartram_0_energy;
+		reliability_decay: switch_smartram_0_maintenance;
+    }
+}
+
+/* This is the item that the road vehicle's trailer comes from. Change "item_smartram_0_rear" to "item_<insertnamehere>_0_rear". You can edit most of the properties listed under "property" to reflect the stats of the vehicle, but remember that it's supposed to be a trailer, not a vehicle unto itself. Despite this, the trailer must have at least 1 hp, due to a quirk of OpenTTD. */
+
+item(FEAT_ROADVEHS, item_smartram_0_rear) {
+    property {
+        name: string(STR_NAME_TRAM_ARTICULATED);
+        climates_available: NO_CLIMATE; // available in toyland?
+        introduction_date: date(2015, 7, 1);
+        model_life: VEHICLE_NEVER_EXPIRES;
+        vehicle_life: 0;
+        reliability_decay: 20;
+        refittable_cargo_classes: bitmask();
+        non_refittable_cargo_classes: bitmask();
+        cargo_allow_refit: [];
+        cargo_disallow_refit: [];
+        cost_factor: 0;
+        running_cost_factor: 0;
+        sprite_id: SPRITE_ID_NEW_ROADVEH;
+        refit_cost: 0;
+        tram_type: Auto;
+        power: 1 hp;
+        running_cost_base: RUNNING_COST_NONE;
+		default_cargo_type: PASS;
+        cargo_capacity: 20;
+        weight: 3 tons;
+        //air_drag_coefficient: default;
+        length: 5;
+		misc_flags: bitmask(ROADVEH_FLAG_TRAM, ROADVEH_FLAG_2CC, ROADVEH_FLAG_NO_BREAKDOWN_SMOKE);
+    }
+    graphics {
+        default: set_smartram_rear_lighted;
+        //purchase: set_smartram_rear_lighted;
+			
+    }
+}
