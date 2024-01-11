@@ -8,7 +8,7 @@
  //this file lists all cargo refits for each vehicle.
  //any changes to cargo refits can be done centrally from this file.
  
- #define CARGODEF_GTR10 \
+ #define CARGODEF_MARK1 \
  cargo_allow_refit:				[PRGD, GOOD, FOOD, ENSP, PLAS, CPNT]; \
  cargo_disallow_refit:			[PASS, ORGN, FERT, N2__, O2__, H2__, CHEM, ORES, WATR, RGTH];
  

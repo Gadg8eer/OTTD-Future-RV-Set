@@ -1675,6 +1675,7 @@ cargotable {
 	PCL_//, //Parcels (high-value mail)
 }
 # 1 "futuRVs.pnml" 1
+
 # 1 "src/01_cargorefits.pnml" 1
 /*
  *  This file is part of the OpenGFX Mars Xtended RoVers and in turn part of the OpenGFX Mars Xpanded project
@@ -1686,7 +1687,7 @@ cargotable {
  //this file lists all cargo refits for each vehicle.
  //any changes to cargo refits can be done centrally from this file.
  
- #define CARGODEF_GTR10 \
+ #define CARGODEF_MARK1 \
  cargo_allow_refit:				[PRGD, GOOD, FOOD, ENSP, PLAS, CPNT]; \
  cargo_disallow_refit:			[PASS, ORGN, FERT, N2__, O2__, H2__, CHEM, ORES, WATR, RGTH];
  
@@ -3981,109 +3982,13 @@ spriteset(spriteset_liox_jetretro, "gfx/liox_sprites.png") {
     tmpl_liox(0, 0)
 }
 # 1 "futuRVs.pnml" 1
-# 1 "src/smartransit/00_autobus.pnml" 1
-/* This is the template. When you're more experienced, you can try editing this, but if it's all gibberish then just modify "FooBarTramVehicleTemplates.png" in GIMP to create a vehicle. Each template below refers to a specific vehicle length, so make sure to put the vehicle sprites in the right part of "FooBarTramVehicleTemplates.png" when drawing a vehicle. */
+# 1 "src/smartransit/00_smartemplate.pnml" 1
+# 1 "futuRVs.pnml" 1
+# 1 "src/smartransit/01_smartram.pnml" 1
 
-template template_bus_32(x, y) {
-    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
-    [0,         20,         10,        28,           -4,         -11]
-    [0+ 20,     20,         26,        28,          -17,         -14]
-    [0+ 50,     20,         36,        28,          -18,         -20]
-    [0+ 90,     20,         26,        28,           -9,         -15]
-    [0+120,     20,         10,        28,           -4,         -11]
-    [0+140,     20,         26,        28,          -16,         -16]
-    [0+170,     20,         36,        28,          -18,         -20]
-    [0+210,     20,         26,        28,           -8,         -16]
-}
-
-template template_bus_28(x, y) {
-    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
-    [0,         60,         10,        28,           -4,         -11]
-    [0+ 20,     60,         26,        28,          -17,         -14]
-    [0+ 50,     60,         36,        28,          -20,         -20]
-    [0+ 90,     60,         26,        28,           -9,         -15]
-    [0+120,     60,         10,        28,           -4,         -13]
-    [0+140,     60,         26,        28,          -16,         -16]
-    [0+170,     60,         36,        28,          -16,         -20]
-    [0+210,     60,         26,        28,           -8,         -16]
-}
-
-template template_bus_24(x, y) {
-    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
-    [0,         100,        10,        28,           -4,         -11]
-    [0+ 20,     100,        26,        28,          -17,         -14]
-    [0+ 50,     100,        36,        28,          -22,         -20]
-    [0+ 90,     100,        26,        28,           -9,         -15]
-    [0+120,     100,        10,        28,           -4,         -15]
-    [0+140,     100,        26,        28,          -16,         -16]
-    [0+170,     100,        36,        28,          -14,         -20]
-    [0+210,     100,        26,        28,           -8,         -16]
-}
-
-template template_bus_20(x, y) {
-    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
-    [0,         140,        10,        28,           -4,         -10]
-    [0+ 20,     140,        26,        28,          -17,         -14]
-    [0+ 50,     140,        36,        28,          -24,         -20]
-    [0+ 90,     140,        26,        28,           -9,         -15]
-    [0+120,     140,        10,        28,           -4,         -16]
-    [0+140,     140,        26,        28,          -16,         -16]
-    [0+170,     140,        36,        28,          -12,         -20]
-    [0+210,     140,        26,        28,           -8,         -16]
-}
-
-template template_bus_16(x, y) {
-    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
-    [0,         180,        10,        28,           -4,          -9]
-    [0+ 20,     180,        26,        28,          -17,         -14]
-    [0+ 50,     180,        36,        28,          -26,         -20]
-    [0+ 90,     180,        26,        28,           -9,         -15]
-    [0+120,     180,        10,        28,           -4,         -17]
-    [0+140,     180,        26,        28,          -16,         -16]
-    [0+170,     180,        36,        28,          -10,         -20]
-    [0+210,     180,        26,        28,           -8,         -16]
-}
-
-template template_bus_12(x, y) {
-    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
-    [0,         220,        10,        28,           -4,          -8]
-    [0+ 20,     220,        26,        28,          -17,         -14]
-    [0+ 50,     220,        36,        28,          -28,         -20]
-    [0+ 90,     220,        26,        28,           -9,         -15]
-    [0+120,     220,        10,        28,           -4,         -18]
-    [0+140,     220,        26,        28,          -16,         -16]
-    [0+170,     220,        36,        28,           -8,         -20]
-    [0+210,     220,        26,        28,           -8,         -16]
-}
-
-template template_bus_8(x, y) {
-    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
-    [0,         260,        10,        28,           -4,          -7]
-    [0+ 20,     260,        26,        28,          -17,         -14]
-    [0+ 50,     260,        36,        28,          -30,         -20]
-    [0+ 90,     260,        26,        28,           -9,         -15]
-    [0+120,     260,        10,        28,           -4,         -19]
-    [0+140,     260,        26,        28,          -16,         -16]
-    [0+170,     260,        36,        28,           -6,         -20]
-    [0+210,     260,        26,        28,           -8,         -16]
-}
-
-template template_bus_4(x, y) {
-    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
-    [0,         300,        10,        28,           -4,          -6]
-    [0+ 20,     300,        26,        28,          -17,         -14]
-    [0+ 50,     300,        36,        28,          -32,         -20]
-    [0+ 90,     300,        26,        28,           -9,         -15]
-    [0+120,     300,        10,        28,           -4,         -20]
-    [0+140,     300,        26,        28,          -16,         -16]
-    [0+170,     300,        36,        28,           -4,         -20]
-    [0+210,     300,        26,        28,           -8,         -16]
-}
-
-template template_purchase(x, y) {
-    //[left_x,  upper_y,    width,     height,     offset_x,     offset_y]
-    [0,         340,        50,        12,          -25,          -6]
-}
+// -------------------- //
+/* -- TRACKLESS TRAM -- */
+// -------------------- //
 
 /* These are the spritesets. */
 
@@ -4098,10 +4003,6 @@ template template_purchase(x, y) {
 spriteset (set_smartram_front_lighted,	"gfx/graphics/tram/AUTO/smartram_0.png") { template_bus_28(2, 2) }
 spriteset (set_smartram_rear_lighted,	"gfx/graphics/tram/AUTO/smartram_0.png") { template_bus_20(386, 2) }
 spriteset (set_smartram_purchase,		"gfx/graphics/tram/AUTO/smartram_0.png") { template_purchase(290, 2) }
-
-spriteset (set_autobus_front_lighted,	"gfx/graphics/road/AUTO/autobus_0.png") { template_bus_28(2, 2) }
-spriteset (set_autobus_rear_lighted,	"gfx/graphics/road/AUTO/autobus_0.png") { template_bus_20(386, 2) }
-spriteset (set_autobus_purchase,		"gfx/graphics/road/AUTO/autobus_0.png") { template_purchase(290, 2) }
 
 //--- Tram
 
@@ -4343,7 +4244,7 @@ switch (FEAT_ROADVEHS, SELF, switch_smartram_0_maintenance, current_tramtype) {
 	CB_FAILED;
 }
 
-//------------------------------------------------TEST TRAM CODE SECTION------------------------------------------------
+//------------------------------------------------TRAM VEHICLE CODE SECTION------------------------------------------------
 
 /* This is the item that the road vehicle comes from. Change "item_smartram_0_front" to "item_<insertnamehere>_0_front". You can edit most of the properties listed under the "property" block to reflect the stats of the vehicle. */
 
@@ -4423,6 +4324,23 @@ item(FEAT_ROADVEHS, item_smartram_0_rear) {
 			
     }
 }
+# 1 "futuRVs.pnml" 1
+# 1 "src/smartransit/02_autobus.pnml" 1
+/* This is the template. When you're more experienced, you can try editing this, but if it's all gibberish then just modify "FooBarTramVehicleTemplates.png" in GIMP to create a vehicle. Each template below refers to a specific vehicle length, so make sure to put the vehicle sprites in the right part of "FooBarTramVehicleTemplates.png" when drawing a vehicle. */
+
+/* These are the spritesets. */
+
+//Step 1: Give your png file a name that makes sense to you.
+
+//Step 2: Change "set_autobus_... to set_<insertlabelhere>_... and "gfx/graphics/road/AUTO/autobus_0.png" to "gfx/<insert full path here>/<insertgrfnamehere>.png".
+
+//Step 3: Change "template_bus_28" to "template_bus_xx", replacing xx with the length of the FRONT section of the articulated vehicle. Remember that you can only use 32, 28, 24, 20, 16, 12, 8 and 4 unless you change the templates.
+
+//Step 4: Change "template_bus_22" to "template_bus_xx", replacing xx with the length of the REAR section of the articulated vehicle. Remember that you can only use 32, 28, 24, 20, 16, 12, 8 and 4 unless you change the templates.
+
+spriteset (set_autobus_front_lighted,	"gfx/graphics/road/AUTO/autobus_0.png") { template_bus_28(2, 2) }
+spriteset (set_autobus_rear_lighted,	"gfx/graphics/road/AUTO/autobus_0.png") { template_bus_20(386, 2) }
+spriteset (set_autobus_purchase,		"gfx/graphics/road/AUTO/autobus_0.png") { template_purchase(290, 2) }
 
 // ---------------------------------- //
 /* -- SELF-DRIVING ARTICULATED BUS -- */
@@ -4960,7 +4878,7 @@ switch (FEAT_ROADVEHS, SELF, switch_autobus_0_maintenance, current_roadtype) {
 	CB_FAILED;
 }
 
-//------------------------------------------------TEST BUS CODE SECTION------------------------------------------------
+//------------------------------------------------ROAD VEHICLE CODE SECTION------------------------------------------------
 
 /* This is the item that the road vehicle comes from. Change "item_autobus_0_front" to "item_<insertnamehere>_0_front". You can edit most of the properties listed under the "property" block to reflect the stats of the vehicle. */
 
@@ -6226,21 +6144,3 @@ item(FEAT_ROADVEHS, item_hoveruniv_01) {
     }
 }
 # 1 "futuRVs.pnml" 1
-
-//GTR-10
-//#include "src/0Steampunk/steampunk_Mark1_item.pnml"
-//#include "src/0Steampunk/steampunk_Mark1_graphics.pnml"
-
-//LiOX
-//#include "jetretro_LiOX_item.pnml"
-//#include "jetretro_LiOX_graphics.pnml"
-
-// Individual vehicle #includes, entails spritesets, vehicle-specific switches, and their item blocks.
-
-//#include "src/roadtypes.pnml"
-//#include "src/tram_1903_tube_gate.pnml"
-//#include "src/tram_1938_tube_new_works.pnml"
-//#include "src/tram_1967_tube_victoria.pnml"
-//#include "src/tram_1992_tube_adtranz.pnml"
-//#include "src/tram_2027_subway_?.pnml"
-//#include "src/tram_2042_subway_shinku-eki.pnml"
