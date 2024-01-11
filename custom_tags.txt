@@ -1,16 +1,8 @@
-<<<<<<< Updated upstream
-VERSION		:1
-TITLE		:Hover Vehicles
-COPYDATE	:2012
-UPDATE		:May 31, 2012
-
-=======
 VERSION			:noRev
 VERSION_STRING	:noRev
 TITLE			:FutuRVs: Futuristic Road Vehicles
-FILENAME		:rov.grf
+FILENAME		:FutuRVs.grf
 REPO_HASH		:
 NEWGRF_VERSION	:0
 COPYDATE		:2012
 UPDATE			:May 31, 2012
->>>>>>> Stashed changes

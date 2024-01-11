@@ -15,15 +15,19 @@ STR_PARAM_DESC_UNIV	:Enables the universal truck (can cary any cargo) for refit 
 # ROAD VEHICLE NAMES
 # =============================================================================
 
+#Retrofuture Vehicle Names
+STR_NAME_MARK1								:AutöWerks Mk.I Halftrack (Thermonuclear)
+STR_NAME_LIOX								:MonsAgro "LiOX" Tanker Crawler (Fuel Cell)
+
 #Vehicle Names
-STR_NAME_BUS_ARTICULATED					:AutöWerks A10 AutöBus (Induction)-
-STR_NAME_HOVERBUS_01						:Chryslus Metroliner '75 HoverBus (Fusion-Electric)-
-STR_NAME_HOVERFLAT_01						:BnL HAUL-E Flatbed Hover Van (Induction)-
-STR_NAME_HOVERHOPPER_01						:Argyle Coop Hopper Hover Truck (Gravlev)-
-STR_NAME_HOVERTANK_01						:Mahir PetroX Hover Tanker (Biofuel)-
-STR_NAME_HOVERSEC_01						:KaibaCorp HiSec Hover Van (Momentum-Electric)-
-STR_NAME_HOVERFRIDGE_01						:Versatran MTR-X Refrigerations (Hoverpad)-
-STR_NAME_HOVERUNIV_01						:CusCo. Omnimodal Hovercraft (Hoverpad)-
+STR_NAME_BUS_ARTICULATED					:AutöWerks A10 AutöBus (Induction)
+STR_NAME_HOVERBUS_01						:Chryslus Metroliner '75 HoverBus (Fusion-Electric)
+STR_NAME_HOVERFLAT_01						:BnL HAUL-E Flatbed Hover Van (Induction)
+STR_NAME_HOVERHOPPER_01						:Argyle Coop Hopper Hover Lorry (Gravlev)
+STR_NAME_HOVERTANK_01						:Mahir PetroX Hover Tanker (Biofuel)
+STR_NAME_HOVERSEC_01						:KaibaCorp HiSec Hover Van (Momentum-Electric)
+STR_NAME_HOVERFRIDGE_01						:Versatran MTR-X Refrigerations (Hoverpad)
+STR_NAME_HOVERUNIV_01						:CusCo. Omnimodal Hovercraft (Hoverpad)
 
 #Vehicle Descriptions
 STR_DESC_HOVERBUS_01:This vehicle can be disabled in the GRF parameters for use with the original Hover Bus GRF.

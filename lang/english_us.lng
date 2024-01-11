@@ -2,8 +2,9 @@
 ##plural 0
 
 STR_GRF_NAME:FutuRVs: Futuristic Road Vehicles 0.3a
+
 STR_GRF_DESCRIPTION:Articulated bus graphic credits to {SILVER}acs121{BLACK}, graphics licensed in {SILVER}GPL v2{BLACK}.{}Hover Vehicles graphics credits to {SILVER}Hazzard{BLACK}, graphics licensed in {SILVER}GPL v2{BLACK}.{}This GRF is a combination of Gadg8eer's "Articul8eer" set and Hazzard's hover vhecles; it adds one new optical tram, one new self-driving bus, and six new high-speed levitating road vehicles to the game:a bus and a truck.{}{COPYRIGHT}{COPYDATE} Hazzard (Mingwei Samuel){}License:{}GPLv2{}Uses parts of HoverBus and eGRVTS
-STR_GRF_URL:https://lemmy.dbzero.com/
+STR_GRF_URL:https://github.com/Gadg8eer/OTTD-FutuRVs
 
 #Parameter Names
 STR_PARAM_NAME_BUS	:Diable the 'Chryslus HoverBus' Vehicle

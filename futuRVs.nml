@@ -5,8 +5,8 @@ grf {
     grfid: "G8R\05";
     name: string(STR_GRF_NAME);
     desc: string(STR_GRF_DESCRIPTION);
-    version: 11;
-    min_compatible_version: 11;
+    version: 12;
+    min_compatible_version: 12;
 	param {
 		param_disable_bus {
 			type: bool;
@@ -60,6 +60,10 @@ template template_tram_28(x, y) {
     [x+170,     y,          36,        28,          -16,         -20+2]
     [x+210,     y,          26,        28,           -12,        -16+2]
 }
+
+
+disable_item(FEAT_ROADVEHS, 00, 87);
+/* the above disables default road vehicles */
 
 basecost {
    	PR_RUNNING_ROADVEH :     2;
@@ -1671,7 +1675,26 @@ cargotable {
 	PCL_//, //Parcels (high-value mail)
 }
 # 1 "futuRVs.pnml" 1
-# 1 "src/01_subway-metro.pnml" 1
+# 1 "src/01_cargorefits.pnml" 1
+/*
+ *  This file is part of the OpenGFX Mars Xtended RoVers and in turn part of the OpenGFX Mars Xpanded project
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 3 of the license might or might not be legally required (check the included license.txt for more information before choosing a license)
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ *  You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+ //this file lists all cargo refits for each vehicle.
+ //any changes to cargo refits can be done centrally from this file.
+ 
+ #define CARGODEF_GTR10 \
+ cargo_allow_refit:				[PRGD, GOOD, FOOD, ENSP, PLAS, CPNT]; \
+ cargo_disallow_refit:			[PASS, ORGN, FERT, N2__, O2__, H2__, CHEM, ORES, WATR, RGTH];
+ 
+ #define CARGODEF_LIOX \
+ cargo_allow_refit:				[N2__, O2__, CHEM, WATR]; \
+ cargo_disallow_refit:			[PASS, PRGD, GOOD, FOOD, ENSP, ORGN, FERT, PLAS, CPNT, H2__, ORES, RGTH];
+# 1 "futuRVs.pnml" 1
+# 1 "src/metro/00_subway-metro.pnml" 1
 // ======= BEGIN GATE TUBE =======
 
 // Gate Tube Sprites
@@ -2974,7 +2997,7 @@ if (param_RV0_or_tram1 == 1) {
 
 // ======= END CHIKATETSU E4 FUTURISTIC =======
 # 1 "futuRVs.pnml" 1
-# 1 "src/02_pneumetro.pnml" 1
+# 1 "src/invismetro/01_pneumetro.pnml" 1
 // ======= BEGIN GATE PNEU =======
 
 // Janus Tube Sprites
@@ -3767,7 +3790,198 @@ if (param_RV0_or_tram1 == 1) {
 
 // ======= END XM-2000 PNEU =======
 # 1 "futuRVs.pnml" 1
-# 1 "src/03_autobus.pnml" 1
+# 1 "src/ogfx-mars-ext/00_templates_ogfxmars.pnml" 1
+/*
+ *  This file is part of the OpenGFX Mars Xtended RoVers and in turn part of the OpenGFX Mars Xpanded project
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 3 of the license might or might not be legally required (check the included license.txt for more information before choosing a license)
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ *  You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+/* This is the sprite template for the GTR-10 Freight Halftrack */
+template tmpl_gtr10(x, y) {
+    //left_x, upper_y, width, height, offset_x, offset_y
+    [  0 + x, y,       10,    28,      -6,      -11]
+    [ 20 + x, y,       26,    28,     -16,      -15]
+    [ 50 + x, y,       36,    28,     -22,      -21]
+    [ 90 + x, y,       26,    28,     -11,      -17]
+    [120 + x, y,       10,    28,      -4,      -14]
+    [140 + x, y,       26,    28,     -15,      -16]
+    [170 + x, y,       36,    28,     -14,      -20]
+    [210 + x, y,       26,    28,     -10,      -15]
+}
+
+/* This is the sprite template for the LiOX Tanker Crawler */
+template tmpl_liox(x, y) {
+    //left_x, upper_y, width, height, offset_x, offset_y
+    [  0 + x, y,       10,    28,      -6,      -14]
+    [ 20 + x, y,       26,    28,     -16,      -16]
+    [ 50 + x, y,       36,    28,     -18,      -21]
+    [ 90 + x, y,       26,    28,     -10,      -15]
+    [120 + x, y,       10,    28,      -4,      -16]
+    [140 + x, y,       26,    28,     -16,      -15]
+    [170 + x, y,       36,    28,     -18,      -20]
+    [210 + x, y,       26,    28,     -10,      -16]
+}
+
+/* tmpl means template, so (0, 0) means the sprite locating is starting from the top left of the image, and (260, 0) means its starting from the top of the image but 260 pixels from the left edge */
+# 1 "futuRVs.pnml" 1
+# 1 "src/ogfx-mars-ext/1a_halftrack_item.pnml" 1
+/*
+ *  This file is part of the OpenGFX Mars Xtended RoVers and in turn part of the OpenGFX Mars Xpanded project
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 3 of the license might or might not be legally required (check the included license.txt for more information before choosing a license)
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ *  You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+/*
+* ITEM
+*/
+
+item(FEAT_ROADVEHS, item_mark1) {
+    property {
+        // Basic Properties
+        name:                           string(STR_NAME_MARK1);
+        climates_available:             bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
+		
+		// Vehicle Properties
+        introduction_date:              date(1910,01,01);
+        model_life:                     50;
+        /* retire_early not set, use default retirement behaviour */
+        vehicle_life:                   50;
+        reliability_decay:              20;
+        speed:                          80 km/h;
+        power:                          120 hp;
+		air_drag_coefficient:			0.05;
+        weight:                         2.0 ton;
+		road_type:
+		
+		//Cargo properties
+		cargo_capacity:                 40;
+		CARGODEF_MARK1
+		//cargo_allow_refit:			no need to define so far
+		//cargo_disallow_refit:			no need to define so far
+        loading_speed:                  3;	// Deliberately low for pressurised cargo
+		
+		// Costs
+        cost_factor:                    20;	//Should be 35,000
+        running_cost_factor:            18; //Should be 3,600
+		running_cost_base:              RUNNING_COST_ROADVEH;
+		refit_cost:                     0;	// Refitting is free
+		/* cargo_age_period is left at default */
+
+        // Graphics & Sound
+		misc_flags:                     bitmask(ROADVEH_FLAG_2CC);
+        sprite_id:                      SPRITE_ID_NEW_ROADVEH; //enable new graphics
+        sound_effect:                   SOUND_BUS_START_PULL_AWAY;
+        /* Visual effect is left at default (no effect) */
+    }
+
+    // Define Graphics
+	/* I had a bit of trouble with this due to poor documentation, so I just guessed and turned out to be right; livery by switch requires you to put the switch name in place of the spritegroup name */
+	graphics {
+	default: switch_mark1_style;
+	}
+}
+# 1 "futuRVs.pnml" 1
+# 1 "src/ogfx-mars-ext/1b_halftrack_gfx.pnml" 1
+/*
+ *  This file is part of the OpenGFX Mars Xtended RoVers and in turn part of the OpenGFX Mars Xpanded project
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 3 of the license might or might not be legally required (check the included license.txt for more information before choosing a license)
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ *  You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+/*
+* Vehicle
+*/
+
+spriteset(spriteset_mark1_steampunk, "gfx/mark1_sprites.png") {
+    tmpl_mark1(0, 0)
+}
+
+spriteset(spriteset_mark1_atomic, "gfx/mark1_sprites.png") {
+    tmpl_mark1(260, 0)
+}
+
+/* Because the switch can't be called upon by the graphics block without a name, you need to put a self-chosen name for the switch in the <ID> section; in this case, "switch_mark1_style" */
+
+switch (FEAT_ROADVEHS, SELF, switch_mark1_style, build_year) {
+	0..1944: spriteset_mark1_steampunk; //case: view "steampunk" 
+	spriteset_mark1_atomic; //case: view "atomic"
+}
+# 1 "futuRVs.pnml" 1
+# 1 "src/ogfx-mars-ext/2a_marstanker_item.pnml" 1
+/*
+ *  This file is part of the OpenGFX Mars Xtended RoVers and in turn part of the OpenGFX Mars Xpanded project
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 3 of the license might or might not be legally required (check the included license.txt for more information before choosing a license)
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ *  You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+/*
+* ITEM
+*/
+
+item(FEAT_ROADVEHS, item_liox) {
+    property {
+        // Basic Properties
+        name:                           string(STR_NAME_LIOX);
+        climates_available:             bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
+		
+		// Vehicle Properties
+        introduction_date:              date(1960,01,01);
+        model_life:                     33;
+		vehicle_life:					20;
+        /* retire_early not set, use default retirement behaviour */
+        vehicle_life:                   30;
+        reliability_decay:              17;
+		speed:                          96 km/h;
+        power:                          200 hp;
+		air_drag_coefficient:			0.05;
+        weight:                         5.0 ton;
+		road_type:                      HAUL;
+		
+		// Cargo Properties
+		cargo_capacity:                 18;
+        CARGODEF_LIOX
+		//cargo_allow_refit:				[N2__, O2__, CHEM, WATR]; \
+		//cargo_disallow_refit:			[PASS, PRGD, GOOD, FOOD, ENSP, ORGN, FERT, PLAS, CPNT, H2__, ORES, RGTH];
+        loading_speed:                  5;
+        /* cargo_age_period is left at default */
+		
+		// Costs
+		cost_factor:                    29; //Should be 50,000
+        running_cost_factor:            25; //Should be 5,000
+		running_cost_base:              RUNNING_COST_ROADVEH;
+		refit_cost:                     0; // Refitting is free
+
+        // Graphics & Sound
+		misc_flags:                     bitmask(ROADVEH_FLAG_2CC);
+        sprite_id:                      SPRITE_ID_NEW_ROADVEH; //enable new graphics
+        sound_effect:                   SOUND_BUS_START_PULL_AWAY;
+        /* Visual effect is left at default (no effect) */
+    }
+
+    // Define graphics
+    graphics {
+        default: spriteset_liox_jetretro;
+    }
+}
+# 1 "futuRVs.pnml" 1
+# 1 "src/ogfx-mars-ext/2b_marstanker_gfx.pnml" 1
+/*
+ *  This file is part of the OpenGFX Mars Xtended RoVers and in turn part of the OpenGFX Mars Xpanded project
+ *  This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; version 3 of the license might or might not be legally required (check the included license.txt for more information before choosing a license)
+ *  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+ *  You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ */
+
+spriteset(spriteset_liox_jetretro, "gfx/liox_sprites.png") {
+    tmpl_liox(0, 0)
+}
+# 1 "futuRVs.pnml" 1
+# 1 "src/smartransit/00_autobus.pnml" 1
 /* This is the template. When you're more experienced, you can try editing this, but if it's all gibberish then just modify "FooBarTramVehicleTemplates.png" in GIMP to create a vehicle. Each template below refers to a specific vehicle length, so make sure to put the vehicle sprites in the right part of "FooBarTramVehicleTemplates.png" when drawing a vehicle. */
 
 template template_bus_32(x, y) {
@@ -4826,23 +5040,23 @@ item(FEAT_ROADVEHS, item_autobus_0_rear) {
     }
 }
 # 1 "futuRVs.pnml" 1
-# 1 "src/04_vactube.pnml" 1
+# 1 "src/invismetro/02_vactube.pnml" 1
 // ======= BEGIN METROVAC V1 FUTURISTIC =======
 
 // Shinku_eki Sprites
-spriteset(MetroVac_purchase_set, "gfx/vehicles/VACT/MetroVac V1/V1Purchase_0.png") {
+spriteset(MetroVac_purchase_set, "gfx/graphics/tram/VACT/MetroVac V1/V1Purchase_0.png") {
 	[-18, -6]
 }
 
-spriteset(MetroVac_head_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Head_0.png") {
+spriteset(MetroVac_head_visible_set, "gfx/graphics/tram/VACT/MetroVac V1/V1Head_0.png") {
 	[-16, -5]
 }
 
-spriteset(MetroVac_middle_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Middle_0.png") {
+spriteset(MetroVac_middle_visible_set, "gfx/graphics/tram/VACT/MetroVac V1/V1Middle_0.png") {
 	[-16, -5]
 }
 
-spriteset(MetroVac_tail_visible_set, "gfx/vehicles/VACT/MetroVac V1/V1Tail_0.png") {
+spriteset(MetroVac_tail_visible_set, "gfx/graphics/tram/VACT/MetroVac V1/V1Tail_0.png") {
 	[-16, -5]
 }
 
@@ -5077,19 +5291,19 @@ if (param_RV0_or_tram1 == 1) {
 // ======= BEGIN SHINKU-EKI E4 FUTURISTIC =======
 
 // Shinku_eki Sprites
-spriteset(CosmoVac_purchase_set, "gfx/vehicles/VACT/Cosmopolitan V4/V4Purchase_0.png") {
+spriteset(CosmoVac_purchase_set, "gfx/graphics/tram/VACT/Cosmopolitan V4/V4Purchase_0.png") {
 	[-18, -6]
 }
 
-spriteset(CosmoVac_head_visible_set, "gfx/vehicles/VACT/CosmoVac V4/V4Head_0.png") {
+spriteset(CosmoVac_head_visible_set, "gfx/graphics/tram/VACT/CosmoVac V4/V4Head_0.png") {
 	[-16, -5]
 }
 
-spriteset(CosmoVac_middle_visible_set, "gfx/vehicles/VACT/CosmoVac V4/V4Middle_0.png") {
+spriteset(CosmoVac_middle_visible_set, "gfx/graphics/tram/VACT/CosmoVac V4/V4Middle_0.png") {
 	[-16, -5]
 }
 
-spriteset(CosmoVac_tail_visible_set, "gfx/vehicles/VACT/CosmoVac V4/V4Tail_0.png") {
+spriteset(CosmoVac_tail_visible_set, "gfx/graphics/tram/VACT/CosmoVac V4/V4Tail_0.png") {
 	[-16, -5]
 }
 
@@ -5321,7 +5535,7 @@ if (param_RV0_or_tram1 == 1) {
 
 // ======= END SHINKU-EKI E4 FUTURISTIC =======
 # 1 "futuRVs.pnml" 1
-# 1 "src/05_hoverv.pnml" 1
+# 1 "src/hover/00_hoverv.pnml" 1
 /*
 NOTE
 Hover Vehicles
@@ -5412,7 +5626,7 @@ item(FEAT_ROADVEHS, item_hoverbus_01) {
 		loading_speed:					3;
 		cost_factor:					250;
 		running_cost_factor:				250;
-		road_type:							RAbS;
+		road_type:							HBus;
 		/* cargo_age_period is left at default */
 
 		/* RV-specific properties */
@@ -6012,6 +6226,14 @@ item(FEAT_ROADVEHS, item_hoveruniv_01) {
     }
 }
 # 1 "futuRVs.pnml" 1
+
+//GTR-10
+//#include "src/0Steampunk/steampunk_Mark1_item.pnml"
+//#include "src/0Steampunk/steampunk_Mark1_graphics.pnml"
+
+//LiOX
+//#include "jetretro_LiOX_item.pnml"
+//#include "jetretro_LiOX_graphics.pnml"
 
 // Individual vehicle #includes, entails spritesets, vehicle-specific switches, and their item blocks.
 

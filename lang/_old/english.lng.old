@@ -1,0 +1,10 @@
+##grflangid 0x00
+# This is the English language file
+
+# GRF name and description definitions
+STR_GRF_NAME				:Recycled OpenGFX Mars Xtended Vehicles r10
+STR_GRF_DESCRIPTION			:Strange Road Vehicles {}{COPYRIGHT}2014 Twyster{}License: GPL v2
+
+# vehicle names
+STR_NAME_GTR10				:qWorks A10 Auto-Home Halftrack
+STR_NAME_LIOX				:Comet Industries "LiOX" Tanker Crawler

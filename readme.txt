@@ -18,7 +18,7 @@ Contents
 		Hover vehicles is a small newGRF created to add a few futuristic hovering vehicles to OpenTTD. The GRF currently includes one bus and five trucks. An aditional universal truck can be enabled via the parameter setings.
 	
 	1a. About Articul8eer
-		Originally concieved as a template for articulated vehicles, the set evolved into a reuse of one of acs121's old NABI bus sprites to create a vehicle capable of interacting with futuristic roads.
+		Originally concieved as a template for articulated vehicles, the set evolved into a reuse of one of acs121's old NABI bus sprites to create a vehicle capable of interacting with futuristic roads. This GRF replaces it and uses the same GRF ID.
 
 2. Recomended settings
 		Adv Settings > Vehicles > Road vehicle acceleration model = Realistic
@@ -71,17 +71,23 @@ Contents
 			-TRTA Chikatetsu GS4 (2099)
 			-TRTA Chikatetsu GSc (2100)
 	
-	3d. Optically-Guided and Magnetically-Guided Vehicles (SmarTram)
+	3d. Retrofuturistic Vehicles
+		You may recognize these from my work (OpenGFX Mars Extended) as they share the same sprites and specs.
+
+			-AutöWerks Mk.I (1890)
+			-
+	
+	3e. Optically-Guided and Magnetically-Guided Vehicles (SmarTram)
 		You may recognize these from the work of acs121 (an old version of NARVS) or from my "Articul8eer Test Set" (GRF ID reused by this GRF), as they share the same sprites.
 
-			-AutöWerks X10 SmarTram (2015)-
+			-AutöWerks X10 SmarTram (2015)
 
-	3e. Self-Driving Vehicles
+	3f. Self-Driving Vehicles
 		You may recognize these from the work of acs121 (an old version of NARVS) or from my "Articul8eer Test Set" (GRF ID reused by this GRF), as they share the same sprites.
 
-			-AutöWerks A10 AutöBus (2030)-
+			-AutöWerks A10 AutöBus (2030)
 
-	3f. VacTrain Metro/Subway (VacTube)
+	3g. VacTrain Metro/Subway (VacTube)
 		A conversion of the "invisible subway trams" GRF by Supercheese and their graphical bases into surface trams that are compatible with the MABV tramtype label. These will have modified purchase sprites.
 
 		You may recognize the futuristic subways and the VacTube variants from one of the Vactrain sets by EmperorJake, as they have sprites (and names) modified from that set.
@@ -94,7 +100,7 @@ Contents
 			-Cosmopolitan Railways "CosmoVac" V4 (2049)
 			-Cosmopolitan Railways "CargoVac" V4c (2050)
 
-	3g. Hovermobiles
+	3h. Hovermobiles
 		A conversion of the "Hover Vehicles" GRF by Hazzard and their graphical bases to use standardized roadtype tables, they have sprites (and modified names) from that set. The sprites are derived from Zephyris' "eGRVTS" GRF.
 
 			-Chryslus Metroliner '78 HoverBus (2078)
