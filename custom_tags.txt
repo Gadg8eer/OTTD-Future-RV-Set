@@ -1,6 +1,8 @@
-VERSION        :noRev
-VERSION_STRING :noRev
-TITLE          :Recycled OpenGFX Mars Xtended Vehicles noRev
-FILENAME       :rov.grf
-REPO_HASH      :
-NEWGRF_VERSION :0
+VERSION			:noRev
+VERSION_STRING	:noRev
+TITLE			:FutuRVs: Future Vehicles Set
+FILENAME		:rov.grf
+REPO_HASH		:
+NEWGRF_VERSION	:0
+COPYDATE		:2012
+UPDATE			:May 31, 2012

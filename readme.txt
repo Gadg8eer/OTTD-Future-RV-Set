@@ -18,7 +18,7 @@ Contents
 		Hover vehicles is a small newGRF created to add a few futuristic hovering vehicles to OpenTTD. The GRF currently includes one bus and five trucks. An aditional universal truck can be enabled via the parameter setings.
 	
 	1a. About Articul8eer
-		Originally concieved as a template for articulated vehicles, the set evolved into a reuse of one of acs121's old NABI bus sprites to create a vehicle capable of interacting with futuristic roads.
+		Originally concieved as a template for articulated vehicles, the set evolved into a reuse of one of acs121's old NABI bus sprites to create a vehicle capable of interacting with futuristic roads. This GRF replaces it and uses the same GRF ID.
 
 2. Recomended settings
 		Adv Settings > Vehicles > Road vehicle acceleration model = Realistic
@@ -74,7 +74,8 @@ Contents
 	3d. Retrofuturistic Vehicles
 		You may recognize these from my work (OpenGFX Mars Extended) as they share the same sprites and specs.
 
-			-AutöWerks Mk.I (1890)-
+			-AutöWerks Mk.I (1890)
+			-
 	
 	3e. Optically-Guided and Magnetically-Guided Vehicles (SmarTram)
 		You may recognize these from the work of acs121 (an old version of NARVS) or from my "Articul8eer Test Set" (GRF ID reused by this GRF), as they share the same sprites.
