@@ -5,26 +5,89 @@
  *  You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
-//Define the cargo translation table
+
+/*
+* ********************************************
+* Define cargo translation table and refits
+* ********************************************
+*/
+ 
+/* This is the cargo table. Check https://newgrf-specs.tt-wiki.net/wiki/CargoTypes to find cargo labels and add them to the cargo table. */
+ 
+// cargotable {
+//	Default cargos
+//   PASS, MAIL
+//   }
+ 
+
+//Cargotable
 cargotable {
-	PASS, //Passengers (pressurised)		Passengers & Covered (fallback to Covered instead of Pressurised)
-	MAIL, //Physical transport of data		Piece goods
-	PCL_, //Courier transport of goods		Piece goods
-	PRGD, //Pressurised goods				Piece goods & Covered
-	GOOD, //General goods					Piece goods
-	FOOD, //Food							Refrigerated & Covered
-	ENSP, //Engineering supplies/machinery	Piece goods
-	ORGN, //Organics						Bulk
-	FERT, //Fertiliser						Liquid
-	PLAS, //Plastic							Piece goods
-	CPNT, //Components						Piece goods
-	N2__, //Nitrogen						Liquid (fallback to Liquid instead of Gas)
-	O2__, //Oxygen							Liquid (fallback to Liquid instead of Gas)
-	H2__, //Hydrogen						Liquid (fallback to Liquid instead of Gas)
-	CHEM, //Chemicals						Liquid & Hazardous
-	ORES, //Mixed ores						Bulk
-	WATR, //Water							Liquid
-	RGTH, //Regolith						Bulk
+	PASS,	//Passengers
+			//Passengers (pressurised)			Passengers & Covered (fallback to Covered instead of Pressurised)
+	GOOD,	//Goods
+			//General goods						Piece goods
+	MAIL,	//Mail
+			//Physical transport of data		Piece goods
+	FOOD,	//Food								Refrigerated & Covered
+	COAL,	//Coal
+	WOOD,	//Wood
+	PAPR,	//Paper
+	STEL,	//Steel
+	BATT,	//Batteries
+	BUBL,	//Bubbles
+	FZDR,	//Fizzy Drinks
+	LVST,	//Livestock
+	FRUT,	//Fruit
+	GRAI,	//Grain
+	WHEA,	//Wheat
+	MAIZ,	//Maize
+	PLAS,	//Plastic							Piece goods
+	IORE,	//Iron Ore
+			//Regolith							Bulk
+	CORE,	//Copper Ore
+	ORES,	//Mixed ores						Bulk
+	TOFF,	//Toffee
+	SUGR,	//Sugar
+	CTCD,	//Candyfloss
+	SWET,	//Candy (sweets)
+	//Mars
+	PRGD,	//Pressurised goods					Piece goods & Covered
+	ORGN,	//Organics							Bulk
+	CPNT,	//Components						Piece goods
+	//Liquid
+	OIL_,	//Oil
+	RUBR,	//Rubber
+	WATR,	//Water
+			//Water								Liquid
+	COLA,	//Cola
+	PLST,	//Plastic (toyland)
+	PETR,	//Petrol
+	RFPR,	//Refined Products
+	//Liquid - Mars
+	CHEM,	//Chemicals							Liquid & Hazardous
+	N2__,	//Nitrogen							Liquid (fallback to Liquid instead of Gas)
+	O2__,	//Oxygen							Liquid (fallback to Liquid instead of Gas)
+	H2__,	//Hydrogen							Liquid (fallback to Liquid instead of Gas)
+	//Special
+	BEER,	//Alcohol
+	FRVG,	//FRUIT
+	WDPR,	//Wood Products
+	WOOL,	//Wool
+	CERE,	//Cereal
+	OLSD,	//Oil Seed
+	FERT,	//Fertilizer
+			//Fertiliser						Liquid
+	LIME,	//Limestone
+	PLaI,	//Plastic
+	MILK,	//Milk
+	FISH,	//Fish
+	ENSP,	//Engineering Supplies
+			//Engineering supplies/machinery	Piece goods
+	FMSP,	//Farm Supplies
+	MNSP,	//Manufacturing Supplies
+	TOUR,	//Tourists (high-end passengers)
+	PCL_//,	//Parcels (high-value mail)
+			//Courier transport of goods		Piece goods
 }
 
 /*
