@@ -30,8 +30,7 @@ item(FEAT_ROADVEHS, item_liox) {
 		
 		// Cargo Properties
 		cargo_capacity:                 18;
-        CARGODEF_LIOX
-		//cargo_allow_refit:				[N2__, O2__, CHEM, WATR]; \
+		//cargo_allow_refit:			[N2__, O2__, CHEM, WATR]; 
 		//cargo_disallow_refit:			[PASS, PRGD, GOOD, FOOD, ENSP, ORGN, FERT, PLAS, CPNT, H2__, ORES, RGTH];
         loading_speed:                  5;
         /* cargo_age_period is left at default */

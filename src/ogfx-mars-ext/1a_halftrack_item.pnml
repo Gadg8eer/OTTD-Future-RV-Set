@@ -25,7 +25,7 @@ item(FEAT_ROADVEHS, item_mark1) {
         power:                          120 hp;
 		air_drag_coefficient:			0.05;
         weight:                         2.0 ton;
-		road_type:						RAAN;
+		road_type:						Road;
 		
 		//Cargo properties
 		cargo_capacity:                 40;
