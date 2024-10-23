@@ -25,7 +25,7 @@ item(FEAT_ROADVEHS, item_liox) {
 	        power:                          200 hp;
 		air_drag_coefficient:			0.05;
 	        weight:                         5.0 ton;
-		road_type:                      HAUL;
+		road_type:                      SAcN;
 		
 	// Cargo Properties
 		cargo_capacity:                 18;
