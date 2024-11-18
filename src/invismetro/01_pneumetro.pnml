@@ -164,7 +164,7 @@ item(FEAT_ROADVEHS, janus_tube) {
 		running_cost_factor:			132;
 		length:							7;
 		cargo_age_period:				90;
-		tram_type:                    	Pneu;
+		tram_type:                    	PAbN;
 	}
 	graphics {
 		articulated_part:				janus_switch_articulated;
@@ -362,7 +362,7 @@ item(FEAT_ROADVEHS, grand_works_tube) {
 		running_cost_factor:			158;
 		length:							7;
 		cargo_age_period:				92;
-		tram_type:                    	Pneu;
+		tram_type:                    	PAbN;
 	}
 	graphics {
 		articulated_part:				grand_works_switch_articulated;
@@ -561,7 +561,7 @@ item(FEAT_ROADVEHS, rail_britannia_tube) {
 		running_cost_factor:			184;
 		length:							7;
 		cargo_age_period:				108;
-		tram_type:                    	Pneu;
+		tram_type:                    	PABN;
 	}
 	graphics {
 		articulated_part:				rail_britannia_switch_articulated;
@@ -759,7 +759,7 @@ item(FEAT_ROADVEHS, xm2000_tube) {
 		running_cost_factor:			212;
 		length:							7;
 		cargo_age_period:				120;
-		tram_type:                    	Pneu;
+		tram_type:                    	PAbN;
 	}
 	graphics {
 		articulated_part:				xm2000_switch_articulated;

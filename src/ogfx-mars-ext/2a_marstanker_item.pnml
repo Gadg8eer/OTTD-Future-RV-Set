@@ -12,32 +12,31 @@
 item(FEAT_ROADVEHS, item_liox) {
     property {
         // Basic Properties
-        name:                           string(STR_NAME_LIOX);
-        climates_available:             bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
+        	name:                           string(STR_NAME_LIOX);
+	        climates_available:             bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL, CLIMATE_TOYLAND);
 		
-		// Vehicle Properties
-        introduction_date:              date(1960,01,01);
-        model_life:                     33;
-		vehicle_life:					20;
+	// Vehicle Properties
+        	introduction_date:              date(1960,01,01);
+		model_life:                     33;
         /* retire_early not set, use default retirement behaviour */
-        vehicle_life:                   30;
-        reliability_decay:              17;
+        	vehicle_life:                   30;
+        	reliability_decay:              17;
 		speed:                          96 km/h;
-        power:                          200 hp;
+	        power:                          200 hp;
 		air_drag_coefficient:			0.05;
-        weight:                         5.0 ton;
-		road_type:                      HAUL;
+	        weight:                         5.0 ton;
+		road_type:                      SAcN;
 		
-		// Cargo Properties
+	// Cargo Properties
 		cargo_capacity:                 18;
 		//cargo_allow_refit:			[N2__, O2__, CHEM, WATR]; 
 		//cargo_disallow_refit:			[PASS, PRGD, GOOD, FOOD, ENSP, ORGN, FERT, PLAS, CPNT, H2__, ORES, RGTH];
-        loading_speed:                  5;
+	        loading_speed:                  5;
         /* cargo_age_period is left at default */
 		
 		// Costs
 		cost_factor:                    29; //Should be 50,000
-        running_cost_factor:            25; //Should be 5,000
+		running_cost_factor:            25; //Should be 5,000
 		running_cost_base:              RUNNING_COST_ROADVEH;
 		refit_cost:                     0; // Refitting is free
 

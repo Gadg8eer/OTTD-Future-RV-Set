@@ -179,7 +179,7 @@ item(FEAT_ROADVEHS, gate_tube) {
 		running_cost_factor:			132;
 		length:							7;
 		cargo_age_period:				90;
-		tram_type:                    	Mtro;
+		tram_type:                    	MAB3;
 	}
 	graphics {
 		articulated_part:				gate_switch_articulated;
@@ -377,7 +377,7 @@ item(FEAT_ROADVEHS, new_works_tube) {
 		running_cost_factor:			158;
 		length:							7;
 		cargo_age_period:				92;
-		tram_type:                    	Mtro;
+		tram_type:                    	MAB3;
 	}
 	graphics {
 		articulated_part:				new_works_switch_articulated;
@@ -576,7 +576,7 @@ item(FEAT_ROADVEHS, victoria_tube) {
 		running_cost_factor:			184;
 		length:							7;
 		cargo_age_period:				108;
-		tram_type:                    	Mtro;
+		tram_type:                    	MAB3;
 	}
 	graphics {
 		articulated_part:				victoria_switch_articulated;
@@ -774,7 +774,7 @@ item(FEAT_ROADVEHS, adtranz_tube) {
 		running_cost_factor:			212;
 		length:							7;
 		cargo_age_period:				120;
-		tram_type:                    	Mtro;
+		tram_type:                    	MAB3;
 	}
 	graphics {
 		articulated_part:				adtranz_switch_articulated;
@@ -1021,7 +1021,7 @@ item(FEAT_ROADVEHS, ChikatetsuE1) {
 		running_cost_factor:			255;
 		length:							7;
 		cargo_age_period:				128;
-		tram_type:                    	MTRO;
+		tram_type:                    	MAB3;
 	}
 	graphics {
 		articulated_part:				ChikatetsuE1_switch_articulated;
@@ -1259,7 +1259,7 @@ item(FEAT_ROADVEHS, ChikatetsuE4) {
 		speed:            	 			511 km/h;
 		power:							1200 hp;
 		tractive_effort_coefficient:	0.18;
-		weight:							60 ton;
+		weight:							120 ton;
 		cargo_capacity:					80;
 		loading_speed:					200;
 		refittable_cargo_classes:		bitmask(CC_PASSENGERS, CC_MAIL);
@@ -1269,7 +1269,7 @@ item(FEAT_ROADVEHS, ChikatetsuE4) {
 		running_cost_factor:			255;
 		length:							7;
 		cargo_age_period:				128;
-		tram_type:                    	MTRO;
+		tram_type:                    	MAC3;
 	}
 	graphics {
 		articulated_part:				ChikatetsuE4_switch_articulated;

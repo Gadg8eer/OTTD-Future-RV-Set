@@ -29,12 +29,12 @@ you have to add a version check to the NewGRF in order to disable itself (or the
 item(FEAT_ROADTYPES, item_road) {
 	property {
 		label:							"ROAD";
-		powered_roadtype_list:			[
+		alternative_roadtype_list:				[
 										"RAaN", "RAAN", "RABN", "RACN", "RAcN",
 										"RAaE", "RAAE", "RABE", "RACE", "RAcE",
 										"RAaI", "RAAI", "RABI", "RACI", "RAcI",
 										"RAaS", "RAAS", "RABS", "RACS", "RAcS"
-										];
+									];
 		//roadtype_flags:					bitmask(ROADTYPE_FLAG_HIDDEN);
 	}
 }
@@ -88,7 +88,7 @@ item(FEAT_ROADVEHS, item_hoverbus_01) {
 		loading_speed:					3;
 		cost_factor:					250;
 		running_cost_factor:				250;
-		road_type:							HBus;
+		road_type:							PAbS;
 		/* cargo_age_period is left at default */
 
 		/* RV-specific properties */
@@ -257,7 +257,7 @@ item(FEAT_ROADVEHS, item_hoverflat_01) {
 		loading_speed:					5;
 		cost_factor:					255;
 		running_cost_factor:				255;
-		road_type:							RAAS;
+		road_type:					RABS;
 		/* cargo_age_period is left at default */
 
 		/* RV-specific properties */
@@ -402,7 +402,7 @@ item(FEAT_ROADVEHS, item_hoverhopper_01) {
 		loading_speed:					5;
 		cost_factor:					255;
 		running_cost_factor:				255;
-		road_type:							RACS;
+		road_type:					RABS;
 		/* cargo_age_period is left at default */
 
 		/* RV-specific properties */
@@ -480,7 +480,7 @@ item(FEAT_ROADVEHS, item_hovertank_01) {
 		loading_speed:					6;
 		cost_factor:					255;
 		running_cost_factor:				255;
-		road_type:							RACS;
+		road_type:							RABS;
 		/* cargo_age_period is left at default */
 
 		/* RV-specific properties */

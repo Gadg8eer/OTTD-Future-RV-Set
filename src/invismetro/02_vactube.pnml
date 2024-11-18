@@ -214,7 +214,7 @@ item(FEAT_ROADVEHS, MetroVac) {
 		running_cost_factor:			255;
 		length:							7;
 		cargo_age_period:				128;
-		tram_type:                    	Vact;
+		tram_type:                    	PAbV; // Standard VacTrain Tunnel
 	}
 	graphics {
 		articulated_part:				MetroVac_switch_articulated;
@@ -461,7 +461,7 @@ item(FEAT_ROADVEHS, Cosmopolitan) {
 		running_cost_factor:			255;
 		length:							7;
 		cargo_age_period:				128;
-		tram_type:                    	VACT;
+		tram_type:                    	PABV; // Deep Wide-Bore VacTrain Tunnel
 	}
 	graphics {
 		articulated_part:				CosmoVac_switch_articulated;

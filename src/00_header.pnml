@@ -277,6 +277,8 @@ switch(FEAT_ROADVEHS, SELF, underground_tube_GFX_switch, cargo_subtype) {
  
 /* This is the Road Type Table. You can add roadtype labels (such as ROAD) to extend compatibility. */
 
+/* Note that if you define the OAbG tramtype and OAbS roadtype, also define the OABG tramtype and OABS roadtype, and have the lowercase b versions also be powered on equivalent tramtypes/roadtypes; OAbG requires OAAG, OABG and OACG, while OAbS requires OAAS, OABS and OACS. OAbG and OAbS indicate the vehicle can pass under low-clearance areas (all low-clearance "b" road/tramtypes should list their typical equivalent in the alternative_roadtype_list, all high-clearance ). */
+
 // == SAMPLE ==
 /*
 roadtypetable {
