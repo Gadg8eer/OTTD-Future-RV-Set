@@ -8,10 +8,16 @@
  //this file lists all cargo refits for each vehicle.
  //any changes to cargo refits can be done centrally from this file.
  
- #define CARGODEF_GTR10 \
- cargo_allow_refit:				[PRGD, GOOD, FOOD, ENSP, PLAS, CPNT]; \
- cargo_disallow_refit:			[PASS, ORGN, FERT, N2__, O2__, H2__, CHEM, ORES, WATR, RGTH];
+	item(FEAT_ROADVEHS, item_mark1) {
+		property	{
+					cargo_allow_refit:				[PRGD, GOOD, FOOD, ENSP, PLAS, CPNT];
+					cargo_disallow_refit:			[PASS, ORGN, FERT, N2__, O2__, H2__, CHEM, ORES, WATR, RGTH];
+		}
+	}
  
- #define CARGODEF_LIOX \
- cargo_allow_refit:				[N2__, O2__, CHEM, WATR]; \
- cargo_disallow_refit:			[PASS, PRGD, GOOD, FOOD, ENSP, ORGN, FERT, PLAS, CPNT, H2__, ORES, RGTH];
+	item(FEAT_ROADVEHS, item_liox) {
+		property	{
+					cargo_allow_refit:				[N2__, O2__, CHEM, WATR];
+					cargo_disallow_refit:			[PASS, PRGD, GOOD, FOOD, ENSP, ORGN, FERT, PLAS, CPNT, H2__, ORES, RGTH];
+		}
+	}

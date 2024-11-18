@@ -326,8 +326,14 @@ roadtypetable {
 	ELRD,
 	//RAAE, RABE, RAbE, RACE,
 	// -- Self-Driving Vehicles --
+	// - Road Vehicles
 	AUTO, Auto,
 	AUTT, AutT,
+	//Halftrack Vehicles
+	SMTS, SmtS,
+	SMTT, SmtT,
+	//Caterpillar Treads
+	SMRT, Smrt,
 	//PAAS, PABS, PAbS, PACS,
 	//PAAS, PABS, PAbS, PACS,
 	//PBAS, PBBS, PBbS, PBCS,
@@ -378,7 +384,6 @@ item(FEAT_ROADTYPES, item_road) {
 										"RAAI", "RABI", "RACI",
 										"RAAS", "RABS", "RACS",
 										"RAAX", "RABX", "RACX",
-										"RAAx", "RABx", "RACx",
 										"RAAi", "RABi", "RACi",
 										"RAAL", "RABL", "RACL",
 										"RAAV", "RABV", "RACV",
@@ -406,8 +411,6 @@ item(FEAT_ROADTYPES, item_lowclear) {
 										"RAAS", "RABS", "RACS",
 												"RAbS",
 										"RAAX", "RABX", "RACX",
-												"RAbX",
-										"RAAx", "RABx", "RACx",
 												"RAbX",
 										"RAAi", "RABi", "RACi",
 												"RAbi",
@@ -442,8 +445,6 @@ item(FEAT_ROADTYPES, item_pipeline) {
 														"RAbS",
 										"RAaX", "RAAX", "RABX", "RACX", "RAcX",
 														"RAbX",
-										"RAax", "RAAx", "RABx", "RACx", "RAcx",
-														"RAbx",
 										"RAai", "RAAi", "RABi", "RACi", "RAci",
 														"RAbi",
 										"RAaL", "RAAL", "RABL", "RACL", "RAcL",
@@ -468,8 +469,6 @@ item(FEAT_ROADTYPES, item_pipeline) {
 														"PAbS",
 										"PAaX", "PAAX", "PABX", "PACX", "PAcX",
 														"PAbX",
-										"PAax", "PAAx", "PABx", "PACx", "PAcx",
-														"PAbx",
 										"PAai", "PAAi", "PABi", "PACi", "PAci",
 														"PAbi",
 										"PAaL", "PAAL", "PABL", "PACL", "PAcL",
@@ -499,7 +498,6 @@ item(FEAT_ROADTYPES, item_selfdriving_bus_doubledeck) {
 										"RAAI", "RABI", "RACI",
 										"RAAS", "RABS", "RACS",
 										"RAAX", "RABX", "RACX",
-										"RAAx", "RABx", "RACx",
 										"RAAi", "RABi", "RACi",
 										"RAAL", "RABL", "RACL",
 										"RAAS", "RABS", "RACS",
@@ -509,7 +507,6 @@ item(FEAT_ROADTYPES, item_selfdriving_bus_doubledeck) {
 										"PAAI", "PABI", "PACI",
 										"PAAS", "PABS", "PACS",
 										"PAAX", "PABX", "PACX",
-										"PAAx", "PABx", "PACx",
 										"PAAi", "PABi", "PACi",
 										"PAAL", "PABL", "PACL",
 										"PAAS", "PABS", "PACS",
@@ -529,7 +526,6 @@ item(FEAT_ROADTYPES, item_selfdriving_bus_lowclear) {
 										"RAAI", "RABI", "RAbI", "RACI",
 										"RAAS", "RABS", "RAbS", "RACS",
 										"RAAX", "RABX", "RAbX", "RACX",
-										"RAAx", "RABx", "RAbx", "RACx",
 										"RAAi", "RABi", "RAbi", "RACi",
 										"RAAL", "RABL", "RAbL", "RACL",
 										"RAAS", "RABS", "RAbS", "RACS",
@@ -541,7 +537,6 @@ item(FEAT_ROADTYPES, item_selfdriving_bus_lowclear) {
 										"PAAI", "PABI", "PAbI", "PACI",
 										"PAAS", "PABS", "PAbS", "PACS",
 										"PAAX", "PABX", "PAbX", "PACX",
-										"PAAx", "PABx", "PAbx", "PACx",
 										"PAAi", "PABi", "PAbi", "PACi",
 										"PAAL", "PABL", "PAbL", "PACL",
 										"PAAS", "PABS", "PAbS", "PACS",
@@ -561,7 +556,6 @@ item(FEAT_ROADTYPES, item_selfdriving_truck) {
 										"RAAI", "RABI", "RACI",
 										"RAAS", "RABS", "RACS",
 										"RAAX", "RABX", "RACX",
-										"RAAx", "RABx", "RACx",
 										"RAA0", "RAB0", "RACi",
 										"RAA1", "RAB1", "RACL",
 										"RAA2", "RAB2", "RACS",
@@ -581,7 +575,6 @@ item(FEAT_ROADTYPES, item_selfdriving_truck_lowclear) {
 										"RAAI", "RABI", "RAbI", "RACI",
 										"RAAS", "RABS", "RAbS", "RACS",
 										"RAAX", "RABX", "RAbX", "RACX",
-										"RAAx", "RABx", "RAbx", "RACx",
 										"RAAi", "RABi", "RAbi", "RACi",
 										"RAAL", "RABL", "RAbL", "RACL",
 										"RAAS", "RABS", "RAbS", "RACS",
@@ -602,7 +595,6 @@ item(FEAT_ROADTYPES, item_trolleybus_doubledeck) {
 										"RAAI", "RABI", "RACI",
 										"RAAS", "RABS", "RACS",
 										"RAAX", "RABX", "RACX",
-										"RAAx", "RABx", "RACx",
 										"RAAi", "RABi", "RACi",
 										"RAAL", "RABL", "RACL",
 										"RAAS", "RABS", "RACS",
@@ -612,7 +604,6 @@ item(FEAT_ROADTYPES, item_trolleybus_doubledeck) {
 										"PAAI", "PABI", "PACI",
 										"PAAS", "PABS", "PACS",
 										"PAAX", "PABX", "PACX",
-										"PAAx", "PABx", "PACx",
 										"PAAi", "PABi", "PACi",
 										"PAAL", "PABL", "PACL",
 										"PAAS", "PABS", "PACS",
@@ -655,8 +646,6 @@ item(FEAT_ROADTYPES, item_car) {
 												"RAbI",
 										"RAAX", "RABX", "RACX",
 												"RAbX",
-										"RAAx", "RABx", "RACx",
-												"RAbx",
 										"RAAi", "RABi", "RACi",
 												"RAbi",
 										"RAAL", "RABL", "RACL",
@@ -678,8 +667,6 @@ item(FEAT_ROADTYPES, item_car) {
 												"PAbI",
 										"PAAX", "PABX", "PACX",
 												"PAbX",
-										"PAAx", "PABx", "PACx",
-												"PAbx",
 										"PAAi", "PABi", "PACi",
 												"PAbi",
 										"PAAL", "PABL", "PACL",
@@ -1607,68 +1594,4 @@ item(FEAT_TRAMTYPES, item_vactransit_smalltube) {
 		tramtype_extra_flags:			bitmask(TRAMTYPE_EXTRA_FLAG_NO_SCRIPT_BUILD, TRAMTYPE_EXTRA_FLAG_NO_TUNNELS, TRAMTYPE_EXTRA_FLAG_NO_TRAIN_COLLISION);
 		tramtype_collision_mode:		bitmask(TRAMTYPE_COLLISION_MODE_ELEVATED);
 	}
-}
-
-/*
-* ********************************************
-* Define cargo translation table and refits
-* ********************************************
-*/
- 
-/* This is the cargo table. Check https://newgrf-specs.tt-wiki.net/wiki/CargoTypes to find cargo labels and add them to the cargo table. */
- 
-// cargotable {
-//	Default cargos
-//   PASS, MAIL
-//   }
- 
-
-//Cargotable
-cargotable {
-	PASS, //Passengers
-	GOOD, //Goods
-	MAIL, //Mail
-	COAL, //Coal
-	WOOD, //Wood
-	PAPR, //Paper
-	STEL, //Steel
-	BATT, //Batteries
-	BUBL, //Bubbles
-	FZDR, //Fizzy Drinks
-	LVST, //Livestock
-	FRUT, //Fruit
-	GRAI, //Grain
-	WHEA, //Wheat
-	MAIZ, //Maize
-	IORE, //Iron Ore
-	CORE, //Copper Ore
-	TOFF, //Toffee
-	SUGR, //Sugar
-	CTCD, //Candyfloss
-	SWET, //Candy (sweets)
-	//
-	OIL_, //Oil
-	RUBR, //Rubber
-	WATR, //Water
-	COLA, //Cola
-	PLST, //Plastic (toyland)
-	PETR, //Petrol
-	RFPR, //Refined Products
-	//Special
-	BEER, //Alcohol
-	FRVG, //FRUIT
-	WDPR, //Wood Products
-	WOOL, //Wool
-	CERE, //Cereal
-	OLSD, //Oil Seed
-	FERT, //Fertilizer
-	LIME, //Limestone
-	PLaI, //Plastic
-	MILK, //Milk
-	FISH, //Fish
-	ENSP, //Enigneering Supplies
-	FMSP, //Farm Supplies
-	MNSP, //Manufacturing Supplies
-	TOUR, //Tourists (high-end passengers)
-	PCL_//, //Parcels (high-value mail)
 }

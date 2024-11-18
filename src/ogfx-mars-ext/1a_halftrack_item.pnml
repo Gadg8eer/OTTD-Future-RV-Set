@@ -25,12 +25,11 @@ item(FEAT_ROADVEHS, item_mark1) {
         power:                          120 hp;
 		air_drag_coefficient:			0.05;
         weight:                         2.0 ton;
-		road_type:
+		road_type:						Road;
 		
 		//Cargo properties
 		cargo_capacity:                 40;
-		CARGODEF_MARK1
-		//cargo_allow_refit:			no need to define so far
+		//cargo_allow_refit:			see 01_cargorefits.pnml
 		//cargo_disallow_refit:			no need to define so far
         loading_speed:                  3;	// Deliberately low for pressurised cargo
 		
